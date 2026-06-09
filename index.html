@@ -13,11 +13,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:cent
 .demo{border-top:1px solid var(--dim);background:var(--bg2)}.demo-inner{max-width:1160px;margin:0 auto;padding:76px 48px}.demo h2{max-width:720px;margin-bottom:20px;font-family:var(--serif);font-size:clamp(34px,4.2vw,56px);font-weight:400;line-height:1.1}.demo p{max-width:680px;margin-bottom:22px;color:var(--soft);font-size:18px;line-height:1.75}.demo-email{display:inline-block;margin-bottom:18px;color:var(--white);font-family:var(--serif);font-size:clamp(22px,3vw,30px);overflow-wrap:anywhere}.demo-actions{display:flex;flex-wrap:wrap;gap:12px}.copy-status{min-height:20px;margin-top:12px;color:var(--mid);font-size:13px}.button-reset{cursor:pointer}
 footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;padding:34px 48px;color:var(--mid);font-size:13px;line-height:1.7}
 @media(max-width:768px){nav{align-items:flex-start;padding:16px 28px}.hero{min-height:76vh;padding:136px 28px 58px}.home,.demo-inner{padding:72px 28px}.intro{grid-template-columns:1fr;gap:24px}.post{grid-template-columns:1fr;gap:14px}.post .arrow{display:none}.demo-actions{flex-direction:column}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{flex-direction:column;align-items:center;gap:10px;padding:14px 20px}.nav-links{justify-content:center;gap:8px 12px}.nav-links a{min-height:30px;font-size:12px;letter-spacing:.02em}.nav-demo{padding:6px 10px}.hero{min-height:auto;padding:148px 20px 54px}.eyebrow{margin-bottom:22px;letter-spacing:.1em}.hero-title{font-size:clamp(3rem,13vw,5rem);line-height:1.02;letter-spacing:0}.hero-copy,.intro p,.demo p{width:100%;font-size:17px;line-height:1.7}.actions{width:100%;flex-direction:column}.actions .btn-primary,.actions .btn-secondary{width:100%}.home,.demo-inner{padding:60px 20px}.post h3{font-size:28px}.demo-email{font-size:clamp(20px,6vw,26px)}footer{flex-direction:column;padding:30px 20px}}
+.mobile-menu-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--dim);border-radius:2px;background:transparent;color:var(--white);cursor:pointer}.mobile-menu-toggle span,.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{display:block;width:16px;height:1px;background:currentColor;content:"";transition:transform .2s,opacity .2s}.mobile-menu-toggle span::before{transform:translateY(-6px)}.mobile-menu-toggle span::after{transform:translateY(5px)}.mobile-menu-toggle[aria-expanded="true"] span{background:transparent}.mobile-menu-toggle[aria-expanded="true"] span::before{transform:translateY(1px) rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] span::after{transform:translateY(0) rotate(-45deg)}.mobile-menu{display:none}@media(max-width:768px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;padding:0 20px}.nav-links{display:none}.mobile-menu-toggle{display:inline-flex}.mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:19;display:none;flex-direction:column;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:rgba(12,12,12,.98);backdrop-filter:blur(12px)}.mobile-menu.is-open{display:flex}.mobile-menu a{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 20px;border-bottom:1px solid rgba(58,58,58,.72);color:var(--soft);font-size:13px;letter-spacing:.06em}.mobile-menu a:last-child{border-bottom:0;color:var(--white)}.hero{padding-top:112px}.hero-title{font-size:clamp(3.2rem,14vw,5rem);letter-spacing:0}.eyebrow,.hero-copy{letter-spacing:0}.actions .btn-primary{width:100%}}@media(max-width:480px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;padding:0 18px}.hero{padding:104px 20px 52px}.hero-title{font-size:clamp(2.85rem,13vw,4.5rem);line-height:1.03}.mobile-menu a{padding:0 18px}.actions .btn-secondary{width:100%}}
 </style>
 </head>
 <body>
 <nav aria-label="Primary navigation">
   <a class="nav-logo" href="index.html">RELIUM</a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
   <ul class="nav-links">
     <li><a href="relium-why.html">Why</a></li>
     <li><a href="relium-product.html">Product</a></li>
@@ -25,6 +27,12 @@ footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between
     <li><a class="nav-demo" href="#demo">Request Demo</a></li>
   </ul>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="relium-why.html">Why</a>
+  <a href="relium-product.html">Product</a>
+  <a href="relium-privacy.html">Privacy</a>
+  <a href="#demo">Request Demo</a>
+</div>
 <main>
   <header class="hero">
     <div class="hero-bg" aria-hidden="true"></div>
@@ -69,6 +77,7 @@ footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between
 </main>
 <footer><p>&copy; 2026 Relium. Metadata-only reliability for SQL and dbt pipelines.</p><p>Built for data teams before bad data reaches dashboards.</p></footer>
 <script>
+document.querySelectorAll('.mobile-menu-toggle').forEach(function(button){var menu=document.getElementById(button.getAttribute('aria-controls'));if(!menu){return;}button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));menu.classList.toggle('is-open',!expanded);});menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){button.setAttribute('aria-expanded','false');menu.classList.remove('is-open');});});});
 document.querySelectorAll('[data-copy-email]').forEach(function(button){button.addEventListener('click',function(){var email=button.getAttribute('data-copy-email');var status=button.closest('.demo').querySelector('.copy-status');if(!navigator.clipboard){status.textContent='Copy manually: '+email;return;}navigator.clipboard.writeText(email).then(function(){status.textContent='Email copied.';}).catch(function(){status.textContent='Copy manually: '+email;});});});
 </script>
 </body>

@@ -24,14 +24,14 @@ footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between
     <li><a href="relium-why.html">Why</a></li>
     <li><a href="relium-product.html">Product</a></li>
     <li><a href="relium-privacy.html">Privacy</a></li>
-    <li><a class="nav-demo" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></li>
+    <li><a class="nav-demo" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></li>
   </ul>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="relium-why.html">Why</a>
   <a href="relium-product.html">Product</a>
   <a href="relium-privacy.html">Privacy</a>
-  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a>
+  <a data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a>
 </div>
 <main>
   <header class="hero">
@@ -41,7 +41,7 @@ footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between
       <h1 class="hero-title">Catch silent <em>dbt failures</em> before dashboards do.</h1>
       <p class="hero-copy">Relium is a reliability engine for the quiet data failures that pass orchestration checks but still break business trust.</p>
       <div class="actions">
-        <a class="btn-primary" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request a Demo</a>
+        <a class="btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request a Demo</a>
         <a class="btn-secondary" href="relium-why.html">Start Reading</a>
       </div>
     </div>
@@ -65,6 +65,7 @@ footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between
 <footer><p>&copy; 2026 Relium. Metadata-only reliability for SQL and dbt pipelines.</p><p>Built for data teams before bad data reaches dashboards.</p></footer>
 <script>
 document.querySelectorAll('.mobile-menu-toggle').forEach(function(button){var menu=document.getElementById(button.getAttribute('aria-controls'));if(!menu){return;}button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));menu.classList.toggle('is-open',!expanded);});menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){button.setAttribute('aria-expanded','false');menu.classList.remove('is-open');});});});
+(function(){var mobileQuery=window.matchMedia('(max-width: 768px)');function updateDemoLinks(){document.querySelectorAll('[data-demo-link]').forEach(function(link){if(mobileQuery.matches){link.setAttribute('href',link.getAttribute('data-mailto-href'));link.removeAttribute('target');link.removeAttribute('rel');}else{link.setAttribute('href',link.getAttribute('data-gmail-href'));link.setAttribute('target','_blank');link.setAttribute('rel','noopener');}});}updateDemoLinks();if(mobileQuery.addEventListener){mobileQuery.addEventListener('change',updateDemoLinks);}else if(mobileQuery.addListener){mobileQuery.addListener(updateDemoLinks);}})();
 </script>
 </body>
 </html>

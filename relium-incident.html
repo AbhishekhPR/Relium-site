@@ -1,22 +1,211 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Incident Example - Relium</title>
+<title>Incident Example</title>
+<link rel="stylesheet" href="relium.css">
+<link rel="icon" type="image/svg+xml" href="relium-logo.svg">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0c0c0c;--bg2:#111;--white:#efefeb;--red:#d94f3d;--dim:#3a3a3a;--mid:#6c6c68;--soft:#a8a8a2;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--serif:Georgia,"Times New Roman",serif}html{scroll-behavior:smooth;overflow-x:hidden}body{width:100%;max-width:100%;overflow-x:hidden;background:var(--bg);color:var(--white);font-family:var(--mono);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}pre,code{max-width:100%;overflow-x:auto}nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:56px;padding:0 48px;border-bottom:1px solid var(--dim);background:rgba(12,12,12,.95);backdrop-filter:blur(12px)}.nav-logo{flex:0 0 auto;font-size:14px;font-weight:600;letter-spacing:.08em}.nav-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 24px;list-style:none}.nav-links a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;color:var(--mid);font-size:13px;letter-spacing:.04em;white-space:nowrap}.nav-links a:hover{color:var(--white)}.nav-demo{padding:7px 14px;border:1px solid var(--dim);border-radius:2px}.article{max-width:900px;margin:0 auto;padding:138px 48px 96px}.kicker{margin-bottom:28px;color:var(--mid);font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{margin-bottom:34px;font-family:var(--serif);font-size:clamp(44px,7vw,88px);font-weight:400;line-height:1;letter-spacing:-.02em}.report{max-width:100%;border:1px solid var(--dim);background:var(--bg2);overflow:hidden}.report-head{display:flex;justify-content:space-between;gap:24px;padding:24px 28px;border-bottom:1px solid var(--dim)}.report-head strong{font-family:var(--serif);font-size:30px;font-weight:400;overflow-wrap:anywhere}.report-head span{color:var(--red);font-size:12px;letter-spacing:.12em;text-transform:uppercase}.line{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:28px;padding:22px 28px;border-bottom:1px solid var(--dim)}.line:last-child{border-bottom:0}.line b{font-size:12px;letter-spacing:.12em;text-transform:uppercase}.line p{color:var(--soft);font-size:17px;line-height:1.75;overflow-wrap:anywhere}.back{display:inline-block;margin-top:34px;color:var(--red);font-size:13px;letter-spacing:.08em;text-transform:uppercase}.demo{border-top:1px solid var(--dim);background:var(--bg2)}.demo-inner{max-width:900px;margin:0 auto;padding:64px 48px}.demo h2{margin-bottom:18px;font-family:var(--serif);font-size:clamp(34px,4.2vw,54px);font-weight:400}.demo p{max-width:660px;margin-bottom:20px;color:var(--soft);font-size:18px;line-height:1.75}.demo-email{display:inline-block;margin-bottom:18px;color:var(--white);font-family:var(--serif);font-size:clamp(22px,3vw,30px);overflow-wrap:anywhere}.demo-actions{display:flex;flex-wrap:wrap;gap:12px}.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 24px;border-radius:2px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.05em;text-align:center}.btn-primary{border:1px solid var(--white);background:var(--white);color:var(--bg)}.btn-secondary{border:1px solid var(--dim);color:var(--soft)}.button-reset{cursor:pointer}.copy-status{min-height:20px;margin-top:12px;color:var(--mid);font-size:13px}footer{border-top:1px solid var(--dim);padding:34px 48px;color:var(--mid);font-size:13px}@media(max-width:768px){nav{align-items:flex-start;padding:16px 28px}.article{padding:132px 28px 82px}.line{grid-template-columns:1fr;gap:10px}.demo-inner{padding:58px 28px}.demo-actions{flex-direction:column}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{flex-direction:column;align-items:center;gap:10px;padding:14px 20px}.nav-links{justify-content:center;gap:8px 12px}.nav-links a{min-height:30px;font-size:12px;letter-spacing:.02em}.nav-demo{padding:6px 10px}.article{padding:148px 20px 76px}h1{font-size:clamp(3rem,13vw,5rem);line-height:1.03;letter-spacing:0}.report-head{flex-direction:column;padding:22px 20px}.line{padding:20px}.demo-inner{padding:52px 20px}.demo p{font-size:17px}.demo-email{font-size:clamp(20px,6vw,26px)}footer{padding:30px 20px}}
-.mobile-menu-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--dim);border-radius:2px;background:transparent;color:var(--white);cursor:pointer}.mobile-menu-toggle span,.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{display:block;width:16px;height:1px;background:currentColor;content:"";transition:transform .2s,opacity .2s}.mobile-menu-toggle span::before{transform:translateY(-6px)}.mobile-menu-toggle span::after{transform:translateY(5px)}.mobile-menu-toggle[aria-expanded="true"] span{background:transparent}.mobile-menu-toggle[aria-expanded="true"] span::before{transform:translateY(1px) rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] span::after{transform:translateY(0) rotate(-45deg)}.mobile-menu{display:none}@media(max-width:768px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;padding:0 20px}.nav-links{display:none}.mobile-menu-toggle{display:inline-flex}.mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:19;display:none;flex-direction:column;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:rgba(12,12,12,.98);backdrop-filter:blur(12px)}.mobile-menu.is-open{display:flex}.mobile-menu a{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 20px;border-bottom:1px solid rgba(58,58,58,.72);color:var(--soft);font-size:13px;letter-spacing:.06em}.mobile-menu a:last-child{border-bottom:0;color:var(--white)}h1{font-size:clamp(3.2rem,14vw,5rem);letter-spacing:0}.kicker{letter-spacing:.08em}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;padding:0 18px}h1{font-size:clamp(2.85rem,13vw,4.5rem);line-height:1.03}.mobile-menu a{padding:0 18px}}
+.incident-hero { max-width: 960px; margin: 0 auto; padding: 148px clamp(20px,5vw,72px) 80px; }
+.incident-hero h1 { font-size: clamp(44px,7vw,82px); font-weight: 780; line-height: .98; letter-spacing: -.02em; margin-bottom: 28px; }
+.incident-hero h1 em { font-style: normal; color: var(--primary); }
+.incident-lead { max-width: 680px; color: var(--muted); font-size: clamp(18px,2vw,22px); line-height: 1.7; }
+
+.incident-body { max-width: 960px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 96px; }
+
+.incident-card { border: 1px solid var(--border); border-radius: 20px; background: var(--surface); overflow: hidden; margin-bottom: 48px; }
+
+.incident-header { padding: 32px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.incident-header h2 { font-size: 22px; font-weight: 760; margin-bottom: 8px; }
+.incident-header p { color: var(--muted); font-size: 14px; margin: 0; }
+.incident-severity { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; background: rgba(248,113,113,.12); color: var(--red); font-family: var(--mono); font-size: 12px; font-weight: 800; letter-spacing: .06em; white-space: nowrap; }
+
+.incident-rows { padding: 24px 32px; }
+.incident-row { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.incident-row:last-child { border-bottom: 0; }
+.incident-row-label { font-family: var(--mono); font-size: 11px; font-weight: 800; color: var(--faint); letter-spacing: .12em; text-transform: uppercase; }
+.incident-row-value { color: var(--text); font-size: 15px; line-height: 1.6; }
+.incident-row-value code { padding: 4px 8px; border-radius: 4px; background: var(--bg-muted); color: var(--primary); font-family: var(--mono); font-size: 13px; }
+
+.incident-evidence { background: var(--bg-muted); padding: 20px; border-radius: 12px; margin-top: 8px; border-left: 3px solid var(--primary); }
+.incident-evidence p { color: var(--muted); font-size: 14px; margin: 0; line-height: 1.6; }
+
+.incident-list { list-style: none; padding: 0; margin: 8px 0 0; }
+.incident-list li { color: var(--muted); font-size: 14px; padding: 4px 0; }
+.incident-list li strong { color: var(--text); font-weight: 700; }
+
+.incident-footer { max-width: 960px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 96px; }
+.incident-back { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-family: var(--mono); font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+
+@media(max-width: 768px) {
+  .incident-header { flex-direction: column; }
+  .incident-row { grid-template-columns: 1fr; gap: 8px; }
+  .incident-row-label { margin-bottom: 4px; }
+}
 </style>
 </head>
 <body>
-<nav><a class="nav-logo" href="index.html">RELIUM</a><button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button><ul class="nav-links"><li><a href="relium-why.html">Why</a></li><li><a href="relium-product.html">Product</a></li><li><a href="relium-privacy.html">Privacy</a></li><li><a class="nav-demo" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></li></ul></nav>
-<div class="mobile-menu" id="mobile-menu"><a href="relium-why.html">Why</a><a href="relium-product.html">Product</a><a href="relium-privacy.html">Privacy</a><a data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></div>
-<main class="article"><p class="kicker">Incident example</p><h1>Relium Data Quality Incident - raw_orders.</h1><section class="report"><div class="report-head"><strong>raw_orders</strong><span>Critical</span></div><div class="line"><b>Anomaly</b><p>Row count dropped by 96.0%.</p></div><div class="line"><b>Evidence</b><p>Expected ~2,500,000 rows, observed 100,000 rows.</p></div><div class="line"><b>Hypothesis</b><p>Upstream ingestion failure is the primary likely cause.</p></div><div class="line"><b>Blast radius</b><p>5 downstream models affected.</p></div><div class="line"><b>Action</b><p>Check the upstream ingestion job for raw_orders before refreshing dependent dashboards.</p></div></section><a class="back" href="index.html">← Back to index</a></main>
-<footer>&copy; 2026 Relium.</footer>
-<script>
-document.querySelectorAll('.mobile-menu-toggle').forEach(function(button){var menu=document.getElementById(button.getAttribute('aria-controls'));if(!menu){return;}button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));menu.classList.toggle('is-open',!expanded);});menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){button.setAttribute('aria-expanded','false');menu.classList.remove('is-open');});});});
-(function(){var mobileQuery=window.matchMedia('(max-width: 768px)');function updateDemoLinks(){document.querySelectorAll('[data-demo-link]').forEach(function(link){if(mobileQuery.matches){link.setAttribute('href',link.getAttribute('data-mailto-href'));link.removeAttribute('target');link.removeAttribute('rel');}else{link.setAttribute('href',link.getAttribute('data-gmail-href'));link.setAttribute('target','_blank');link.setAttribute('rel','noopener');}});}updateDemoLinks();if(mobileQuery.addEventListener){mobileQuery.addEventListener('change',updateDemoLinks);}else if(mobileQuery.addListener){mobileQuery.addListener(updateDemoLinks);}})();
-</script>
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="index.html" aria-label="Relium home">
+    <span class="logo-mark"></span>RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html#pipeline">How it works</a></li>
+    <li><a href="demo.html">Demo</a></li>
+    <li class="nav-dropdown-wrap">
+      <button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+        Learn
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        <a href="relium-why.html" role="menuitem"><span class="dd-icon">↗</span><span><strong>Why Relium</strong><small>The quiet failures that break dashboards</small></span></a>
+        <a href="relium-product.html" role="menuitem"><span class="dd-icon">⬡</span><span><strong>Product approach</strong><small>Metadata, lineage, SQL risk</small></span></a>
+        <a href="relium-incident.html" role="menuitem"><span class="dd-icon">⚑</span><span><strong>Incident example</strong><small>See a real RCA report output</small></span></a>
+        <a href="blog.html" role="menuitem"><span class="dd-icon">✦</span><span><strong>Blog</strong><small>Data reliability and dbt ops</small></span></a>
+      </div>
+    </li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span></button></li>
+    <li><a class="nav-demo" data-demo-link
+      data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+      href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      target="_blank" rel="noopener">Book a demo</a></li>
+  </ul>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#pipeline">How it works</a>
+  <a href="demo.html">Demo</a>
+  <a href="relium-why.html">Why Relium</a>
+  <a href="relium-product.html">Product approach</a>
+  <a href="relium-incident.html">Incident example</a>
+  <a href="blog.html">Blog</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span>Theme</button>
+  <a data-demo-link
+    data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+    href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    target="_blank" rel="noopener">Book a demo</a>
+</div>
+
+<main>
+  <header class="incident-hero">
+    <p class="eyebrow">Real example</p>
+    <h1>The broken source.<br><em>The cascading damage.</em></h1>
+    <p class="incident-lead">When raw_orders drops 40% of rows, which models break first? And how do you know what to fix?</p>
+  </header>
+
+  <div class="incident-body">
+    <div class="incident-card">
+      <div class="incident-header">
+        <div>
+          <h2>raw_orders — Rows Dropped 47%</h2>
+          <p>Detected 2026-06-07 at 15:10:00 UTC</p>
+        </div>
+        <span class="incident-severity">🔴 Critical</span>
+      </div>
+
+      <div class="incident-rows">
+        <div class="incident-row">
+          <div class="incident-row-label">Event</div>
+          <div class="incident-row-value">Row count anomaly detected in source table. Expected ~2,800 rows, found 1,400.</div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Risk</div>
+          <div class="incident-row-value">4 downstream models affected: stg_orders, fct_revenue_realtime, dashboard_realtime_metrics, customer_metrics_view</div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Root Table</div>
+          <div class="incident-row-value"><code>raw.raw_orders</code></div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Affected Assets</div>
+          <div class="incident-row-value">
+            <ul class="incident-list">
+              <li><strong>stg_orders</strong> — Rebuilds on partial source data</li>
+              <li><strong>fct_revenue_realtime</strong> — Missing order records will show undercount</li>
+              <li><strong>dashboard_realtime_metrics</strong> — Real-time charts display incomplete totals</li>
+              <li><strong>customer_metrics_view</strong> — Customer LTV and retention metrics affected</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Evidence</div>
+          <div class="incident-row-value">
+            <div class="incident-evidence">
+              <p><strong>Row Count Baseline:</strong> 2,800 rows (learned from 30-day history)</p>
+              <p style="margin-top: 8px;"><strong>Current Count:</strong> 1,400 rows (47% drop)</p>
+              <p style="margin-top: 8px;"><strong>NULL Rate:</strong> Unchanged at 0.2%</p>
+              <p style="margin-top: 8px;"><strong>Freshness:</strong> Updated 4 minutes ago (within expected window)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Hypothesis</div>
+          <div class="incident-row-value">The ingestion job completed successfully, but the upstream data source is missing orders. Check: (1) Did the orders API experience an outage? (2) Are you filtering orders by date, and did the time window shift? (3) Was a recent ETL change applied?</div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">Action</div>
+          <div class="incident-row-value">
+            <ul class="incident-list">
+              <li>Verify raw data in source system (check API/database directly)</li>
+              <li>Compare last successful ingestion timestamp and row count</li>
+              <li>Review recent changes to raw_orders dbt model or upstream ETL</li>
+              <li>If source is actually correct, pause downstream models until decision is made</li>
+              <li>Once root cause is fixed, manually re-run stg_orders and downstream models</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="incident-row">
+          <div class="incident-row-label">RCA Path</div>
+          <div class="incident-row-value">
+            <ul class="incident-list">
+              <li><strong>1. Source anomaly detected</strong> — raw_orders row count (1,400) vs. baseline (2,800)</li>
+              <li><strong>2. Lineage traced</strong> — Found 4 downstream dependencies</li>
+              <li><strong>3. Impact assessed</strong> — All 4 models will produce incorrect results</li>
+              <li><strong>4. Grouped into single incident</strong> — Prevents alert fatigue from 4 separate Slack messages</li>
+              <li><strong>5. RCA hypothesis generated</strong> — Ingestion success but upstream data loss suspected</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="incident-footer">
+      <a class="incident-back" href="relium-why.html">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back to why this matters →
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Relium.</p>
+  <p>Metadata-first. Built before dashboards break.</p>
+</footer>
+<script src="relium.js"></script>
+<script>(function(){
+  var wraps = document.querySelectorAll(''.nav-dropdown-wrap,'');
+  wraps.forEach(function(wrap){
+    var trigger = wrap.querySelector(''.nav-dropdown-trigger,'');
+    var dropdown = wrap.querySelector(''.nav-dropdown,'');
+    if(!trigger || !dropdown) return;
+    function open(){ trigger.setAttribute('',aria-expanded,'','',true,''); dropdown.classList.add('',is-open,''); }
+    function close(){ trigger.setAttribute('',aria-expanded,'','',false,''); dropdown.classList.remove('',is-open,''); }
+    trigger.addEventListener('',click,'', function(e){ e.stopPropagation(); trigger.getAttribute('',aria-expanded,'')==='true' ? close() : open(); });
+    wrap.addEventListener('',mouseenter,'', open);
+    wrap.addEventListener('',mouseleave,'', close);
+    document.addEventListener('',click,'', function(e){ if(!wrap.contains(e.target)) close(); });
+  });
+})();</script>
 </body>
 </html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relium Demo - Slack alert and RCA example</title>
+<meta name="description" content="A Relium demo showing the Slack alerts and RCA reports generated for risky dbt and SQL changes.">
+<link rel="stylesheet" href="relium.css">
+<link rel="icon" type="image/svg+xml" href="relium-logo.svg">
+</head>
+<body>
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="index.html" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html#pipeline">How it works</a></li>
+    <li><a href="demo.html">Demo</a></li>
+    <li class="nav-dropdown-wrap">
+      <button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+        Learn
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        <a href="relium-why.html" role="menuitem">
+          <span class="dd-icon">↗</span>
+          <span><strong>Why Relium</strong><small>The quiet failures that break dashboards</small></span>
+        </a>
+        <a href="relium-product.html" role="menuitem">
+          <span class="dd-icon">⬡</span>
+          <span><strong>Product approach</strong><small>Metadata, lineage, SQL risk — how it works</small></span>
+        </a>
+        <a href="relium-incident.html" role="menuitem">
+          <span class="dd-icon">⚑</span>
+          <span><strong>Incident example</strong><small>See a real RCA report output</small></span>
+        </a>
+        <a href="blog.html" role="menuitem">
+          <span class="dd-icon">✦</span>
+          <span><strong>Blog</strong><small>Data reliability, SQL patterns, dbt ops</small></span>
+        </a>
+      </div>
+    </li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button></li>
+    <li><a class="nav-demo" data-demo-link
+      data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+      href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      target="_blank" rel="noopener">Book a demo</a></li>
+  </ul>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#pipeline">How it works</a>
+  <a href="demo.html">Demo</a>
+  <a href="relium-why.html">Why Relium</a>
+  <a href="relium-product.html">Product approach</a>
+  <a href="relium-incident.html">Incident example</a>
+  <a href="blog.html">Blog</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
+  <a data-demo-link
+    data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+    href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    target="_blank" rel="noopener">Book a demo</a>
+</div>
+<main class="article-shell demo-shell">
+  <header class="article-hero reveal">
+    <p class="eyebrow">Demo</p>
+    <h1>See the kind of Slack alert and RCA Relium gives your team.</h1>
+    <p>This demo shows how Relium turns a risky dbt change into a clear incident preview: what changed, what broke, what is downstream, and what to do next.</p>
+  </header>
+  <section class="demo-grid">
+    <article class="slack-demo reveal">
+      <div class="slack-top"><span></span><strong>#data-quality</strong><em>Relium</em></div>
+      <div class="slack-message">
+        <strong>Risk detected in PR #1842</strong>
+        <p><b>Severity:</b> High<br><b>Change:</b> filtered LEFT JOIN in the customer lifetime value model<br><b>Likely impact:</b> active customers may be dropped from retention and revenue metrics.</p>
+        <ul>
+          <li>Revenue dashboard may under-report</li>
+          <li>Retention metrics may drop incorrectly</li>
+          <li>Executive weekly report is blocked</li>
+        </ul>
+        <button class="demo-action" type="button" data-open-rca>Open RCA</button>
+      </div>
+    </article>
+    <article class="rca-teaser reveal">
+      <p class="eyebrow">Incident preview</p>
+      <h2>RCA appears only when the alert is opened.</h2>
+      <p>Click Open RCA in the Slack alert to see the incident report animate into view with cause, evidence, impact, and suggested fix.</p>
+      <div class="incident-mini-flow" aria-hidden="true">
+        <span>Slack alert</span>
+        <i></i>
+        <span>RCA report</span>
+        <i></i>
+        <span>Fix ready</span>
+      </div>
+    </article>
+  </section>
+</main>
+<div class="rca-modal" id="demo-rca-modal" role="dialog" aria-modal="true" aria-labelledby="demo-rca-title" hidden>
+  <button class="rca-modal-backdrop" type="button" data-close-rca aria-label="Close RCA"></button>
+  <article class="rca-demo rca-modal-panel" id="demo-rca" tabindex="-1">
+    <button class="rca-close" type="button" data-close-rca aria-label="Close RCA">×</button>
+    <p class="eyebrow">Demo RCA</p>
+    <h2 id="demo-rca-title">Root cause analysis</h2>
+    <div class="rca-row"><span>Finding</span><p>Null-excluding filter moved from join condition into WHERE clause, changing LEFT JOIN behavior.</p></div>
+    <div class="rca-row"><span>Evidence</span><p>Customer rows without matching orders are removed before downstream revenue aggregation.</p></div>
+    <div class="rca-row"><span>Blast radius</span><p>Revenue dashboard, retention metrics, executive revenue readout, and weekly board report may be wrong.</p></div>
+    <div class="rca-row"><span>Suggested fix</span><p>Move the filter back into the JOIN condition or explicitly preserve unmatched customer rows.</p></div>
+  </article>
+</div>
+<footer class="site-footer"><p>&copy; 2026 Relium.</p><p>Slack alerts and RCA before production deploys.</p></footer>
+<script src="relium.js"></script>
+</body>
+</html>

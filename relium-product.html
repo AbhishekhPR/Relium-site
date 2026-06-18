@@ -1,22 +1,177 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Approach - Relium</title>
+<title>How Relium Works</title>
+<link rel="stylesheet" href="relium.css">
+<link rel="icon" type="image/svg+xml" href="relium-logo.svg">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0c0c0c;--bg2:#111;--white:#efefeb;--red:#d94f3d;--dim:#3a3a3a;--mid:#6c6c68;--soft:#a8a8a2;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--serif:Georgia,"Times New Roman",serif}html{scroll-behavior:smooth;overflow-x:hidden}body{width:100%;max-width:100%;overflow-x:hidden;background:var(--bg);color:var(--white);font-family:var(--mono);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}pre,code{max-width:100%;overflow-x:auto}nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:56px;padding:0 48px;border-bottom:1px solid var(--dim);background:rgba(12,12,12,.95);backdrop-filter:blur(12px)}.nav-logo{flex:0 0 auto;font-size:14px;font-weight:600;letter-spacing:.08em}.nav-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 24px;list-style:none}.nav-links a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;color:var(--mid);font-size:13px;letter-spacing:.04em;white-space:nowrap}.nav-links a:hover{color:var(--white)}.nav-demo{padding:7px 14px;border:1px solid var(--dim);border-radius:2px}.article{max-width:920px;margin:0 auto;padding:138px 48px 96px}.kicker{margin-bottom:28px;color:var(--mid);font-size:12px;letter-spacing:.14em;text-transform:uppercase}h1{margin-bottom:34px;font-family:var(--serif);font-size:clamp(44px,7vw,88px);font-weight:400;line-height:1;letter-spacing:-.02em}p{margin-bottom:26px;color:var(--soft);font-size:20px;line-height:1.85}.rows{margin:44px 0;border-top:1px solid var(--dim)}.row{display:grid;grid-template-columns:minmax(160px,220px) minmax(0,1fr);gap:36px;padding:26px 0;border-bottom:1px solid var(--dim)}.row h2{font-size:15px;letter-spacing:.05em}.row p{margin:0;font-size:17px;line-height:1.75}.back{display:inline-block;margin-top:20px;color:var(--red);font-size:13px;letter-spacing:.08em;text-transform:uppercase}.demo{border-top:1px solid var(--dim);background:var(--bg2)}.demo-inner{max-width:920px;margin:0 auto;padding:64px 48px}.demo h2{margin-bottom:18px;font-family:var(--serif);font-size:clamp(34px,4.2vw,54px);font-weight:400}.demo p{max-width:660px;margin-bottom:20px;color:var(--soft);font-size:18px;line-height:1.75}.demo-email{display:inline-block;margin-bottom:18px;color:var(--white);font-family:var(--serif);font-size:clamp(22px,3vw,30px);overflow-wrap:anywhere}.demo-actions{display:flex;flex-wrap:wrap;gap:12px}.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 24px;border-radius:2px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.05em;text-align:center}.btn-primary{border:1px solid var(--white);background:var(--white);color:var(--bg)}.btn-secondary{border:1px solid var(--dim);color:var(--soft)}.button-reset{cursor:pointer}.copy-status{min-height:20px;margin-top:12px;color:var(--mid);font-size:13px}footer{border-top:1px solid var(--dim);padding:34px 48px;color:var(--mid);font-size:13px}@media(max-width:768px){nav{align-items:flex-start;padding:16px 28px}.article{padding:132px 28px 82px}.row{grid-template-columns:1fr;gap:10px}.demo-inner{padding:58px 28px}.demo-actions{flex-direction:column}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{flex-direction:column;align-items:center;gap:10px;padding:14px 20px}.nav-links{justify-content:center;gap:8px 12px}.nav-links a{min-height:30px;font-size:12px;letter-spacing:.02em}.nav-demo{padding:6px 10px}.article{padding:148px 20px 76px}h1{font-size:clamp(3rem,13vw,5rem);line-height:1.03;letter-spacing:0}p{width:100%;font-size:18px;line-height:1.72}.demo-inner{padding:52px 20px}.demo p{font-size:17px}.demo-email{font-size:clamp(20px,6vw,26px)}footer{padding:30px 20px}}
-.mobile-menu-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--dim);border-radius:2px;background:transparent;color:var(--white);cursor:pointer}.mobile-menu-toggle span,.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{display:block;width:16px;height:1px;background:currentColor;content:"";transition:transform .2s,opacity .2s}.mobile-menu-toggle span::before{transform:translateY(-6px)}.mobile-menu-toggle span::after{transform:translateY(5px)}.mobile-menu-toggle[aria-expanded="true"] span{background:transparent}.mobile-menu-toggle[aria-expanded="true"] span::before{transform:translateY(1px) rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] span::after{transform:translateY(0) rotate(-45deg)}.mobile-menu{display:none}@media(max-width:768px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;padding:0 20px}.nav-links{display:none}.mobile-menu-toggle{display:inline-flex}.mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:19;display:none;flex-direction:column;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:rgba(12,12,12,.98);backdrop-filter:blur(12px)}.mobile-menu.is-open{display:flex}.mobile-menu a{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 20px;border-bottom:1px solid rgba(58,58,58,.72);color:var(--soft);font-size:13px;letter-spacing:.06em}.mobile-menu a:last-child{border-bottom:0;color:var(--white)}h1{font-size:clamp(3.2rem,14vw,5rem);letter-spacing:0}.kicker{letter-spacing:.08em}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;padding:0 18px}h1{font-size:clamp(2.85rem,13vw,4.5rem);line-height:1.03}.mobile-menu a{padding:0 18px}}
+.product-hero { max-width: 960px; margin: 0 auto; padding: 148px clamp(20px,5vw,72px) 80px; }
+.product-hero h1 { font-size: clamp(44px,7vw,82px); font-weight: 780; line-height: .98; letter-spacing: -.02em; margin-bottom: 28px; }
+.product-hero h1 em { font-style: normal; color: var(--primary); }
+.product-lead { max-width: 680px; color: var(--muted); font-size: clamp(18px,2vw,22px); line-height: 1.7; }
+
+.product-body { max-width: 1100px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 96px; }
+
+.flow-strip { display: flex; gap: 0; margin-bottom: 96px; }
+.flow-item { flex: 1; padding: 32px 24px; border: 1px solid var(--border); border-left: 0; position: relative; }
+.flow-item:first-child { border-left: 1px solid var(--border); }
+.flow-item h3 { font-size: 16px; font-weight: 760; margin-bottom: 12px; }
+.flow-item p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
+.flow-num { font-family: var(--mono); font-size: 11px; font-weight: 800; color: var(--faint); letter-spacing: .12em; margin-bottom: 8px; display: block; }
+.flow-item::after { content: "→"; position: absolute; right: -24px; top: 50%; transform: translateY(-50%); color: var(--faint); font-weight: 600; }
+.flow-item:last-child::after { display: none; }
+
+.capabilities-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+.capability-card { padding: 28px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); }
+.capability-card h3 { font-size: 18px; font-weight: 760; margin-bottom: 12px; color: var(--text); }
+.capability-card p { color: var(--muted); font-size: 15px; line-height: 1.65; margin-bottom: 16px; }
+.capability-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: .06em; }
+
+.product-cta { margin-top: 64px; padding-top: 64px; border-top: 1px solid var(--border); }
+.product-cta a { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-family: var(--mono); font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+
+@media(max-width: 768px) {
+  .flow-strip { flex-direction: column; }
+  .flow-item { border-left: 1px solid var(--border); }
+  .flow-item::after { display: none; }
+  .capabilities-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<nav><a class="nav-logo" href="index.html">RELIUM</a><button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button><ul class="nav-links"><li><a href="relium-why.html">Why</a></li><li><a href="relium-product.html">Product</a></li><li><a href="relium-privacy.html">Privacy</a></li><li><a class="nav-demo" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></li></ul></nav>
-<div class="mobile-menu" id="mobile-menu"><a href="relium-why.html">Why</a><a href="relium-product.html">Product</a><a href="relium-privacy.html">Privacy</a><a data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></div>
-<main class="article"><p class="kicker">Product approach</p><h1>A reliability layer for metadata, lineage, and SQL risk.</h1><p>Relium runs close to the data environment and produces concise RCA reports from aggregate signals. It is meant to sit beside dbt, not replace it.</p><div class="rows"><article class="row"><h2>SQL risk</h2><p>Flags patterns like filtered LEFT JOINs, SELECT *, hardcoded date filters, division risks, and null-excluding logic.</p></article><article class="row"><h2>Metadata drift</h2><p>Tracks row counts, null rates, duplicate keys, schema changes, freshness, cardinality, and numeric statistics.</p></article><article class="row"><h2>Blast radius</h2><p>Uses SQL and dbt lineage to show which downstream models may be affected by a broken source table.</p></article><article class="row"><h2>Incident output</h2><p>Generates Slack-ready alerts and Markdown RCA reports with evidence, hypotheses, and immediate investigation steps.</p></article></div><a class="back" href="relium-incident.html">Read incident example →</a></main>
-<footer>&copy; 2026 Relium.</footer>
-<script>
-document.querySelectorAll('.mobile-menu-toggle').forEach(function(button){var menu=document.getElementById(button.getAttribute('aria-controls'));if(!menu){return;}button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));menu.classList.toggle('is-open',!expanded);});menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){button.setAttribute('aria-expanded','false');menu.classList.remove('is-open');});});});
-(function(){var mobileQuery=window.matchMedia('(max-width: 768px)');function updateDemoLinks(){document.querySelectorAll('[data-demo-link]').forEach(function(link){if(mobileQuery.matches){link.setAttribute('href',link.getAttribute('data-mailto-href'));link.removeAttribute('target');link.removeAttribute('rel');}else{link.setAttribute('href',link.getAttribute('data-gmail-href'));link.setAttribute('target','_blank');link.setAttribute('rel','noopener');}});}updateDemoLinks();if(mobileQuery.addEventListener){mobileQuery.addEventListener('change',updateDemoLinks);}else if(mobileQuery.addListener){mobileQuery.addListener(updateDemoLinks);}})();
-</script>
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="index.html" aria-label="Relium home">
+    <span class="logo-mark"></span>RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html#pipeline">How it works</a></li>
+    <li><a href="demo.html">Demo</a></li>
+    <li class="nav-dropdown-wrap">
+      <button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+        Learn
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        <a href="relium-why.html" role="menuitem"><span class="dd-icon">↗</span><span><strong>Why Relium</strong><small>The quiet failures that break dashboards</small></span></a>
+        <a href="relium-product.html" role="menuitem"><span class="dd-icon">⬡</span><span><strong>Product approach</strong><small>Metadata, lineage, SQL risk</small></span></a>
+        <a href="relium-incident.html" role="menuitem"><span class="dd-icon">⚑</span><span><strong>Incident example</strong><small>See a real RCA report output</small></span></a>
+        <a href="blog.html" role="menuitem"><span class="dd-icon">✦</span><span><strong>Blog</strong><small>Data reliability and dbt ops</small></span></a>
+      </div>
+    </li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span></button></li>
+    <li><a class="nav-demo" data-demo-link
+      data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+      href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      target="_blank" rel="noopener">Book a demo</a></li>
+  </ul>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#pipeline">How it works</a>
+  <a href="demo.html">Demo</a>
+  <a href="relium-why.html">Why Relium</a>
+  <a href="relium-product.html">Product approach</a>
+  <a href="relium-incident.html">Incident example</a>
+  <a href="blog.html">Blog</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span>Theme</button>
+  <a data-demo-link
+    data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+    href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    target="_blank" rel="noopener">Book a demo</a>
+</div>
+
+<main>
+  <header class="product-hero">
+    <p class="eyebrow">How it works</p>
+    <h1>Three layers.<br><em>One platform.</em></h1>
+    <p class="product-lead">Relium combines metadata inspection, SQL lineage analysis, and risk detection to catch data quality issues before they reach dashboards.</p>
+  </header>
+
+  <div class="product-body">
+    <div class="flow-strip">
+      <div class="flow-item">
+        <span class="flow-num">STEP 01</span>
+        <h3>Inspect Metadata</h3>
+        <p>Track schema, row counts, NULL rates, and freshness across all tables and models.</p>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">STEP 02</span>
+        <h3>Detect Anomalies</h3>
+        <p>Compare current metrics against learned baselines to spot unexpected changes.</p>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">STEP 03</span>
+        <h3>Analyze SQL Risk</h3>
+        <p>Parse SQL to identify join logic, filter placement, and cardinality issues.</p>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">STEP 04</span>
+        <h3>Trace Lineage</h3>
+        <p>Map which models depend on affected tables and what downstream impact matters most.</p>
+      </div>
+      <div class="flow-item">
+        <span class="flow-num">STEP 05</span>
+        <h3>Create RCA Report</h3>
+        <p>Correlate symptoms and generate root cause analysis with evidence and remediation paths.</p>
+      </div>
+    </div>
+
+    <h2 style="font-size: clamp(32px,5vw,56px); font-weight: 780; margin: 80px 0 48px; line-height: 1;">Core Capabilities</h2>
+
+    <div class="capabilities-grid">
+      <div class="capability-card">
+        <h3>Baseline Learning</h3>
+        <p>Relium learns normal behavior from historical metrics. You set the sensitivity — we do the anomaly detection.</p>
+        <span class="capability-badge">Pattern Recognition</span>
+      </div>
+      <div class="capability-card">
+        <h3>SQL Risk Detection</h3>
+        <p>Parse dbt models and raw SQL to flag risky patterns: implicit JOINs, INNER vs LEFT mismatches, complex subqueries.</p>
+        <span class="capability-badge">Code Analysis</span>
+      </div>
+      <div class="capability-card">
+        <h3>Incident Correlation</h3>
+        <p>When a source table breaks, we automatically find all downstream models affected and group them into one incident report.</p>
+        <span class="capability-badge">Graph Lineage</span>
+      </div>
+      <div class="capability-card">
+        <h3>AI-Powered Explanations</h3>
+        <p>Optional integration with Groq or OpenAI for natural-language root cause hypotheses and remediation suggestions.</p>
+        <span class="capability-badge">Optional LLM</span>
+      </div>
+    </div>
+
+    <div class="product-cta">
+      <a href="relium-incident.html">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        See a real incident report →
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Relium.</p>
+  <p>Metadata-first. Built before dashboards break.</p>
+</footer>
+<script src="relium.js"></script>
+<script>(function(){
+  var wraps = document.querySelectorAll(''.nav-dropdown-wrap,'');
+  wraps.forEach(function(wrap){
+    var trigger = wrap.querySelector(''.nav-dropdown-trigger,'');
+    var dropdown = wrap.querySelector(''.nav-dropdown,'');
+    if(!trigger || !dropdown) return;
+    function open(){ trigger.setAttribute('',aria-expanded,'','',true,''); dropdown.classList.add('',is-open,''); }
+    function close(){ trigger.setAttribute('',aria-expanded,'','',false,''); dropdown.classList.remove('',is-open,''); }
+    trigger.addEventListener('',click,'', function(e){ e.stopPropagation(); trigger.getAttribute('',aria-expanded,'')==='true' ? close() : open(); });
+    wrap.addEventListener('',mouseenter,'', open);
+    wrap.addEventListener('',mouseleave,'', close);
+    document.addEventListener('',click,'', function(e){ if(!wrap.contains(e.target)) close(); });
+  });
+})();</script>
 </body>
 </html>

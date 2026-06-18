@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Relium logo</title>
+  <desc id="desc">A professional rounded square logo with a minimal geometric letter R.</desc>
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F3F4F6"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)"/>
+  <rect x="5" y="5" width="54" height="54" rx="13" fill="none" stroke="#000000" stroke-opacity=".1"/>
+  <path d="M19 48V16h19.2C45.3 16 50 20.2 50 26.3c0 4.6-2.7 8.1-7.1 9.5L50 48h-9.8l-6.7-10.8h-6V48H19Zm8.5-17.8h9.4c2.8 0 4.6-1.5 4.6-3.8 0-2.4-1.8-3.8-4.6-3.8h-9.4v7.6Z" fill="#000000"/>
+</svg>

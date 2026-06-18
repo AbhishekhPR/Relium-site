@@ -3,69 +3,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relium - Metadata-only reliability for SQL and dbt</title>
-<meta name="description" content="Relium catches silent SQL and dbt pipeline failures before bad data reaches dashboards.">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0c0c0c;--bg2:#111;--white:#efefeb;--red:#d94f3d;--dim:#3a3a3a;--mid:#6c6c68;--soft:#a8a8a2;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--serif:Georgia,"Times New Roman",serif}html{scroll-behavior:smooth;overflow-x:hidden}body{width:100%;max-width:100%;overflow-x:hidden;background:var(--bg);color:var(--white);font-family:var(--mono);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}pre,code{max-width:100%;overflow-x:auto}
-nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:56px;padding:0 48px;border-bottom:1px solid var(--dim);background:rgba(12,12,12,.95);backdrop-filter:blur(12px)}.nav-logo{flex:0 0 auto;font-size:14px;font-weight:600;letter-spacing:.08em}.nav-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 24px;list-style:none}.nav-links a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;color:var(--mid);font-size:13px;letter-spacing:.04em;white-space:nowrap;transition:color .2s,border-color .2s}.nav-links a:hover{color:var(--white)}.nav-demo{padding:7px 14px;border:1px solid var(--dim);border-radius:2px}.nav-demo:hover{border-color:var(--soft)}
-.hero{position:relative;min-height:86vh;display:flex;flex-direction:column;justify-content:flex-end;padding:132px 48px 64px;border-bottom:1px solid var(--dim);overflow:hidden}.hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,transparent 62%,rgba(217,79,61,.035) 100%),repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.018) 79px,rgba(255,255,255,.018) 80px),repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.018) 79px,rgba(255,255,255,.018) 80px)}.hero-content{position:relative;z-index:1;max-width:920px}.eyebrow,.label{color:var(--mid);font-size:12px;letter-spacing:.14em;text-transform:uppercase}.eyebrow{margin-bottom:30px}.hero-title{max-width:880px;margin-bottom:30px;font-family:var(--serif);font-size:clamp(54px,7vw,104px);font-weight:400;line-height:.98;letter-spacing:-.02em}.hero-title em{color:var(--red);font-style:italic}.hero-copy{max-width:600px;margin-bottom:30px;color:var(--soft);font-size:18px;line-height:1.75}.actions{display:flex;flex-wrap:wrap;gap:12px}.btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 28px;border-radius:2px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.05em;text-align:center;transition:all .2s}.btn-primary{border:1px solid var(--white);background:var(--white);color:var(--bg)}.btn-primary:hover{border-color:var(--red);background:var(--red);color:var(--white)}.btn-secondary{border:1px solid var(--dim);color:var(--soft)}.btn-secondary:hover{border-color:var(--soft);color:var(--white)}
-.home{max-width:1160px;margin:0 auto;padding:96px 48px}.intro{display:grid;grid-template-columns:260px minmax(0,760px);gap:80px;margin-bottom:76px}.intro h2{margin-bottom:24px;font-family:var(--serif);font-size:clamp(36px,4.5vw,60px);font-weight:400;line-height:1.1;letter-spacing:-.02em}.intro p{color:var(--soft);font-size:19px;line-height:1.85}.posts{border-top:1px solid var(--dim)}.post{display:grid;grid-template-columns:220px minmax(0,1fr) auto;gap:42px;align-items:center;padding:32px 0;border-bottom:1px solid var(--dim)}.post small{color:var(--mid);font-size:12px;letter-spacing:.12em;text-transform:uppercase}.post h3{margin-bottom:10px;font-family:var(--serif);font-size:32px;font-weight:400;line-height:1.2}.post p{max-width:620px;color:var(--soft);font-size:16px;line-height:1.7}.post .arrow{color:var(--mid);font-size:22px}
-.demo{border-top:1px solid var(--dim);background:var(--bg2)}.demo-inner{max-width:1160px;margin:0 auto;padding:76px 48px}.demo h2{max-width:720px;margin-bottom:20px;font-family:var(--serif);font-size:clamp(34px,4.2vw,56px);font-weight:400;line-height:1.1}.demo p{max-width:680px;margin-bottom:22px;color:var(--soft);font-size:18px;line-height:1.75}.demo-email{display:inline-block;margin-bottom:18px;color:var(--white);font-family:var(--serif);font-size:clamp(22px,3vw,30px);overflow-wrap:anywhere}.demo-actions{display:flex;flex-wrap:wrap;gap:12px}.copy-status{min-height:20px;margin-top:12px;color:var(--mid);font-size:13px}.button-reset{cursor:pointer}
-footer{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;padding:34px 48px;color:var(--mid);font-size:13px;line-height:1.7}
-@media(max-width:768px){nav{align-items:flex-start;padding:16px 28px}.hero{min-height:76vh;padding:136px 28px 58px}.home,.demo-inner{padding:72px 28px}.intro{grid-template-columns:1fr;gap:24px}.post{grid-template-columns:1fr;gap:14px}.post .arrow{display:none}.demo-actions{flex-direction:column}.demo-actions .btn-primary,.demo-actions .btn-secondary{width:100%}}@media(max-width:480px){nav{flex-direction:column;align-items:center;gap:10px;padding:14px 20px}.nav-links{justify-content:center;gap:8px 12px}.nav-links a{min-height:30px;font-size:12px;letter-spacing:.02em}.nav-demo{padding:6px 10px}.hero{min-height:auto;padding:148px 20px 54px}.eyebrow{margin-bottom:22px;letter-spacing:.1em}.hero-title{font-size:clamp(3rem,13vw,5rem);line-height:1.02;letter-spacing:0}.hero-copy,.intro p,.demo p{width:100%;font-size:17px;line-height:1.7}.actions{width:100%;flex-direction:column}.actions .btn-primary,.actions .btn-secondary{width:100%}.home,.demo-inner{padding:60px 20px}.post h3{font-size:28px}.demo-email{font-size:clamp(20px,6vw,26px)}footer{flex-direction:column;padding:30px 20px}}
-.mobile-menu-toggle{display:none;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--dim);border-radius:2px;background:transparent;color:var(--white);cursor:pointer}.mobile-menu-toggle span,.mobile-menu-toggle span::before,.mobile-menu-toggle span::after{display:block;width:16px;height:1px;background:currentColor;content:"";transition:transform .2s,opacity .2s}.mobile-menu-toggle span::before{transform:translateY(-6px)}.mobile-menu-toggle span::after{transform:translateY(5px)}.mobile-menu-toggle[aria-expanded="true"] span{background:transparent}.mobile-menu-toggle[aria-expanded="true"] span::before{transform:translateY(1px) rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] span::after{transform:translateY(0) rotate(-45deg)}.mobile-menu{display:none}@media(max-width:768px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;justify-content:space-between;gap:18px;padding:0 20px}.nav-links{display:none}.mobile-menu-toggle{display:inline-flex}.mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:19;display:none;flex-direction:column;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:rgba(12,12,12,.98);backdrop-filter:blur(12px)}.mobile-menu.is-open{display:flex}.mobile-menu a{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 20px;border-bottom:1px solid rgba(58,58,58,.72);color:var(--soft);font-size:13px;letter-spacing:.06em}.mobile-menu a:last-child{border-bottom:0;color:var(--white)}.hero{padding-top:112px}.hero-title{font-size:clamp(3.2rem,14vw,5rem);letter-spacing:0}.eyebrow,.hero-copy{letter-spacing:0}.actions .btn-primary{width:100%}}@media(max-width:480px){nav{height:56px;min-height:56px;flex-direction:row;align-items:center;padding:0 18px}.hero{padding:104px 20px 52px}.hero-title{font-size:clamp(2.85rem,13vw,4.5rem);line-height:1.03}.mobile-menu a{padding:0 18px}.actions .btn-secondary{width:100%}}
-</style>
+<title>Relium - Catch risky dbt changes before production</title>
+<meta name="description" content="Relium reviews SQL and dbt pull requests, traces downstream impact, and alerts your team before bad data reaches dashboards.">
+<link rel="stylesheet" href="relium.css">
+<link rel="icon" type="image/svg+xml" href="relium-logo.svg">
 </head>
 <body>
-<nav aria-label="Primary navigation">
-  <a class="nav-logo" href="index.html">RELIUM</a>
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="index.html" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
   <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
   <ul class="nav-links">
-    <li><a href="relium-why.html">Why</a></li>
-    <li><a href="relium-product.html">Product</a></li>
-    <li><a href="relium-privacy.html">Privacy</a></li>
-    <li><a class="nav-demo" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a></li>
+    <li><a href="#pipeline">How it works</a></li>
+    <li><a href="demo.html">Demo</a></li>
+    <li class="nav-dropdown-wrap">
+      <button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+        Learn
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dropdown" role="menu">
+        <a href="relium-why.html" role="menuitem">
+          <span class="dd-icon">↗</span>
+          <span>
+            <strong>Why Relium</strong>
+            <small>The quiet failures that break dashboards</small>
+          </span>
+        </a>
+        <a href="relium-product.html" role="menuitem">
+          <span class="dd-icon">⬡</span>
+          <span>
+            <strong>Product approach</strong>
+            <small>Metadata, lineage, SQL risk — how it works</small>
+          </span>
+        </a>
+        <a href="relium-incident.html" role="menuitem">
+          <span class="dd-icon">⚑</span>
+          <span>
+            <strong>Incident example</strong>
+            <small>See a real RCA report output</small>
+          </span>
+        </a>
+        <a href="blog.html" role="menuitem">
+          <span class="dd-icon">✦</span>
+          <span>
+            <strong>Blog</strong>
+            <small>Data reliability, SQL patterns, dbt ops</small>
+          </span>
+        </a>
+      </div>
+    </li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button></li>
+    <li><a class="nav-demo" data-demo-link
+      data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+      href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+      target="_blank" rel="noopener">Book a demo</a></li>
   </ul>
 </nav>
+
 <div class="mobile-menu" id="mobile-menu">
-  <a href="relium-why.html">Why</a>
-  <a href="relium-product.html">Product</a>
-  <a href="relium-privacy.html">Privacy</a>
-  <a data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request Demo</a>
+  <a href="#pipeline">How it works</a>
+  <a href="demo.html">Demo</a>
+  <a href="relium-why.html">Why Relium</a>
+  <a href="relium-product.html">Product approach</a>
+  <a href="relium-incident.html">Incident example</a>
+  <a href="blog.html">Blog</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
+  <a data-demo-link
+    data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
+    href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
+    target="_blank" rel="noopener">Book a demo</a>
 </div>
+
 <main>
-  <header class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="hero-content">
-      <p class="eyebrow">Metadata-only reliability for SQL and dbt</p>
-      <h1 class="hero-title">Catch silent <em>dbt failures</em> before dashboards do.</h1>
-      <p class="hero-copy">Relium is a reliability engine for the quiet data failures that pass orchestration checks but still break business trust.</p>
-      <div class="actions">
-        <a class="btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Request a Demo</a>
-        <a class="btn-secondary" href="relium-why.html">Start Reading</a>
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Production reliability for dbt teams</p>
+        <h1 class="hero-headline-v2">Trust your data pipelines in production. </h1>
+        <p class="hero-subtitle">Relium reviews SQL and dbt pull requests, traces downstream impact, and alerts your team before bad data reaches dashboards.</p>
+        <div class="actions">
+          <a class="btn btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Book a demo</a>
+          <a class="btn btn-secondary" href="#pipeline">View product flow</a>
+        </div>
+        <p class="trust-line">Built for teams running production dbt pipelines.</p>
+      </div>
+
+      <aside class="product-mockup reveal" aria-label="Relium product mockup">
+        <div class="mockup-shell">
+          <div class="mockup-topbar">
+            <div>
+              <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+            </div>
+            <strong>Relium Review</strong>
+            <span class="mockup-status">PR #1842</span>
+          </div>
+          <div class="mockup-body">
+            <div class="pr-check card">
+              <div class="card-head">
+                <span>GitHub PR check</span>
+                <strong class="status-pill risk">Risk detected</strong>
+              </div>
+              <h2>Filtered LEFT JOIN may drop active customers</h2>
+              <p>Change touches the <strong>customer lifetime value model</strong> and modifies null handling in an upstream join.</p>
+              <div class="score-row">
+                <span>Confidence</span>
+                <div class="meter"><i style="--meter-target:86%"></i></div>
+                <strong>86%</strong>
+              </div>
+            </div>
+
+            <div class="mockup-grid">
+              <div class="card">
+                <div class="card-head">
+                  <span>Business impact</span>
+                  <strong>High priority</strong>
+                </div>
+                <ul class="asset-list lineage-trace" aria-label="Affected lineage path">
+                  <li>
+                    <span class="asset-name">Revenue dashboard</span>
+                    <span class="hop-badge">at risk</span>
+                  </li>
+                  <li>
+                    <span class="asset-name">Retention metrics</span>
+                    <span class="hop-badge">may drop</span>
+                  </li>
+                  <li>
+                    <span class="asset-name">Weekly exec report</span>
+                    <span class="hop-badge">blocked</span>
+                  </li>
+                  <li>
+                    <span class="asset-name">Finance owner</span>
+                    <span class="hop-badge">notified</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card slack-card">
+                <div class="card-head">
+                  <span>Slack alert</span>
+                  <strong class="status-pill sent">Ready</strong>
+                </div>
+                <p><strong>#data-quality</strong><br>Risk blocked in PR #1842. Revenue dashboard may be affected.</p>
+              </div>
+            </div>
+
+            <div class="card fix-card">
+              <div class="card-head">
+                <span>Suggested fix</span>
+                <strong>Review join filter</strong>
+              </div>
+              <code>Move order_status filter into the JOIN condition or preserve unmatched customer rows.</code>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section pipeline-section" id="pipeline">
+    <div class="section-heading centered reveal">
+      <p class="eyebrow">Data pipeline</p>
+      <h2>Relium lives in the transformation layer, before bad logic ships.</h2>
+      <p>Most data tools watch jobs after they run. Relium reviews the dbt and SQL change before production, traces what it can affect, and sends the team a clear risk narrative.</p>
+    </div>
+    <div class="data-pipeline-graph relium-review-map reveal" aria-label="Interactive Relium product pipeline map">
+      <div class="review-map-canvas">
+        <svg class="review-map-svg" viewBox="0 0 760 460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <path class="map-link map-link-pr" d="M126 92 C220 42, 302 82, 366 180"></path>
+          <path class="map-link map-link-sql" d="M628 92 C526 42, 454 82, 394 180"></path>
+          <path class="map-link map-link-blast" d="M112 352 C220 424, 306 358, 366 280"></path>
+          <path class="map-link map-link-alert" d="M648 350 C528 424, 450 356, 394 280"></path>
+          <path class="map-link map-link-fix" d="M380 380 C354 336, 354 304, 378 282"></path>
+          <path class="map-link map-link-block" d="M380 80 C408 126, 408 154, 382 178"></path>
+          <circle class="map-pulse" r="5">
+            <animateMotion class="pipeline-motion" data-delay="0" begin="indefinite" dur="5.4s" repeatCount="indefinite">
+              <mpath href="#map-motion-path"></mpath>
+            </animateMotion>
+          </circle>
+          <path id="map-motion-path" d="M126 92 C220 42, 302 82, 366 180 C386 212, 386 246, 366 280 C306 358, 220 424, 112 352 C220 424, 306 358, 366 280 C450 356, 528 424, 648 350"></path>
+        </svg>
+
+        <button class="review-node node-pr is-selected" type="button" data-pipeline-step="pr" data-title="Pull request opened" data-kicker="Input" data-body="A dbt developer opens PR #1842 changing the customer lifetime value logic. Relium reads the diff before CI finishes." data-metric="Changed SQL: 42 lines" data-owner="Owner: Analytics Engineering" aria-pressed="true">
+          <span>01</span>
+          <strong>PR Change</strong>
+          <small>dbt model edited</small>
+        </button>
+
+        <button class="review-node node-sql" type="button" data-pipeline-step="sql" data-title="SQL risk scan" data-kicker="Relium review" data-body="Relium flags a filtered LEFT JOIN that can remove active customers with no matching order row." data-metric="Confidence: 86%" data-owner="Signal: join semantics changed" aria-pressed="false">
+          <span>02</span>
+          <strong>SQL Risk Scan</strong>
+          <small>logic reviewed</small>
+        </button>
+
+        <button class="review-node node-blast" type="button" data-pipeline-step="blast" data-title="Blast radius mapped" data-kicker="Lineage" data-body="The changed logic feeds revenue reporting, retention metrics, the executive dashboard, and the weekly board report." data-metric="Business surfaces: 5" data-owner="Path: model → metric → dashboard" aria-pressed="false">
+          <span>03</span>
+          <strong>Blast Radius</strong>
+          <small>impact traced</small>
+        </button>
+
+        <button class="review-node node-alert" type="button" data-pipeline-step="alert" data-title="Owner alert prepared" data-kicker="Slack" data-body="Relium drafts a Slack alert with severity, likely impact, affected assets, and the exact file that caused the risk." data-metric="Channel: #data-quality" data-owner="Notify: Finance + RevOps" aria-pressed="false">
+          <span>04</span>
+          <strong>Owner Alert</strong>
+          <small>Slack-ready RCA</small>
+        </button>
+
+        <button class="review-node node-fix" type="button" data-pipeline-step="fix" data-title="Suggested fix" data-kicker="RCA" data-body="Move the order_status filter into the JOIN condition or explicitly preserve unmatched customer rows before aggregation." data-metric="Fix type: SQL rewrite" data-owner="Reviewer action: request changes" aria-pressed="false">
+          <span>05</span>
+          <strong>Suggested Fix</strong>
+          <small>plain-English action</small>
+        </button>
+
+        <button class="review-node node-block" type="button" data-pipeline-step="block" data-title="Risk blocked before merge" data-kicker="Gate" data-body="The PR check stays red until the risky logic is reviewed, fixed, or explicitly accepted by the data owner." data-metric="Status: blocked" data-owner="Protects: production dashboards" aria-pressed="false">
+          <span>06</span>
+          <strong>Production Gate</strong>
+          <small>bad data stopped</small>
+        </button>
+
+        <div class="review-map-hub transformation-layer" aria-label="Relium review layer">
+          <em>Relium sits here</em>
+          <b class="risk-caught-badge">Risk caught</b>
+          <span>Review Layer</span>
+          <strong>Relium</strong>
+          <p>SQL risk, dbt lineage, RCA, and team alerts before production deploys.</p>
+        </div>
+      </div>
+
+      <aside class="pipeline-inspector" aria-live="polite">
+        <p class="eyebrow" data-inspector-kicker>Input</p>
+        <h3 data-inspector-title>Pull request opened</h3>
+        <p data-inspector-body>A dbt developer opens PR #1842 changing the customer lifetime value logic. Relium reads the diff before CI finishes.</p>
+        <div class="inspector-facts">
+          <span data-inspector-metric>Changed SQL: 42 lines</span>
+          <span data-inspector-owner>Owner: Analytics Engineering</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section chart-section">
+    <div class="split-section">
+      <div class="section-heading reveal">
+        <p class="eyebrow">What Relium does</p>
+        <h2>Turns a risky PR into an actionable data incident preview.</h2>
+        <p>Relium combines code review, lineage, metadata, and team alerts so reviewers know what changed, what breaks, who is affected, and what to fix.</p>
+      </div>
+      <div class="relium-impact-chart reveal" aria-label="Relium review capabilities">
+        <article class="capability-card">
+          <span>01</span>
+          <strong>Reads SQL before it runs</strong>
+          <p>Flags risky joins, null filters, hardcoded dates, and metric logic in pull requests.</p>
+        </article>
+        <article class="capability-card">
+          <span>02</span>
+          <strong>Maps blast radius across dbt models</strong>
+          <p>Shows which downstream models, metrics, dashboards, and reports may be affected.</p>
+        </article>
+        <article class="capability-card">
+          <span>03</span>
+          <strong>Sends Slack-ready incident reports</strong>
+          <p>Summarizes likely cause, impacted assets, confidence, and suggested next action.</p>
+        </article>
       </div>
     </div>
-  </header>
-  <section class="home">
-    <div class="intro">
-      <p class="label">Field notes</p>
-      <div>
-        <h2>A small journal on SQL reliability, metadata, and pre-dashboard data quality.</h2>
-        <p>Instead of forcing the whole story onto one page, the Relium site is organized like a product blog. Read the motivation, the product approach, the privacy model, and a sample incident report separately.</p>
-      </div>
+  </section>
+
+  <section class="section problem-section" id="problem">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Problem</p>
+      <h2>Your pipeline can pass. Your metrics can still be wrong.</h2>
+      <p>Production analytics break most often in quiet ways: a review misses a risky SQL change, lineage impact is unclear, and dashboards keep loading with corrupted numbers.</p>
     </div>
-    <div class="posts">
-      <a class="post" href="relium-why.html"><small>01 / Why</small><div><h3>The job passed. The dashboard is still wrong.</h3><p>Why analytics teams need monitoring for silent failures, not only failed jobs.</p></div><span class="arrow">→</span></a>
-      <a class="post" href="relium-product.html"><small>02 / Product</small><div><h3>Metadata, lineage, and SQL structure.</h3><p>How Relium turns aggregate signals into RCA reports and Slack-ready incidents.</p></div><span class="arrow">→</span></a>
-      <a class="post" href="relium-incident.html"><small>03 / Incident</small><div><h3>A raw_orders incident report.</h3><p>A compact example of anomaly evidence, hypothesis, blast radius, and action.</p></div><span class="arrow">→</span></a>
-      <a class="post" href="relium-privacy.html"><small>04 / Privacy</small><div><h3>Designed without raw customer records.</h3><p>The metadata-first architecture behind Relium's incident evidence.</p></div><span class="arrow">→</span></a>
+    <div class="risk-grid">
+      <article class="risk-card reveal">
+        <span>01</span>
+        <h3>Risky SQL changes</h3>
+        <p>Catch joins, filters, schema assumptions, and metric logic that look harmless in a diff but change business results.</p>
+      </article>
+      <article class="risk-card reveal">
+        <span>02</span>
+        <h3>Silent dashboard corruption</h3>
+        <p>Spot downstream risk before bad numbers arrive in dashboards, board reports, or operating reviews.</p>
+      </article>
+      <article class="risk-card reveal">
+        <span>03</span>
+        <h3>Manual review gaps</h3>
+        <p>Give reviewers context about affected models, metrics, and owners without asking them to reconstruct lineage by hand.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section integrations-section">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Built for production dbt teams</p>
+      <h2>Fits into the workflow your data team already uses.</h2>
+    </div>
+    <div class="integration-grid">
+      <article class="integration-card reveal"><span class="integration-logo logo-dbt"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/dbt.svg" alt="dbt logo"></span><strong>dbt</strong><p>Model-aware review using manifest and lineage context.</p></article>
+      <article class="integration-card reveal"><span class="integration-logo logo-github"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub logo"></span><strong>GitHub</strong><p>Pull request checks with impact summaries before merge.</p></article>
+      <article class="integration-card reveal"><span class="integration-logo logo-slack"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" alt="Slack logo"></span><strong>Slack</strong><p>Alerts for owners when risky changes touch business metrics.</p></article>
+      <article class="integration-card reveal"><span class="integration-logo logo-ci"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo"></span><strong>CI/CD</strong><p>Reliability gate that fits into existing release workflows.</p></article>
+      <article class="integration-card reveal"><span class="integration-logo logo-warehouse"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/snowflake.svg" alt="Snowflake logo"></span><strong>Warehouse metadata</strong><p>Freshness, schema, and aggregate signals without raw records.</p></article>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="cta-inner reveal">
+      <p class="eyebrow">Production analytics deserve a preflight check</p>
+      <h2>Protect production analytics before bad data reaches the business.</h2>
+      <a class="btn btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Book a demo</a>
     </div>
   </section>
 </main>
-<footer><p>&copy; 2026 Relium. Metadata-only reliability for SQL and dbt pipelines.</p><p>Built for data teams before bad data reaches dashboards.</p></footer>
-<script>
-document.querySelectorAll('.mobile-menu-toggle').forEach(function(button){var menu=document.getElementById(button.getAttribute('aria-controls'));if(!menu){return;}button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!expanded));menu.classList.toggle('is-open',!expanded);});menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){button.setAttribute('aria-expanded','false');menu.classList.remove('is-open');});});});
-(function(){var mobileQuery=window.matchMedia('(max-width: 768px)');function updateDemoLinks(){document.querySelectorAll('[data-demo-link]').forEach(function(link){if(mobileQuery.matches){link.setAttribute('href',link.getAttribute('data-mailto-href'));link.removeAttribute('target');link.removeAttribute('rel');}else{link.setAttribute('href',link.getAttribute('data-gmail-href'));link.setAttribute('target','_blank');link.setAttribute('rel','noopener');}});}updateDemoLinks();if(mobileQuery.addEventListener){mobileQuery.addEventListener('change',updateDemoLinks);}else if(mobileQuery.addListener){mobileQuery.addListener(updateDemoLinks);}})();
-</script>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Relium. Production reliability for dbt pipelines.</p>
+  <p>Metadata-first. Built before dashboards break.</p>
+</footer>
+<script src="relium.js"></script>
 </body>
 </html>

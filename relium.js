@@ -1,4 +1,11 @@
 (function(){
+  if(window.location && window.history && window.history.replaceState){
+    var cleanPath=window.location.pathname.replace(/\/index\.html$/,"/").replace(/\.html$/,"");
+    if(cleanPath!==window.location.pathname){
+      window.history.replaceState(null,"",cleanPath + window.location.search + window.location.hash);
+    }
+  }
+
   var root=document.documentElement;
   var storageKey="relium-theme";
   var toggles=document.querySelectorAll("[data-theme-toggle]");

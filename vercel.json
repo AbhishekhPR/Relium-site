@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/demo", "destination": "/demo.html" },
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/relium-why", "destination": "/relium-why.html" },
+    { "source": "/relium-product", "destination": "/relium-product.html" },
+    { "source": "/relium-incident", "destination": "/relium-incident.html" },
+    { "source": "/relium-privacy", "destination": "/relium-privacy.html" }
+  ]
+}

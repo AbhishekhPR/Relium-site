@@ -295,6 +295,75 @@
     </div>
   </section>
 
+  <section class="section incidents-section" id="incidents">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Real-time incidents</p>
+      <h2>Relium turns production anomalies into clear incident previews.</h2>
+      <p>Short root-cause narratives, affected assets, and recommended action before a data issue becomes a boardroom question.</p>
+    </div>
+    <div class="incident-card-grid">
+      <article class="incident-card reveal">
+        <div class="incident-card-top">
+          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1047</b></span>
+          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-high">High</b></span>
+        </div>
+        <h3>Null Spike</h3>
+        <dl class="incident-fields">
+          <div><dt>Root Event</dt><dd>Null rate jumped 8x</dd></div>
+          <div><dt>Root Table</dt><dd>stg_payments</dd></div>
+          <div><dt>Affected Models</dt><dd>12</dd></div>
+          <div><dt>Primary Hypothesis</dt><dd>Upstream API stopped sending payment_method.</dd></div>
+          <div><dt>Recommended Action</dt><dd>Quarantine latest batch and notify Finance owner.</dd></div>
+        </dl>
+      </article>
+
+      <article class="incident-card reveal">
+        <div class="incident-card-top">
+          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1052</b></span>
+          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-warning">Medium</b></span>
+        </div>
+        <h3>Duplicate Ingestion</h3>
+        <dl class="incident-fields">
+          <div><dt>Root Event</dt><dd>Primary keys duplicated</dd></div>
+          <div><dt>Root Table</dt><dd>raw_orders</dd></div>
+          <div><dt>Affected Models</dt><dd>9</dd></div>
+          <div><dt>Primary Hypothesis</dt><dd>Retry job replayed a completed load window.</dd></div>
+          <div><dt>Recommended Action</dt><dd>Deduplicate by load_id and pause downstream marts.</dd></div>
+        </dl>
+      </article>
+
+      <article class="incident-card reveal">
+        <div class="incident-card-top">
+          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1058</b></span>
+          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-warning">Medium</b></span>
+        </div>
+        <h3>Freshness Failure</h3>
+        <dl class="incident-fields">
+          <div><dt>Root Event</dt><dd>Table stale by 3h</dd></div>
+          <div><dt>Root Table</dt><dd>events_sessionized</dd></div>
+          <div><dt>Affected Models</dt><dd>18</dd></div>
+          <div><dt>Primary Hypothesis</dt><dd>Orchestrator skipped the hourly session job.</dd></div>
+          <div><dt>Recommended Action</dt><dd>Backfill current window before KPI refresh.</dd></div>
+        </dl>
+      </article>
+
+      <article class="incident-card incident-card-critical reveal">
+        <div class="incident-card-top">
+          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1063</b></span>
+          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-critical">Critical</b></span>
+        </div>
+        <h3>Data Loss</h3>
+        <dl class="incident-fields">
+          <div><dt>Root Event</dt><dd>Rows dropped 42%</dd></div>
+          <div><dt>Root Table</dt><dd>fct_revenue_daily</dd></div>
+          <div><dt>Affected Models</dt><dd>31</dd></div>
+          <div><dt>Primary Hypothesis</dt><dd>Filtered join removed customers without orders.</dd></div>
+          <div><dt>Recommended Action</dt><dd>Block release and restore last trusted model.</dd></div>
+        </dl>
+      </article>
+    </div>
+  </section>
+
   <section class="section integrations-section">
     <div class="section-heading reveal">
       <p class="eyebrow">Built for production dbt teams</p>

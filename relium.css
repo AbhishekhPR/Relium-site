@@ -426,3 +426,43 @@ h1{max-width:760px;margin-bottom:24px;font-size:clamp(48px,6vw,78px);font-weight
   font-size: 16px;
   line-height: 1.65;
 }
+
+@media(max-width:860px){
+  .relium-review-map{
+    padding:14px;
+    overflow-x:auto;
+    border-radius:24px;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+  }
+  .review-map-canvas{
+    display:block;
+    min-width:720px;
+    min-height:510px;
+    padding:0;
+    overflow:hidden;
+    scroll-snap-align:start;
+  }
+  .review-map-svg{display:block}
+  .review-map-hub{position:absolute;top:50%;left:50%;width:min(300px,42%);transform:translate(-50%,-50%)}
+  .review-node{position:absolute;width:184px}
+  .node-pr{top:38px;left:32px}
+  .node-sql{top:38px;right:32px}
+  .node-blast{bottom:38px;left:32px}
+  .node-alert{right:32px;bottom:38px}
+  .node-fix{left:50%;bottom:22px;transform:translateX(-50%)}
+  .node-block{top:24px;left:50%;transform:translateX(-50%)}
+  .review-node:hover,.review-node:focus-visible,.review-node.is-selected{transform:translateY(-5px) scale(1.035)}
+  .node-fix:hover,.node-fix:focus-visible,.node-fix.is-selected{transform:translateX(-50%) translateY(-5px) scale(1.035)}
+  .node-block:hover,.node-block:focus-visible,.node-block.is-selected{transform:translateX(-50%) translateY(-5px) scale(1.035)}
+}
+
+@media(max-width:560px){
+  .product-mockup{width:100%}
+  .mockup-shell{border-radius:22px}
+  .mockup-topbar{gap:10px;padding:12px 14px}
+  .mockup-topbar strong,.mockup-status{font-size:11px}
+  .card-head{align-items:flex-start;flex-direction:column}
+  .score-row{grid-template-columns:1fr auto}
+  .score-row span{grid-column:1 / -1}
+}

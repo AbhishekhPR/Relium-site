@@ -256,4 +256,118 @@
       closeRcaModal();
     }
   });
+
+  var blogArticles=document.querySelectorAll("[data-blog-article]");
+  var blogTags=document.querySelectorAll("[data-blog-filter]");
+  var blogEmpty=document.querySelector("[data-blog-empty]");
+  var blogReader=document.getElementById("article-reader");
+  var blogReaderPanel=blogReader ? blogReader.querySelector(".blog-reader-panel") : null;
+  var blogReaderTitle=blogReader ? blogReader.querySelector("[data-reader-title]") : null;
+  var blogReaderMeta=blogReader ? blogReader.querySelector("[data-reader-meta]") : null;
+  var blogReaderBody=blogReader ? blogReader.querySelector("[data-reader-body]") : null;
+  var lastBlogTrigger=null;
+
+  function blogCategoryLabel(value){
+    return (value || "").replace(/\b\w/g,function(letter){return letter.toUpperCase();});
+  }
+
+  function buildArticleBody(article){
+    var title=article.getAttribute("data-blog-title") || "Relium article";
+    var category=blogCategoryLabel(article.getAttribute("data-blog-category"));
+    var excerpt=article.getAttribute("data-blog-excerpt") || "";
+    return [
+      excerpt,
+      "The practical lesson: treat this as a production reliability risk, not just a code style preference. The safest review asks what business metric changes, which downstream assets inherit the change, and who needs to approve it before merge.",
+      "Relium's approach is to connect SQL review, dbt lineage, and incident context before the model reaches production. That gives teams a readable risk summary while the fix is still cheap."
+    ].map(function(text,index){
+      var paragraph=document.createElement("p");
+      paragraph.textContent=index===1 && category ? text.replace("this",category.toLowerCase()) : text;
+      if(index===0 && title){paragraph.setAttribute("data-article-intro","true");}
+      return paragraph;
+    });
+  }
+
+  function openBlogReader(article,trigger){
+    if(!blogReader || !blogReaderPanel || !blogReaderTitle || !blogReaderMeta || !blogReaderBody){return;}
+    lastBlogTrigger=trigger || article;
+    var category=blogCategoryLabel(article.getAttribute("data-blog-category"));
+    var title=article.getAttribute("data-blog-title") || "";
+    var meta=article.getAttribute("data-blog-meta") || "";
+    blogReaderTitle.textContent=title;
+    blogReaderMeta.textContent=category + (meta ? " · " + meta : "");
+    blogReaderBody.replaceChildren();
+    buildArticleBody(article).forEach(function(paragraph){blogReaderBody.appendChild(paragraph);});
+    blogReader.hidden=false;
+    document.body.classList.add("modal-open");
+    window.requestAnimationFrame(function(){blogReaderPanel.focus({preventScroll:true});});
+  }
+
+  function closeBlogReader(){
+    if(!blogReader){return;}
+    blogReader.hidden=true;
+    document.body.classList.remove("modal-open");
+    if(lastBlogTrigger){lastBlogTrigger.focus();}
+  }
+
+  blogArticles.forEach(function(article){
+    var triggers=article.matches("a") ? [article] : Array.prototype.slice.call(article.querySelectorAll("[data-read-article]"));
+    triggers.forEach(function(trigger){
+      trigger.addEventListener("click",function(event){
+        event.preventDefault();
+        openBlogReader(article,trigger);
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-close-blog-reader]").forEach(function(button){
+    button.addEventListener("click",closeBlogReader);
+  });
+
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape" && blogReader && !blogReader.hidden){
+      closeBlogReader();
+    }
+  });
+
+  function applyBlogFilter(filter){
+    var visibleCount=0;
+    blogArticles.forEach(function(article){
+      var category=(article.getAttribute("data-blog-category") || "").toLowerCase();
+      var visible=filter==="all" || category===filter;
+      article.classList.toggle("is-hidden",!visible);
+      if(visible){visibleCount += 1;}
+    });
+    if(blogEmpty){blogEmpty.classList.toggle("is-visible",visibleCount===0);}
+  }
+
+  blogTags.forEach(function(tag){
+    tag.addEventListener("click",function(){
+      var filter=(tag.getAttribute("data-blog-filter") || "all").toLowerCase();
+      blogTags.forEach(function(item){
+        var selected=item===tag;
+        item.classList.toggle("active",selected);
+        item.setAttribute("aria-pressed",String(selected));
+      });
+      applyBlogFilter(filter);
+    });
+  });
+
+  var newsletterForm=document.querySelector("[data-newsletter-form]");
+  if(newsletterForm){
+    var newsletterInput=newsletterForm.querySelector("input[type='email']");
+    var newsletterStatus=document.querySelector("[data-newsletter-status]");
+    newsletterForm.addEventListener("submit",function(event){
+      event.preventDefault();
+      var email=newsletterInput ? newsletterInput.value.trim() : "";
+      var valid=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if(newsletterStatus){newsletterStatus.classList.toggle("is-error",!valid);}
+      if(!valid){
+        if(newsletterStatus){newsletterStatus.textContent="Enter a valid email to subscribe.";}
+        if(newsletterInput){newsletterInput.focus();}
+        return;
+      }
+      if(newsletterStatus){newsletterStatus.textContent="You're subscribed. We'll send the next Relium post there.";}
+      newsletterForm.reset();
+    });
+  }
 })();

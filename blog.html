@@ -15,6 +15,7 @@
 .blog-tag-row { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 48px; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); }
 .blog-tag { display: inline-flex; align-items: center; min-height: 34px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .14s, color .14s, border-color .14s; }
 .blog-tag:hover, .blog-tag.active { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.blog-tag:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
 .blog-main { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 96px; }
 
@@ -58,17 +59,32 @@
 .blog-card-bottom { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--bg-soft); display: flex; align-items: center; justify-content: space-between; }
 .blog-card-bottom span { color: var(--faint); font-family: var(--mono); font-size: 12px; font-weight: 700; }
 .blog-card-bottom a { color: var(--primary); font-size: 13px; font-weight: 760; font-family: var(--mono); display: inline-flex; align-items: center; gap: 5px; }
+.blog-featured.is-hidden,
+.blog-post-card.is-hidden { display: none; }
+.blog-empty-state { display: none; margin: 30px 0 58px; padding: 28px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--muted); line-height: 1.6; }
+.blog-empty-state.is-visible { display: block; }
 
 /* Newsletter strip */
 .blog-newsletter { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 32px; padding: 36px 40px; border: 1px solid var(--border); border-radius: 24px; background: linear-gradient(135deg, var(--surface), var(--bg-soft)); margin-bottom: 60px; }
 .blog-newsletter h3 { font-size: 22px; margin-bottom: 6px; }
 .blog-newsletter p { color: var(--muted); font-size: 15px; line-height: 1.55; }
+.blog-newsletter-signup { display: grid; gap: 10px; }
 .blog-newsletter-input { display: flex; gap: 10px; }
 .blog-newsletter-input input { flex: 1; min-width: 220px; min-height: 44px; padding: 0 16px; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface); color: var(--text); font-family: var(--sans); font-size: 14px; outline: none; transition: border-color .18s; }
 .blog-newsletter-input input:focus { border-color: var(--primary); }
 .blog-newsletter-input input::placeholder { color: var(--faint); }
 .blog-newsletter-input button { min-height: 44px; padding: 0 22px; border: 1px solid var(--primary); border-radius: 999px; background: var(--primary); color: #fff; font-family: var(--sans); font-size: 13px; font-weight: 780; cursor: pointer; transition: opacity .18s; white-space: nowrap; }
 .blog-newsletter-input button:hover { opacity: .85; }
+.blog-newsletter-status { min-height: 20px; margin-top: 10px; color: var(--primary); font-family: var(--mono); font-size: 12px; font-weight: 800; }
+.blog-newsletter-status.is-error { color: var(--red); }
+.blog-reader { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 22px; }
+.blog-reader[hidden] { display: none; }
+.blog-reader-backdrop { position: absolute; inset: 0; border: 0; background: rgba(2,6,23,.68); backdrop-filter: blur(10px); cursor: pointer; }
+.blog-reader-panel { position: relative; z-index: 1; width: min(780px, 100%); max-height: min(760px, calc(100vh - 44px)); overflow: auto; padding: clamp(28px,5vw,46px); border: 1px solid var(--border); border-radius: 28px; background: var(--surface); box-shadow: var(--shadow); }
+.blog-reader-close { position: absolute; top: 14px; right: 14px; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-soft); color: var(--text); font-size: 22px; line-height: 1; cursor: pointer; }
+.blog-reader h2 { max-width: 620px; margin: 12px 0 18px; font-size: clamp(30px,4.5vw,48px); line-height: 1.04; }
+.blog-reader-meta { color: var(--primary); font-family: var(--mono); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.blog-reader-body { display: grid; gap: 18px; margin-top: 24px; color: var(--muted); font-size: 17px; line-height: 1.75; }
 
 @media(max-width: 1100px) {
   .blog-featured { grid-template-columns: 1fr; }
@@ -76,10 +92,20 @@
   .blog-post-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media(max-width: 760px) {
+  .blog-hero { padding-top: 116px; padding-bottom: 40px; }
+  .blog-hero p { font-size: 17px; }
+  .blog-tag-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 26px; scrollbar-width: thin; }
+  .blog-tag { flex: 0 0 auto; }
   .blog-post-grid { grid-template-columns: 1fr; }
   .blog-newsletter { grid-template-columns: 1fr; gap: 22px; padding: 28px 24px; }
   .blog-newsletter-input { flex-direction: column; }
+  .blog-newsletter-input input { min-width: 0; width: 100%; }
   .blog-featured-body { padding: 28px 24px; }
+  .blog-featured { border-radius: 22px; margin-top: 34px; }
+  .blog-featured-visual { min-height: 230px; padding: 20px; }
+  .blog-featured-visual code { max-width: 100%; font-size: 12px; }
+  .blog-featured-meta { align-items: flex-start; flex-wrap: wrap; }
+  .read-link { width: 100%; margin-left: 50px; }
 }
 </style>
 </head>
@@ -150,18 +176,18 @@
   </header>
 
   <div class="blog-tag-row">
-    <button class="blog-tag active" type="button">All</button>
-    <button class="blog-tag" type="button">SQL patterns</button>
-    <button class="blog-tag" type="button">Runtime monitoring</button>
-    <button class="blog-tag" type="button">Incident management</button>
-    <button class="blog-tag" type="button">dbt ops</button>
-    <button class="blog-tag" type="button">Lineage</button>
+    <button class="blog-tag active" type="button" data-blog-filter="all" aria-pressed="true">All</button>
+    <button class="blog-tag" type="button" data-blog-filter="sql patterns" aria-pressed="false">SQL patterns</button>
+    <button class="blog-tag" type="button" data-blog-filter="runtime monitoring" aria-pressed="false">Runtime monitoring</button>
+    <button class="blog-tag" type="button" data-blog-filter="incident management" aria-pressed="false">Incident management</button>
+    <button class="blog-tag" type="button" data-blog-filter="dbt ops" aria-pressed="false">dbt ops</button>
+    <button class="blog-tag" type="button" data-blog-filter="lineage" aria-pressed="false">Lineage</button>
   </div>
 
   <div class="blog-main">
 
     <!-- Featured post -->
-    <a class="blog-featured reveal" href="#" aria-label="Read: The LEFT JOIN trap that corrupts retention metrics">
+    <a class="blog-featured reveal" href="#article-reader" data-blog-article data-blog-category="sql patterns" data-blog-title="The LEFT JOIN trap that silently corrupts retention metrics" data-blog-meta="June 14, 2026 · 7 min read" data-blog-excerpt="A single WHERE clause in the wrong place turns a LEFT JOIN into an inner join. Your pipeline passes. Your active-customer count is wrong. Here's how to catch it before it ships." aria-label="Read: The LEFT JOIN trap that corrupts retention metrics">
       <div class="blog-featured-visual">
         <div class="blog-featured-visual-inner">
           <code>
@@ -199,7 +225,7 @@
     <p class="blog-section-label">Recent posts</p>
     <div class="blog-post-grid">
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="runtime monitoring" data-blog-title="Why row count alone won't catch most data incidents" data-blog-meta="June 10, 2026 · 5 min" data-blog-excerpt="Row count is the first metric everyone tracks and the last one that catches a real problem. Null rates, duplicate keys, and freshness tell a more complete story.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-runtime">Runtime monitoring</span>
           <h3>Why row count alone won't catch most data incidents</h3>
@@ -207,11 +233,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>June 10, 2026 · 5 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="incident management" data-blog-title="Incident correlation: one alert instead of twelve" data-blog-meta="June 6, 2026 · 6 min" data-blog-excerpt="When raw_orders drops rows, every downstream model fires separately. Correlation groups them into a single incident with one root cause and one clear action.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-incident">Incident management</span>
           <h3>Incident correlation: one alert instead of twelve</h3>
@@ -219,11 +245,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>June 6, 2026 · 6 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="dbt ops" data-blog-title="What a dbt manifest can tell you before a model runs" data-blog-meta="June 2, 2026 · 8 min" data-blog-excerpt="The manifest.json is the most underused file in a dbt project. Here's how to extract lineage, ownership, and risk exposure from it without touching the warehouse.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-ops">dbt ops</span>
           <h3>What a dbt manifest can tell you before a model runs</h3>
@@ -231,11 +257,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>June 2, 2026 · 8 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="lineage" data-blog-title="Blast radius: how far can one broken model reach?" data-blog-meta="May 28, 2026 · 5 min" data-blog-excerpt="A model that feeds a metric that feeds a dashboard that feeds a board report has a blast radius of four. Most teams don't know the number until something breaks.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-lineage">Lineage</span>
           <h3>Blast radius: how far can one broken model reach?</h3>
@@ -243,11 +269,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>May 28, 2026 · 5 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="sql patterns" data-blog-title="Five SQL patterns that look safe but break production metrics" data-blog-meta="May 22, 2026 · 10 min" data-blog-excerpt="SELECT *, hardcoded date filters, COALESCE(x, 0) in aggregations — each one is a time bomb that passes CI and fails silently in production.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-sql">SQL patterns</span>
           <h3>Five SQL patterns that look safe but break production metrics</h3>
@@ -255,11 +281,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>May 22, 2026 · 10 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="runtime monitoring" data-blog-title="Freshness is not a timestamp — it's a contract" data-blog-meta="May 16, 2026 · 6 min" data-blog-excerpt="When a table's latest row is 48 hours old, that's not a data quality signal. That's a broken promise to every dashboard downstream. Here's how to model it properly.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-runtime">Runtime monitoring</span>
           <h3>Freshness is not a timestamp — it's a contract</h3>
@@ -267,7 +293,7 @@
         </div>
         <div class="blog-card-bottom">
           <span>May 16, 2026 · 6 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
@@ -279,9 +305,12 @@
         <h3>Data reliability patterns, straight to your inbox.</h3>
         <p>One post every two weeks. SQL edge cases, dbt ops, and incident lessons from production pipelines.</p>
       </div>
-      <div class="blog-newsletter-input">
-        <input type="email" placeholder="you@company.com" aria-label="Email address">
-        <button type="button">Subscribe</button>
+      <div class="blog-newsletter-signup">
+        <form class="blog-newsletter-input" data-newsletter-form>
+          <input type="email" placeholder="you@company.com" aria-label="Email address">
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="blog-newsletter-status" data-newsletter-status aria-live="polite"></p>
       </div>
     </div>
 
@@ -289,7 +318,7 @@
     <p class="blog-section-label">Earlier</p>
     <div class="blog-post-grid">
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="incident management" data-blog-title="Writing an RCA your non-technical stakeholders will actually read" data-blog-meta="May 9, 2026 · 4 min" data-blog-excerpt="Root cause reports get ignored when they're written for engineers. A good RCA has a one-line summary, evidence, impact, and a clear next action — nothing else.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-incident">Incident management</span>
           <h3>Writing an RCA your non-technical stakeholders will actually read</h3>
@@ -297,11 +326,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>May 9, 2026 · 4 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="dbt ops" data-blog-title="CI for data: making PR checks mean something" data-blog-meta="May 3, 2026 · 7 min" data-blog-excerpt="Most data teams run dbt compile in CI. That catches syntax errors. It doesn't catch a join that removes 30% of your customer base. Here's what a real data CI check looks like.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-ops">dbt ops</span>
           <h3>CI for data: making PR checks mean something</h3>
@@ -309,11 +338,11 @@
         </div>
         <div class="blog-card-bottom">
           <span>May 3, 2026 · 7 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
-      <article class="blog-post-card reveal">
+      <article class="blog-post-card reveal" data-blog-article data-blog-category="lineage" data-blog-title="Metadata-first observability: why we don't touch your data" data-blog-meta="Apr 26, 2026 · 6 min" data-blog-excerpt="You can detect nearly every meaningful data quality problem without scanning raw records. Row counts, null rates, freshness, schema drift — metadata tells the story.">
         <div class="blog-card-top">
           <span class="blog-card-tag tag-lineage">Lineage</span>
           <h3>Metadata-first observability: why we don't touch your data</h3>
@@ -321,14 +350,25 @@
         </div>
         <div class="blog-card-bottom">
           <span>Apr 26, 2026 · 6 min</span>
-          <a href="#">Read →</a>
+          <a href="#article-reader" data-read-article>Read →</a>
         </div>
       </article>
 
     </div>
 
+    <p class="blog-empty-state" data-blog-empty>No posts match that topic yet.</p>
   </div>
 </main>
+
+<div class="blog-reader" id="article-reader" hidden>
+  <button class="blog-reader-backdrop" type="button" data-close-blog-reader aria-label="Close article"></button>
+  <article class="blog-reader-panel" tabindex="-1" aria-modal="true" role="dialog" aria-labelledby="blog-reader-title">
+    <button class="blog-reader-close" type="button" data-close-blog-reader aria-label="Close article">&times;</button>
+    <p class="blog-reader-meta" data-reader-meta></p>
+    <h2 id="blog-reader-title" data-reader-title></h2>
+    <div class="blog-reader-body" data-reader-body></div>
+  </article>
+</div>
 
 <footer class="site-footer">
   <p>&copy; 2026 Relium. Production reliability for dbt pipelines.</p>
@@ -336,29 +376,5 @@
 </footer>
 
 <script src="relium.js"></script>
-<script>
-(function(){
-  var wraps = document.querySelectorAll('.nav-dropdown-wrap');
-  wraps.forEach(function(wrap){
-    var trigger = wrap.querySelector('.nav-dropdown-trigger');
-    var dropdown = wrap.querySelector('.nav-dropdown');
-    if(!trigger || !dropdown) return;
-    function open(){ trigger.setAttribute('aria-expanded','true'); dropdown.classList.add('is-open'); }
-    function close(){ trigger.setAttribute('aria-expanded','false'); dropdown.classList.remove('is-open'); }
-    trigger.addEventListener('click', function(e){ e.stopPropagation(); trigger.getAttribute('aria-expanded')==='true' ? close() : open(); });
-    wrap.addEventListener('mouseenter', open);
-    wrap.addEventListener('mouseleave', close);
-    document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) close(); });
-  });
-
-  var tags = document.querySelectorAll('.blog-tag');
-  tags.forEach(function(tag){
-    tag.addEventListener('click', function(){
-      tags.forEach(function(t){ t.classList.remove('active'); });
-      tag.classList.add('active');
-    });
-  });
-})();
-</script>
 </body>
 </html>

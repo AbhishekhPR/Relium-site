@@ -1,10 +1,40 @@
 {
-  "rewrites": [
-    { "source": "/demo", "destination": "/demo.html" },
-    { "source": "/blog", "destination": "/blog.html" },
-    { "source": "/relium-why", "destination": "/relium-why.html" },
-    { "source": "/relium-product", "destination": "/relium-product.html" },
-    { "source": "/relium-incident", "destination": "/relium-incident.html" },
-    { "source": "/relium-privacy", "destination": "/relium-privacy.html" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/relium-privacy", "destination": "/privacy", "permanent": true },
+    { "source": "/relium-product", "destination": "/how-it-works", "permanent": true },
+    { "source": "/relium-why", "destination": "/how-it-works", "permanent": true },
+    { "source": "/relium-incident", "destination": "/how-it-works", "permanent": true },
+    { "source": "/demo", "destination": "/how-it-works", "permanent": true },
+    { "source": "/blog", "destination": "/", "permanent": true },
+    { "source": "/signin", "destination": "https://app.relium.dev/onboarding", "permanent": false },
+    { "source": "/sign-in", "destination": "https://app.relium.dev/onboarding", "permanent": false },
+    { "source": "/signup", "destination": "https://app.relium.dev/onboarding?start=1", "permanent": false },
+    { "source": "/sign-up", "destination": "https://app.relium.dev/onboarding?start=1", "permanent": false },
+    { "source": "/app", "destination": "https://app.relium.dev/", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'self'"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }

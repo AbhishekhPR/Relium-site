@@ -1,396 +1,573 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Relium - Catch risky dbt changes before production</title>
-<meta name="description" content="Relium reviews SQL and dbt pull requests, traces downstream impact, and alerts your team before bad data reaches dashboards.">
-<link rel="stylesheet" href="relium.css">
-<link rel="icon" type="image/svg+xml" href="relium-logo.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relium — Verify data changes before they reach production</title>
+<meta name="description" content="Relium reviews SQL and dbt pull requests, traces downstream and KPI impact, and returns an ALLOW, WARN or BLOCK decision before the change reaches production.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/">
+<meta property="og:title" content="Relium — Verify data changes before they reach production">
+<meta property="og:description" content="Relium reviews SQL and dbt pull requests, traces downstream and KPI impact, and returns an ALLOW, WARN or BLOCK decision before the change reaches production.">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+<link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/relium.css">
+<script>
+  // Apply the stored theme before first paint so there is no flash. Same key
+  // the application uses.
+  (function () {
+    try {
+      document.documentElement.classList.add('js')
+      var stored = localStorage.getItem('relium.theme')
+      if (stored === 'dark' || stored === 'light') {
+        document.documentElement.setAttribute('data-theme', stored)
+      }
+    } catch (e) { /* storage blocked — the light default already applies */ }
+  }())
+</script>
 </head>
 <body>
-<nav class="site-nav" aria-label="Primary navigation">
-  <a class="nav-logo" href="/" aria-label="Relium home">
-    <span class="logo-mark"></span>
-    RELIUM
-  </a>
-  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
-  <ul class="nav-links">
-    <li><a href="/#pipeline">How it works</a></li>
-    <li><a href="/demo">Demo</a></li>
-    <li class="nav-dropdown-wrap">
-      <button class="nav-dropdown-trigger" type="button" aria-expanded="false" aria-haspopup="true">
-        Learn
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="/" aria-label="Relium home">
+      <span class="brand-mark" aria-hidden="true">R</span>
+      Relium
+    </a>
+    <ul class="nav-links">
+      <li><a href="/how-it-works">How it works</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/security">Security</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <div class="nav-dropdown" role="menu">
-        <a href="/relium-why" role="menuitem">
-          <span class="dd-icon">↗</span>
-          <span>
-            <strong>Why Relium</strong>
-            <small>The quiet failures that break dashboards</small>
-          </span>
-        </a>
-        <a href="/relium-product" role="menuitem">
-          <span class="dd-icon">⬡</span>
-          <span>
-            <strong>Product approach</strong>
-            <small>Metadata, lineage, SQL risk — how it works</small>
-          </span>
-        </a>
-        <a href="/relium-incident" role="menuitem">
-          <span class="dd-icon">⚑</span>
-          <span>
-            <strong>Incident example</strong>
-            <small>See a real RCA report output</small>
-          </span>
-        </a>
-        <a href="/blog" role="menuitem">
-          <span class="dd-icon">✦</span>
-          <span>
-            <strong>Blog</strong>
-            <small>Data reliability, SQL patterns, dbt ops</small>
-          </span>
-        </a>
-      </div>
-    </li>
-    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button></li>
-    <li><a class="nav-demo" data-demo-link
-      data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
-      data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
-      href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
-      target="_blank" rel="noopener">Book a demo</a></li>
-  </ul>
+      <a class="btn btn-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+      <a class="btn btn-primary" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
 </nav>
 
-<div class="mobile-menu" id="mobile-menu">
-  <a href="/#pipeline">How it works</a>
-  <a href="/demo">Demo</a>
-  <a href="/relium-why">Why Relium</a>
-  <a href="/relium-product">Product approach</a>
-  <a href="/relium-incident">Incident example</a>
-  <a href="/blog">Blog</a>
-  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
-  <a data-demo-link
-    data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
-    data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request"
-    href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request"
-    target="_blank" rel="noopener">Book a demo</a>
+<div class="mobile-menu" id="mobile-menu" data-open="false">
+  <ul>
+    <li><a href="/how-it-works">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security">Security</a></li>
+  </ul>
+  <div class="mobile-actions">
+    <a class="btn btn-block" href="https://app.relium.dev/onboarding">Sign in</a>
+    <a class="btn btn-primary btn-block" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+  </div>
 </div>
 
-<main>
+<main id="main">
+
+  <!-- ==================================================================
+       HERO — what it is, who it is for, what to do next.
+       ================================================================== -->
   <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Production reliability for dbt teams</p>
-        <h1 class="hero-headline-v2">Trust your data pipelines in production. </h1>
-        <p class="hero-subtitle">Relium reviews SQL and dbt pull requests, traces downstream impact, and alerts your team before bad data reaches dashboards.</p>
-        <div class="actions">
-          <a class="btn btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Book a demo</a>
-          <a class="btn btn-secondary" href="/#pipeline">View product flow</a>
+    <div class="wrap hero-inner">
+      <div class="reveal">
+        <span class="eyebrow">Pre-deployment verification for data teams</span>
+        <h1>Verify data changes before they reach production.</h1>
+        <p class="hero-sub">
+          Relium reviews every SQL and dbt change on the pull request, traces
+          what it affects downstream, evaluates the impact on your metrics, and
+          returns a release decision — before the change ships.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+          <a class="btn btn-lg" href="#how">See how it works</a>
         </div>
-        <p class="trust-line">Built for teams running production dbt pipelines.</p>
+        <p class="hero-note">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Free plan, no card required
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Installs as a GitHub App
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Works with your existing CI
+          </span>
+        </p>
       </div>
 
-      <aside class="product-mockup reveal" aria-label="Relium product mockup">
-        <div class="mockup-shell">
-          <div class="mockup-topbar">
-            <div>
-              <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
-            </div>
-            <strong>Relium Review</strong>
-            <span class="mockup-status">PR #1842</span>
+      <!-- The product figure. Every label here is vocabulary the product
+           actually uses: the decision, the traced downstream models, the
+           evidence classes, the diff. No metric describes a real customer. -->
+      <div class="reveal" aria-labelledby="figure-caption">
+        <p id="figure-caption" class="sr-only">
+          An illustration of a Relium review: a filtered LEFT JOIN in a dbt model
+          receives a BLOCK decision, with the downstream models it affects, the
+          evidence considered, and the offending diff.
+        </p>
+        <div class="figure-shell" role="img" aria-describedby="figure-caption">
+          <div class="figure-bar">
+            <span class="figure-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <strong>Relium review</strong>
+            <span class="figure-ref">pull request</span>
           </div>
-          <div class="mockup-body">
-            <div class="pr-check card">
-              <div class="card-head">
-                <span>GitHub PR check</span>
-                <strong class="status-pill risk">Risk detected</strong>
-              </div>
-              <h2>Filtered LEFT JOIN may drop active customers</h2>
-              <p>Change touches the <strong>customer lifetime value model</strong> and modifies null handling in an upstream join.</p>
-              <div class="score-row">
-                <span>Confidence</span>
-                <div class="meter"><i style="--meter-target:86%"></i></div>
-                <strong>86%</strong>
+          <div class="figure-body">
+
+            <div class="decision-row">
+              <span class="decision-verdict">BLOCK</span>
+              <div>
+                <p class="decision-title">Filter in the WHERE clause turns a LEFT JOIN into an inner join</p>
+                <p>
+                  Customers with no completed order are dropped before aggregation.
+                  <code>fct_customer_ltv</code> loses rows, and every metric built on it moves with it.
+                </p>
               </div>
             </div>
 
-            <div class="mockup-grid">
-              <div class="card">
-                <div class="card-head">
-                  <span>Business impact</span>
-                  <strong>High priority</strong>
-                </div>
-                <ul class="asset-list lineage-trace" aria-label="Affected lineage path">
-                  <li>
-                    <span class="asset-name">Revenue dashboard</span>
-                    <span class="hop-badge">at risk</span>
-                  </li>
-                  <li>
-                    <span class="asset-name">Retention metrics</span>
-                    <span class="hop-badge">may drop</span>
-                  </li>
-                  <li>
-                    <span class="asset-name">Weekly exec report</span>
-                    <span class="hop-badge">blocked</span>
-                  </li>
-                  <li>
-                    <span class="asset-name">Finance owner</span>
-                    <span class="hop-badge">notified</span>
-                  </li>
+            <pre class="figure-code" aria-hidden="true"><span class="del">-  left join orders o on c.id = o.customer_id
+-  where o.status = 'completed'</span>
+<span class="add">+  left join orders o on c.id = o.customer_id
++    and o.status = 'completed'</span></pre>
+
+            <div class="figure-grid">
+              <div class="figure-panel">
+                <span class="label">Downstream impact</span>
+                <ul class="lineage">
+                  <li data-tone="block"><span class="dot"></span><span class="name">fct_customer_ltv</span><span class="tag">changed</span></li>
+                  <li data-tone="block"><span class="dot"></span><span class="name">mart_revenue_daily</span><span class="tag">affected</span></li>
+                  <li data-tone="review"><span class="dot"></span><span class="name">mart_retention</span><span class="tag">affected</span></li>
+                  <li data-tone="review"><span class="dot"></span><span class="name">exp_exec_dashboard</span><span class="tag">exposure</span></li>
                 </ul>
               </div>
-              <div class="card slack-card">
-                <div class="card-head">
-                  <span>Slack alert</span>
-                  <strong class="status-pill sent">Ready</strong>
-                </div>
-                <p><strong>#data-quality</strong><br>Risk blocked in PR #1842. Revenue dashboard may be affected.</p>
+              <div class="figure-panel">
+                <span class="label">Evidence considered</span>
+                <ul class="evidence-list">
+                  <li><b>dbt manifest</b>compiled lineage for both commits</li>
+                  <li><b>Semantic diff</b>join semantics changed</li>
+                  <li><b>Warehouse metadata</b>row counts and null rates</li>
+                </ul>
               </div>
             </div>
 
-            <div class="card fix-card">
-              <div class="card-head">
-                <span>Suggested fix</span>
-                <strong>Review join filter</strong>
-              </div>
-              <code>Move order_status filter into the JOIN condition or preserve unmatched customer rows.</code>
-            </div>
           </div>
         </div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="section pipeline-section" id="pipeline">
-    <div class="section-heading centered reveal">
-      <p class="eyebrow">Data pipeline</p>
-      <h2>Relium lives in the transformation layer, before bad logic ships.</h2>
-      <p>Most data tools watch jobs after they run. Relium reviews the dbt and SQL change before production, traces what it can affect, and sends the team a clear risk narrative.</p>
-    </div>
-    <div class="data-pipeline-graph relium-review-map reveal" aria-label="Interactive Relium product pipeline map">
-      <div class="review-map-canvas">
-        <svg class="review-map-svg" viewBox="0 0 760 460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <path class="map-link map-link-pr" d="M126 92 C220 42, 302 82, 366 180"></path>
-          <path class="map-link map-link-sql" d="M628 92 C526 42, 454 82, 394 180"></path>
-          <path class="map-link map-link-blast" d="M112 352 C220 424, 306 358, 366 280"></path>
-          <path class="map-link map-link-alert" d="M648 350 C528 424, 450 356, 394 280"></path>
-          <path class="map-link map-link-fix" d="M380 380 C354 336, 354 304, 378 282"></path>
-          <path class="map-link map-link-block" d="M380 80 C408 126, 408 154, 382 178"></path>
-          <circle class="map-pulse" r="5">
-            <animateMotion class="pipeline-motion" data-delay="0" begin="indefinite" dur="5.4s" repeatCount="indefinite">
-              <mpath href="#map-motion-path"></mpath>
-            </animateMotion>
-          </circle>
-          <path id="map-motion-path" d="M126 92 C220 42, 302 82, 366 180 C386 212, 386 246, 366 280 C306 358, 220 424, 112 352 C220 424, 306 358, 366 280 C450 356, 528 424, 648 350"></path>
-        </svg>
-
-        <button class="review-node node-pr is-selected" type="button" data-pipeline-step="pr" data-title="Pull request opened" data-kicker="Input" data-body="A dbt developer opens PR #1842 changing the customer lifetime value logic. Relium reads the diff before CI finishes." data-metric="Changed SQL: 42 lines" data-owner="Owner: Analytics Engineering" aria-pressed="true">
-          <span>01</span>
-          <strong>PR Change</strong>
-          <small>dbt model edited</small>
-        </button>
-
-        <button class="review-node node-sql" type="button" data-pipeline-step="sql" data-title="SQL risk scan" data-kicker="Relium review" data-body="Relium flags a filtered LEFT JOIN that can remove active customers with no matching order row." data-metric="Confidence: 86%" data-owner="Signal: join semantics changed" aria-pressed="false">
-          <span>02</span>
-          <strong>SQL Risk Scan</strong>
-          <small>logic reviewed</small>
-        </button>
-
-        <button class="review-node node-blast" type="button" data-pipeline-step="blast" data-title="Blast radius mapped" data-kicker="Lineage" data-body="The changed logic feeds revenue reporting, retention metrics, the executive dashboard, and the weekly board report." data-metric="Business surfaces: 5" data-owner="Path: model → metric → dashboard" aria-pressed="false">
-          <span>03</span>
-          <strong>Blast Radius</strong>
-          <small>impact traced</small>
-        </button>
-
-        <button class="review-node node-alert" type="button" data-pipeline-step="alert" data-title="Owner alert prepared" data-kicker="Slack" data-body="Relium drafts a Slack alert with severity, likely impact, affected assets, and the exact file that caused the risk." data-metric="Channel: #data-quality" data-owner="Notify: Finance + RevOps" aria-pressed="false">
-          <span>04</span>
-          <strong>Owner Alert</strong>
-          <small>Slack-ready RCA</small>
-        </button>
-
-        <button class="review-node node-fix" type="button" data-pipeline-step="fix" data-title="Suggested fix" data-kicker="RCA" data-body="Move the order_status filter into the JOIN condition or explicitly preserve unmatched customer rows before aggregation." data-metric="Fix type: SQL rewrite" data-owner="Reviewer action: request changes" aria-pressed="false">
-          <span>05</span>
-          <strong>Suggested Fix</strong>
-          <small>plain-English action</small>
-        </button>
-
-        <button class="review-node node-block" type="button" data-pipeline-step="block" data-title="Risk blocked before merge" data-kicker="Gate" data-body="The PR check stays red until the risky logic is reviewed, fixed, or explicitly accepted by the data owner." data-metric="Status: blocked" data-owner="Protects: production dashboards" aria-pressed="false">
-          <span>06</span>
-          <strong>Production Gate</strong>
-          <small>bad data stopped</small>
-        </button>
-
-        <div class="review-map-hub transformation-layer" aria-label="Relium review layer">
-          <em>Relium sits here</em>
-          <b class="risk-caught-badge">Risk caught</b>
-          <span>Review Layer</span>
-          <strong>Relium</strong>
-          <p>SQL risk, dbt lineage, RCA, and team alerts before production deploys.</p>
-        </div>
-      </div>
-
-      <aside class="pipeline-inspector" aria-live="polite">
-        <p class="eyebrow" data-inspector-kicker>Input</p>
-        <h3 data-inspector-title>Pull request opened</h3>
-        <p data-inspector-body>A dbt developer opens PR #1842 changing the customer lifetime value logic. Relium reads the diff before CI finishes.</p>
-        <div class="inspector-facts">
-          <span data-inspector-metric>Changed SQL: 42 lines</span>
-          <span data-inspector-owner>Owner: Analytics Engineering</span>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <section class="section chart-section">
-    <div class="split-section">
-      <div class="section-heading reveal">
-        <p class="eyebrow">What Relium does</p>
-        <h2>Turns a risky PR into an actionable data incident preview.</h2>
-        <p>Relium combines code review, lineage, metadata, and team alerts so reviewers know what changed, what breaks, who is affected, and what to fix.</p>
-      </div>
-      <div class="relium-impact-chart reveal" aria-label="Relium review capabilities">
-        <article class="capability-card">
-          <span>01</span>
-          <strong>Reads SQL before it runs</strong>
-          <p>Flags risky joins, null filters, hardcoded dates, and metric logic in pull requests.</p>
-        </article>
-        <article class="capability-card">
-          <span>02</span>
-          <strong>Maps blast radius across dbt models</strong>
-          <p>Shows which downstream models, metrics, dashboards, and reports may be affected.</p>
-        </article>
-        <article class="capability-card">
-          <span>03</span>
-          <strong>Sends Slack-ready incident reports</strong>
-          <p>Summarizes likely cause, impacted assets, confidence, and suggested next action.</p>
-        </article>
       </div>
     </div>
   </section>
 
-  <section class="section problem-section" id="problem">
-    <div class="section-heading reveal">
-      <p class="eyebrow">Problem</p>
-      <h2>Your pipeline can pass. Your metrics can still be wrong.</h2>
-      <p>Production analytics break most often in quiet ways: a review misses a risky SQL change, lineage impact is unclear, and dashboards keep loading with corrupted numbers.</p>
-    </div>
-    <div class="risk-grid">
-      <article class="risk-card reveal">
-        <span>01</span>
-        <h3>Risky SQL changes</h3>
-        <p>Catch joins, filters, schema assumptions, and metric logic that look harmless in a diff but change business results.</p>
-      </article>
-      <article class="risk-card reveal">
-        <span>02</span>
-        <h3>Silent dashboard corruption</h3>
-        <p>Spot downstream risk before bad numbers arrive in dashboards, board reports, or operating reviews.</p>
-      </article>
-      <article class="risk-card reveal">
-        <span>03</span>
-        <h3>Manual review gaps</h3>
-        <p>Give reviewers context about affected models, metrics, and owners without asking them to reconstruct lineage by hand.</p>
-      </article>
+  <!-- ==================================================================
+       PROBLEM
+       ================================================================== -->
+  <section class="section-alt" id="problem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The problem</span>
+        <h2>Code passing tests is not the same as a data change being safe.</h2>
+        <p>
+          A dbt change can compile, pass every test and deploy cleanly, and still
+          silently change what a number means. Tests check the shape of your
+          data. They do not check whether the definition of revenue moved.
+        </p>
+      </div>
+
+      <div class="contrast reveal">
+        <div>
+          <h3>What your pipeline checks today</h3>
+          <ul>
+            <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> The SQL compiles</li>
+            <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Schema tests pass</li>
+            <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Uniqueness and not-null hold</li>
+            <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> The models build in order</li>
+          </ul>
+          <p class="verdict">CI is green. The pull request is approved.</p>
+        </div>
+        <div>
+          <h3>What nothing checks</h3>
+          <ul>
+            <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> A filter moved and 30% of customers left the model</li>
+            <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> A metric definition quietly changed meaning</li>
+            <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> Four downstream marts inherited the change</li>
+            <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg> The board report now disagrees with finance</li>
+          </ul>
+          <p class="verdict">Nobody finds out until someone questions the number.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section incidents-section" id="incidents">
-    <div class="section-heading reveal">
-      <p class="eyebrow">Real-time incidents</p>
-      <h2>Relium turns production anomalies into clear incident previews.</h2>
-      <p>Short root-cause narratives, affected assets, and recommended action before a data issue becomes a boardroom question.</p>
-    </div>
-    <div class="incident-card-grid">
-      <article class="incident-card reveal">
-        <div class="incident-card-top">
-          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1047</b></span>
-          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-high">High</b></span>
-        </div>
-        <h3>Null Spike</h3>
-        <dl class="incident-fields">
-          <div><dt>Root Event</dt><dd>Null rate jumped 8x</dd></div>
-          <div><dt>Root Table</dt><dd>stg_payments</dd></div>
-          <div><dt>Affected Models</dt><dd>12</dd></div>
-          <div><dt>Primary Hypothesis</dt><dd>Upstream API stopped sending payment_method.</dd></div>
-          <div><dt>Recommended Action</dt><dd>Quarantine latest batch and notify Finance owner.</dd></div>
-        </dl>
-      </article>
+  <!-- ==================================================================
+       HOW IT WORKS
+       ================================================================== -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>Relium reviews the change where the change happens — on the pull request.</h2>
+        <p>
+          There is nothing to run and nothing to watch. Relium reads the pull
+          request, works out what it would do, and posts the decision back.
+        </p>
+      </div>
 
-      <article class="incident-card reveal">
-        <div class="incident-card-top">
-          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1052</b></span>
-          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-warning">Medium</b></span>
+      <div class="steps reveal">
+        <div class="step">
+          <span class="step-n" aria-hidden="true">1</span>
+          <div>
+            <h3>A developer opens a pull request</h3>
+            <p>The Relium GitHub App sees SQL and dbt changes on the branch. No new workflow for the developer to learn.</p>
+          </div>
         </div>
-        <h3>Duplicate Ingestion</h3>
-        <dl class="incident-fields">
-          <div><dt>Root Event</dt><dd>Primary keys duplicated</dd></div>
-          <div><dt>Root Table</dt><dd>raw_orders</dd></div>
-          <div><dt>Affected Models</dt><dd>9</dd></div>
-          <div><dt>Primary Hypothesis</dt><dd>Retry job replayed a completed load window.</dd></div>
-          <div><dt>Recommended Action</dt><dd>Deduplicate by load_id and pause downstream marts.</dd></div>
-        </dl>
-      </article>
-
-      <article class="incident-card reveal">
-        <div class="incident-card-top">
-          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1058</b></span>
-          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-warning">Medium</b></span>
+        <div class="step">
+          <span class="step-n" aria-hidden="true">2</span>
+          <div>
+            <h3>Your CI hands over the compiled manifests</h3>
+            <p>A short GitHub Actions step submits the dbt manifest for the base and head commits, so Relium reasons about the compiled project rather than guessing from the diff.</p>
+          </div>
         </div>
-        <h3>Freshness Failure</h3>
-        <dl class="incident-fields">
-          <div><dt>Root Event</dt><dd>Table stale by 3h</dd></div>
-          <div><dt>Root Table</dt><dd>events_sessionized</dd></div>
-          <div><dt>Affected Models</dt><dd>18</dd></div>
-          <div><dt>Primary Hypothesis</dt><dd>Orchestrator skipped the hourly session job.</dd></div>
-          <div><dt>Recommended Action</dt><dd>Backfill current window before KPI refresh.</dd></div>
-        </dl>
-      </article>
-
-      <article class="incident-card incident-card-critical reveal">
-        <div class="incident-card-top">
-          <span class="incident-meta"><small>Incident ID</small><b class="incident-id">INC-1063</b></span>
-          <span class="incident-meta incident-meta-severity"><small>Severity</small><b class="severity-badge severity-critical">Critical</b></span>
+        <div class="step">
+          <span class="step-n" aria-hidden="true">3</span>
+          <div>
+            <h3>Relium traces the downstream impact</h3>
+            <p>Which models, sources, metrics and exposures depend on what changed — read from your own lineage, not inferred from file names.</p>
+          </div>
         </div>
-        <h3>Data Loss</h3>
-        <dl class="incident-fields">
-          <div><dt>Root Event</dt><dd>Rows dropped 42%</dd></div>
-          <div><dt>Root Table</dt><dd>fct_revenue_daily</dd></div>
-          <div><dt>Affected Models</dt><dd>31</dd></div>
-          <div><dt>Primary Hypothesis</dt><dd>Filtered join removed customers without orders.</dd></div>
-          <div><dt>Recommended Action</dt><dd>Block release and restore last trusted model.</dd></div>
-        </dl>
-      </article>
+        <div class="step">
+          <span class="step-n" aria-hidden="true">4</span>
+          <div>
+            <h3>It evaluates the semantic and KPI risk</h3>
+            <p>Join semantics, filter placement, null handling, cardinality, contract breaks and changes to the definitions your metrics are built on.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-n" aria-hidden="true">5</span>
+          <div>
+            <h3>Warehouse evidence is considered where available</h3>
+            <p>A collector you run, with your own read-only credentials, submits aggregate metadata — row counts, null rates, duplicate keys, freshness. Never rows.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-n" aria-hidden="true">6</span>
+          <div>
+            <h3>The decision is published on the pull request</h3>
+            <p>One check run and one comment, with the reasoning and the evidence behind it. On Pro, a blocking decision can fail the check and hold the merge.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section integrations-section">
-    <div class="section-heading reveal">
-      <p class="eyebrow">Built for production dbt teams</p>
-      <h2>Fits into the workflow your data team already uses.</h2>
-    </div>
-    <div class="integration-grid">
-      <article class="integration-card reveal"><span class="integration-logo logo-dbt"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/dbt.svg" alt="dbt logo"></span><strong>dbt</strong><p>Model-aware review using manifest and lineage context.</p></article>
-      <article class="integration-card reveal"><span class="integration-logo logo-github"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub logo"></span><strong>GitHub</strong><p>Pull request checks with impact summaries before merge.</p></article>
-      <article class="integration-card reveal"><span class="integration-logo logo-slack"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" alt="Slack logo"></span><strong>Slack</strong><p>Alerts for owners when risky changes touch business metrics.</p></article>
-      <article class="integration-card reveal"><span class="integration-logo logo-ci"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions logo"></span><strong>CI/CD</strong><p>Reliability gate that fits into existing release workflows.</p></article>
-      <article class="integration-card reveal"><span class="integration-logo logo-warehouse"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/snowflake.svg" alt="Snowflake logo"></span><strong>Warehouse metadata</strong><p>Freshness, schema, and aggregate signals without raw records.</p></article>
+  <!-- ==================================================================
+       THE DECISION
+       ================================================================== -->
+  <section class="section-alt" id="decisions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The output</span>
+        <h2>One decision, in three words your team already understands.</h2>
+        <p>
+          Every review resolves to one of three outcomes, with the reasoning and
+          the evidence recorded beside it.
+        </p>
+      </div>
+      <div class="verdicts reveal">
+        <div class="verdict-card" data-tone="safe">
+          <span class="tag">ALLOW</span>
+          <p>Relium found no meaningful semantic change and nothing downstream that this release puts at risk. The check passes.</p>
+        </div>
+        <div class="verdict-card" data-tone="review">
+          <span class="tag">WARN</span>
+          <p>The change alters behaviour in a way somebody should look at. The decision is visible on the pull request and does not fail the check.</p>
+        </div>
+        <div class="verdict-card" data-tone="block">
+          <span class="tag">BLOCK</span>
+          <p>Relium expects this change to break something that matters downstream. On Pro, this fails the GitHub check and the merge waits.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="final-cta" id="demo">
-    <div class="cta-inner reveal">
-      <p class="eyebrow">Production analytics deserve a preflight check</p>
-      <h2>Protect production analytics before bad data reaches the business.</h2>
-      <a class="btn btn-primary" data-demo-link data-gmail-href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" data-mailto-href="mailto:abhishekhrel9@gmail.com?subject=Relium%20Demo%20Request" href="https://mail.google.com/mail/?view=cm&fs=1&to=abhishekhrel9@gmail.com&su=Relium%20Demo%20Request" target="_blank" rel="noopener">Book a demo</a>
+  <!-- ==================================================================
+       DIFFERENTIATION
+       ================================================================== -->
+  <section class="section" id="different">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Where Relium sits</span>
+        <h2>Before the release, not after the incident.</h2>
+        <p>
+          Most tooling in the data stack tells you what already happened. Relium
+          works on the change that has not shipped yet, which is the only point
+          where the outcome can still be different.
+        </p>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="card">
+          <span class="card-num">01</span>
+          <h3>It reasons about meaning, not shape</h3>
+          <p>A test asserts that a column is never null. Relium asks whether the definition behind that column still means what it did yesterday.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">02</span>
+          <h3>It knows what is downstream</h3>
+          <p>The risk of a change is not the model it edits — it is everything that inherits from it. Relium traces that path from your compiled dbt project.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">03</span>
+          <h3>It produces a release decision</h3>
+          <p>Not a dashboard to check and not an alert to triage. A single ALLOW, WARN or BLOCK, published where the merge decision is already being made.</p>
+        </div>
+      </div>
     </div>
   </section>
+
+  <!-- ==================================================================
+       WHAT IT CONNECTS TO
+       ================================================================== -->
+  <section class="section-alt" id="connects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Fits your stack</span>
+        <h2>Four connections, all of which you already have.</h2>
+      </div>
+      <div class="tools reveal">
+        <span class="tool">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+          GitHub <small>App and checks</small>
+        </span>
+        <span class="tool">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+          dbt <small>manifest and lineage</small>
+        </span>
+        <span class="tool">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6h6"/><path d="M4 5a2 2 0 0 1 2-2h8l6 6v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="m9 13 2 2 4-4"/></svg>
+          GitHub Actions <small>manifest handoff</small>
+        </span>
+        <span class="tool">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+          Your warehouse <small>read-only, aggregate metadata</small>
+        </span>
+      </div>
+      <p class="muted reveal" style="margin-top: 20px; font-size: 13.5px;">
+        Warehouse evidence is collected by a process you run in your own
+        environment, with credentials you hold. See
+        <a href="/security" style="text-decoration: underline; text-underline-offset: 2px;">how Relium handles your data</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       PRICING — mirrors the plans the product actually enforces.
+       ================================================================== -->
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="section-head centered reveal">
+        <span class="eyebrow">Pricing</span>
+        <h2>Understand, verify, enforce.</h2>
+        <p>Start free. Upgrade when you want Relium to hold the merge.</p>
+      </div>
+
+      <div class="plans reveal">
+        <div class="plan">
+          <div class="plan-top"><span class="plan-name">Free</span></div>
+          <p class="plan-tier">Understand</p>
+          <div class="plan-price"><span class="plan-amount">$0</span></div>
+          <p class="plan-headline">Explore change impact on one repository.</p>
+          <a class="btn btn-block" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Core SQL and dbt analysis</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Downstream impact tracing</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> ALLOW / WARN / BLOCK decision</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>1</b> repository</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>7 days</b> of review history</li>
+          </ul>
+        </div>
+
+        <div class="plan" data-popular="true">
+          <div class="plan-top">
+            <span class="plan-name">Starter</span>
+            <span class="plan-badge">Most popular</span>
+          </div>
+          <p class="plan-tier">Verify</p>
+          <div class="plan-price"><span class="plan-amount">$149</span><span class="plan-cadence">/month</span></div>
+          <p class="plan-headline">Verify every change before production, with evidence.</p>
+          <a class="btn btn-primary btn-block" href="https://app.relium.dev/onboarding?start=1">Start with Starter</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Everything in Free</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Full KPI impact analysis</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Warehouse evidence</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Runtime evidence</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Up to <b>3</b> repositories</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>90 days</b> of review history</li>
+          </ul>
+        </div>
+
+        <div class="plan">
+          <div class="plan-top"><span class="plan-name">Pro</span></div>
+          <p class="plan-tier">Enforce</p>
+          <div class="plan-price"><span class="plan-amount">$250</span><span class="plan-cadence">/month</span></div>
+          <p class="plan-headline">Enforce safe data releases across your team.</p>
+          <a class="btn btn-block" href="https://app.relium.dev/onboarding?start=1">Start with Pro</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Everything in Starter</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Merge blocking</b> on a BLOCK decision</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Custom review policies</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Team-wide governance controls</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Unlimited</b> repositories</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Unlimited</b> review history</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="muted reveal" style="margin-top: 24px; font-size: 13.5px;">
+        Prices in USD, billed monthly. Payments are handled by Polar, our
+        merchant of record — Relium never sees or stores your card details.
+        <a href="/pricing" style="text-decoration: underline; text-underline-offset: 2px;">Compare the plans in full</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       FAQ
+       ================================================================== -->
+  <section class="section-alt" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Questions</span>
+        <h2>Before you connect a repository.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>How long does setup take?</summary>
+          <div class="faq-body">
+            Sign in, install the Relium GitHub App on the repository, point Relium
+            at your dbt project, and add one repository secret so your CI can hand
+            over the compiled manifest. Relium walks you through each step and
+            shows you the exact workflow file to copy.
+          </div>
+        </details>
+        <details>
+          <summary>Does Relium need access to my data?</summary>
+          <div class="faq-body">
+            No. The analysis works from your repository and your compiled dbt
+            manifest. Warehouse evidence is optional, and it is collected by a
+            process that runs in your environment with credentials you hold — it
+            reads aggregate metadata such as row counts, null rates, duplicate
+            keys and freshness. Individual rows and cell values are never read or
+            submitted.
+          </div>
+        </details>
+        <details>
+          <summary>Will it block our merges straight away?</summary>
+          <div class="faq-body">
+            Not unless you ask it to. Relium starts in shadow mode: it publishes
+            the real decision on the pull request, but a WARN or BLOCK stays
+            advisory and never fails the check. Enforcement is a deliberate switch,
+            and merge blocking is a Pro capability.
+          </div>
+        </details>
+        <details>
+          <summary>Which warehouses are supported?</summary>
+          <div class="faq-body">
+            The collector currently supports PostgreSQL and SQLite. The core
+            analysis — lineage, semantic diff, downstream impact and the release
+            decision — does not depend on the warehouse and works on any dbt
+            project regardless of where it runs.
+          </div>
+        </details>
+        <details>
+          <summary>What happens if I stop paying?</summary>
+          <div class="faq-body">
+            Your workspace drops back to the Free plan at the end of the paid
+            period. Nothing is deleted at that moment: repositories beyond the free
+            limit stop being reviewed, warehouse evidence stops being accepted, and
+            history is shown for the free retention window. Billing, invoices and
+            cancellation are managed through Polar's customer portal.
+          </div>
+        </details>
+        <details>
+          <summary>Do you support GitLab or Bitbucket?</summary>
+          <div class="faq-body">
+            Not today. Relium reviews pull requests through a GitHub App and
+            publishes its decision as a GitHub check run and comment. GitHub is the
+            only supported host right now.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       FINAL CTA
+       ================================================================== -->
+  <section class="final-cta">
+    <div class="wrap reveal">
+      <h2>Know what changes before you ship.</h2>
+      <p>
+        Connect a repository and open your next pull request. Relium will review
+        the change and publish its decision on the PR.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+        <a class="btn btn-lg" href="/how-it-works">Read how it works</a>
+      </div>
+      <p class="hero-note">
+        <span>Free plan, no card required</span>
+      </p>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
-  <p>&copy; 2026 Relium. Production reliability for dbt pipelines.</p>
-  <p>Metadata-first. Built before dashboards break.</p>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/" aria-label="Relium home">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          Relium
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Relium</span>
+      <span class="spacer"></span>
+      <span>Payments by Polar, our merchant of record</span>
+    </div>
+  </div>
 </footer>
-<script src="relium.js"></script>
+
+<script src="/relium.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relium pricing — Free, Starter and Pro</title>
+<meta name="description" content="Relium pricing: Free at $0, Starter at $149/month, Pro at $250/month. Compare repositories, warehouse evidence, history retention and merge blocking.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/pricing">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/pricing">
+<meta property="og:title" content="Relium pricing — Free, Starter and Pro">
+<meta property="og:description" content="Relium pricing: Free at $0, Starter at $149/month, Pro at $250/month. Compare repositories, warehouse evidence, history retention and merge blocking.">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+<link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/relium.css">
+<script>
+  // Apply the stored theme before first paint so there is no flash. Same key
+  // the application uses.
+  (function () {
+    try {
+      document.documentElement.classList.add('js')
+      var stored = localStorage.getItem('relium.theme')
+      if (stored === 'dark' || stored === 'light') {
+        document.documentElement.setAttribute('data-theme', stored)
+      }
+    } catch (e) { /* storage blocked — the light default already applies */ }
+  }())
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="/" aria-label="Relium home">
+      <span class="brand-mark" aria-hidden="true">R</span>
+      Relium
+    </a>
+    <ul class="nav-links">
+      <li><a href="/how-it-works">How it works</a></li>
+      <li><a href="/pricing" aria-current="page">Pricing</a></li>
+      <li><a href="/security">Security</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Switch to dark theme">
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+      <a class="btn btn-primary" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu" data-open="false">
+  <ul>
+    <li><a href="/how-it-works">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security">Security</a></li>
+  </ul>
+  <div class="mobile-actions">
+    <a class="btn btn-block" href="https://app.relium.dev/onboarding">Sign in</a>
+    <a class="btn btn-primary btn-block" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Pricing</span>
+      <h1>Understand, verify, enforce.</h1>
+      <p>
+        Every plan runs the same analysis. What changes as you move up is how
+        much evidence Relium can gather, how much history it keeps, and whether
+        it is allowed to hold a merge.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="plans reveal">
+        <div class="plan">
+          <div class="plan-top"><span class="plan-name">Free</span></div>
+          <p class="plan-tier">Understand</p>
+          <div class="plan-price"><span class="plan-amount">$0</span></div>
+          <p class="plan-headline">Explore change impact on one repository.</p>
+          <a class="btn btn-block" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Core SQL and dbt analysis</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Downstream impact tracing</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Semantic change detection</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> ALLOW / WARN / BLOCK decision</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>1</b> repository</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>2</b> team members</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>7 days</b> of review history</li>
+          </ul>
+        </div>
+
+        <div class="plan" data-popular="true">
+          <div class="plan-top">
+            <span class="plan-name">Starter</span>
+            <span class="plan-badge">Most popular</span>
+          </div>
+          <p class="plan-tier">Verify</p>
+          <div class="plan-price"><span class="plan-amount">$149</span><span class="plan-cadence">/month</span></div>
+          <p class="plan-headline">Verify every change before production, with evidence.</p>
+          <a class="btn btn-primary btn-block" href="https://app.relium.dev/onboarding?start=1">Start with Starter</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Everything in Free</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Full KPI impact analysis</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Warehouse evidence</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Runtime evidence</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Up to <b>3</b> repositories</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>10</b> team members</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>90 days</b> of review history</li>
+          </ul>
+        </div>
+
+        <div class="plan">
+          <div class="plan-top"><span class="plan-name">Pro</span></div>
+          <p class="plan-tier">Enforce</p>
+          <div class="plan-price"><span class="plan-amount">$250</span><span class="plan-cadence">/month</span></div>
+          <p class="plan-headline">Enforce safe data releases across your team.</p>
+          <a class="btn btn-block" href="https://app.relium.dev/onboarding?start=1">Start with Pro</a>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Everything in Starter</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Merge blocking</b> on a BLOCK decision</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Custom review policies</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Team-wide governance controls</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Unlimited</b> repositories</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Unlimited</b> team members</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> <b>Unlimited</b> review history</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-head reveal" style="margin-top: var(--sp-16); margin-bottom: var(--sp-6);">
+        <h2>Compare the plans</h2>
+        <p>
+          The first four rows are identical on purpose. Relium does not sell
+          correctness — the analysis does not get better when you pay more.
+        </p>
+      </div>
+
+      <div class="compare-wrap reveal">
+        <div class="scroll-x">
+          <table class="compare">
+            <caption class="sr-only">Feature comparison across the Free, Starter and Pro plans</caption>
+            <thead>
+              <tr>
+                <th scope="col">Capability</th>
+                <th scope="col">Free</th>
+                <th scope="col">Starter</th>
+                <th scope="col">Pro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Core SQL/dbt analysis</th><td class="yes">Included</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Downstream impact</th><td class="yes">Included</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Semantic change detection</th><td class="yes">Included</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">ALLOW / WARN / BLOCK decision</th><td class="yes">Included</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">KPI impact</th><td>Basic</td><td class="yes">Full</td><td class="yes">Full</td></tr>
+              <tr><th scope="row">Repositories</th><td>1</td><td>3</td><td class="yes">Unlimited</td></tr>
+              <tr><th scope="row">Warehouse evidence</th><td class="no">—</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Runtime evidence</th><td class="no">—</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Review history</th><td>7 days</td><td>90 days</td><td class="yes">Unlimited</td></tr>
+              <tr><th scope="row">Custom review policies</th><td class="no">—</td><td class="no">—</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Merge blocking</th><td class="no">—</td><td class="no">—</td><td class="yes">Included</td></tr>
+              <tr><th scope="row">Team members</th><td>2</td><td>10</td><td class="yes">Unlimited</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="muted reveal" style="margin-top: 20px; font-size: 13.5px;">
+        Prices in USD, billed monthly. Your plan and its limits are always visible
+        in Settings inside the product.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Billing questions</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>Who processes the payment?</summary>
+          <div class="faq-body">
+            Polar is Relium's merchant of record. Checkout, payment methods,
+            invoices, tax handling and cancellation all happen on Polar's hosted
+            pages. Relium never sees or stores your card details.
+          </div>
+        </details>
+        <details>
+          <summary>Can I change plan later?</summary>
+          <div class="faq-body">
+            Yes, from Settings inside the product. Upgrades take effect once Polar
+            confirms the payment, usually within a few seconds. Downgrades and
+            cancellations are managed in Polar's customer portal, which you reach
+            from the same screen.
+          </div>
+        </details>
+        <details>
+          <summary>What happens at the end of a cancelled subscription?</summary>
+          <div class="faq-body">
+            You keep the paid plan until the end of the period you have already
+            paid for, and then the workspace returns to Free. Repositories beyond
+            the free limit stop being reviewed and warehouse evidence stops being
+            accepted; nothing is deleted at that moment.
+          </div>
+        </details>
+        <details>
+          <summary>Is there a free trial of the paid plans?</summary>
+          <div class="faq-body">
+            The Free plan is the trial, and it does not expire. It runs the same
+            analysis and produces the same decisions on one repository — what it
+            does not include is warehouse evidence, extended history and merge
+            blocking.
+          </div>
+        </details>
+        <details>
+          <summary>Do you offer annual billing or enterprise terms?</summary>
+          <div class="faq-body">
+            Not through self-serve today. Both plans are billed monthly through
+            Polar.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="wrap reveal">
+      <h2>Know what changes before you ship.</h2>
+      <p>
+        Connect a repository and open your next pull request. Relium will review
+        the change and publish its decision on the PR.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+        <a class="btn btn-lg" href="/how-it-works">Read how it works</a>
+      </div>
+      <p class="hero-note"><span>Free plan, no card required</span></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/" aria-label="Relium home">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          Relium
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Relium</span>
+      <span class="spacer"></span>
+      <span>Payments by Polar, our merchant of record</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/relium.js" defer></script>
+</body>
+</html>

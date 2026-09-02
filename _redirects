@@ -1,6 +1,26 @@
-/demo /demo.html 200
-/blog /blog.html 200
-/relium-why /relium-why.html 200
-/relium-product /relium-product.html 200
-/relium-incident /relium-incident.html 200
-/relium-privacy /relium-privacy.html 200
+# Netlify-style redirects. Kept in step with vercel.json, which is what
+# relium.dev actually deploys through — this file exists so the site can be
+# served from either host without the URLs changing.
+
+# Clean URLs
+/how-it-works        /how-it-works.html   200
+/pricing             /pricing.html        200
+/security            /security.html       200
+/privacy             /privacy.html        200
+/terms               /terms.html          200
+
+# Retired pages. These URLs carried an earlier positioning of the product and
+# are permanently redirected rather than left to 404.
+/relium-privacy      /privacy             301
+/relium-product      /how-it-works        301
+/relium-why          /how-it-works        301
+/relium-incident     /how-it-works        301
+/demo                /how-it-works        301
+/blog                /                    301
+
+# Shortcuts into the application.
+/signin   https://app.relium.dev/onboarding           302
+/sign-in  https://app.relium.dev/onboarding           302
+/signup   https://app.relium.dev/onboarding?start=1   302
+/sign-up  https://app.relium.dev/onboarding?start=1   302
+/app      https://app.relium.dev/                     302

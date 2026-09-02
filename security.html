@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security and data handling — Relium</title>
+<meta name="description" content="What Relium reads, what it stores, and what it never touches. Repository access, compiled dbt manifests, the warehouse collector, credentials, and our subprocessors.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/security">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/security">
+<meta property="og:title" content="Security and data handling — Relium">
+<meta property="og:description" content="What Relium reads, what it stores, and what it never touches.">
+<link rel="stylesheet" href="/relium.css">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="/" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="/how-it-works">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security" aria-current="page">Security</a></li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button></li>
+    <li><a class="nav-signin" href="https://app.relium.dev/onboarding">Sign in</a></li>
+    <li><a class="nav-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a></li>
+  </ul>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/how-it-works">How it works</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/security">Security</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button>
+  <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+  <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <span class="eyebrow">Security and data handling</span>
+      <h1>What Relium reads, what it stores, and what it never touches.</h1>
+      <p>This page describes how the product actually works today. Where something is not yet in place, it says so rather than implying otherwise.</p>
+      <p class="page-updated">Last reviewed: September 2026</p>
+    </div>
+  </section>
+
+  <div class="legal-layout">
+    <div class="prose">
+
+      <h2 id="short-version">The short version</h2>
+      <p>Relium is a hosted service. Your compiled dbt manifests and the review records Relium produces from them are transmitted to and stored by Relium. Your warehouse rows are not: warehouse evidence is gathered by a collector that runs in your own environment and submits aggregate metadata only.</p>
+
+      <div class="callout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p>Relium does not currently hold a SOC 2, ISO 27001 or HIPAA attestation, and does not claim one. If your procurement process requires a completed security questionnaire, ask and we will answer it against what is described here.</p>
+      </div>
+
+      <h2 id="receives">What Relium receives</h2>
+      <p>Three inputs, from three places you control.</p>
+
+      <h3>1. Repository content, through the GitHub App</h3>
+      <p>An administrator of your GitHub organisation installs the Relium GitHub App and chooses which repositories it may see. Relium reads pull request metadata and the SQL and dbt files those pull requests change, and it writes one check run and one comment per review. It can be uninstalled at any time from GitHub, which revokes that access immediately.</p>
+
+      <h3>2. Compiled dbt manifests, through your CI</h3>
+      <p>A step in your GitHub Actions workflow posts the <code>manifest.json</code> that <code>dbt compile</code> produces for the base and head commits, authenticated with a repository secret Relium issues to you. A dbt manifest describes your project's structure — model names, compiled SQL, dependencies, tests, exposures and configuration. It does not contain rows from your warehouse.</p>
+
+      <h3>3. Aggregate warehouse metadata, through a collector you run</h3>
+      <p>Warehouse evidence is optional and is available from the Starter plan. The collector runs in your environment, connects with read-only credentials that you hold and Relium never sees, and answers a bounded request for a specific set of tables. Adapters are read-only, restricted to an allowlist of tables, and bounded by timeout and cost.</p>
+
+      <div class="matrix-wrap">
+        <div class="scroll-x">
+          <table class="matrix">
+            <caption class="sr-only">What the warehouse collector reads and submits</caption>
+            <thead>
+              <tr><th scope="col">From your warehouse</th><th scope="col">Read</th><th scope="col">Submitted to Relium</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Table and column names</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+              <tr><th scope="row">Row counts</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+              <tr><th scope="row">Distinct and duplicate key counts</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+              <tr><th scope="row">Null rates per column</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+              <tr><th scope="row">Freshness timestamps</th><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+              <tr><th scope="row">Individual rows or cell values</th><td class="no">No</td><td class="no">No</td></tr>
+              <tr><th scope="row">Customer records or personal data</th><td class="no">No</td><td class="no">No</td></tr>
+              <tr><th scope="row">Warehouse credentials</th><td class="no">No</td><td class="no">No</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2 id="stores">What Relium stores</h2>
+      <p>Relium keeps the review record: the decision, the findings and their evidence, the change plan and traced lineage, the manifests submitted for each attempt, and the audit trail of what was published to GitHub. These records are what make a review reproducible and auditable after the fact. How long they are retained is set by your plan — 7 days on Free, 90 days on Starter, and retained on Pro.</p>
+      <p>Delivery payloads sent to external systems have secrets and raw SQL redacted before they leave.</p>
+
+      <h2 id="credentials">Credentials</h2>
+      <ul>
+        <li><strong>Your warehouse credentials</strong> stay in your environment. Relium never receives them and has no way to connect to your warehouse itself.</li>
+        <li><strong>The CI token</strong> Relium issues is shown to you exactly once. Only a hash of it is kept, so it cannot be recovered — if it is lost, you issue a new one, which revokes the old. Relium will never ask you to paste it back into the browser.</li>
+        <li><strong>GitHub access</strong> is held as a GitHub App installation, scoped to the repositories your administrator selected, and revocable from GitHub at any time.</li>
+        <li><strong>Payment details</strong> are never seen by Relium. Polar, our merchant of record, handles checkout and stores payment methods.</li>
+      </ul>
+
+      <h2 id="access">Authentication and access</h2>
+      <p>Sign-in is handled by Clerk. Governance actions — anything that changes what Relium publishes on a pull request — additionally require a GitHub session, and Relium re-checks your live repository permission with GitHub on every one of them. What you can do in Relium is what you can do on the pull request; there is no separate permission model to keep in step.</p>
+
+      <h2 id="subprocessors">Subprocessors</h2>
+      <p>Relium uses the following third parties to operate the service.</p>
+      <div class="matrix-wrap">
+        <div class="scroll-x">
+          <table class="matrix">
+            <caption class="sr-only">Third-party subprocessors used by Relium</caption>
+            <thead>
+              <tr><th scope="col">Provider</th><th scope="col">Purpose</th><th scope="col">Data involved</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">GitHub</th><td>Source of the changes under review; where decisions are published</td><td>Repository content, pull request metadata, your GitHub identity</td></tr>
+              <tr><th scope="row">Clerk</th><td>Authentication and organisation management</td><td>Name, email address, organisation membership</td></tr>
+              <tr><th scope="row">Polar</th><td>Merchant of record: checkout, invoicing, subscription management</td><td>Billing contact and payment details, held by Polar</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2 id="vulnerability">Reporting a vulnerability</h2>
+      <p>If you believe you have found a security issue in Relium, report it to <a href="mailto:security@relium.dev">security@relium.dev</a> before disclosing it publicly. Please include enough detail to reproduce it. We will acknowledge the report and keep you updated while we work on it.</p>
+
+      <h2 id="open-questions">Questions this page does not answer</h2>
+      <p>If you need something specific — a data processing agreement, a hosting region commitment, a completed vendor questionnaire — write to <a href="mailto:security@relium.dev">security@relium.dev</a>. We would rather tell you plainly what is and is not in place than publish a badge we have not earned.</p>
+
+    </div>
+
+    <nav class="legal-toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#short-version">The short version</a></li>
+        <li><a href="#receives">What Relium receives</a></li>
+        <li><a href="#stores">What Relium stores</a></li>
+        <li><a href="#credentials">Credentials</a></li>
+        <li><a href="#access">Authentication and access</a></li>
+        <li><a href="#subprocessors">Subprocessors</a></li>
+        <li><a href="#vulnerability">Reporting a vulnerability</a></li>
+        <li><a href="#open-questions">Questions this page does not answer</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="final-cta">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Get started</span>
+      <h2>Know what changes before you ship.</h2>
+      <p>Connect a repository and open your next pull request. Relium will review the change and publish its decision on the PR.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+        <a class="btn btn-secondary" href="/how-it-works">Read how it works</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Relium home">
+          <span class="logo-mark"></span>
+          RELIUM
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>&copy; 2026 Relium</span>
+    <span>Payments by Polar, our merchant of record</span>
+  </div>
+</footer>
+<script src="/relium.js" defer></script>
+</body>
+</html>

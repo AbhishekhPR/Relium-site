@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy notice — Relium</title>
+<meta name="description" content="How Relium collects, uses and stores personal data, who we share it with, how long we keep it, and your rights.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/privacy">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/privacy">
+<meta property="og:title" content="Privacy notice — Relium">
+<meta property="og:description" content="How Relium collects, uses and stores personal data, and what you can ask us to do with it.">
+<link rel="stylesheet" href="/relium.css">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="/" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="/how-it-works">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security">Security</a></li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button></li>
+    <li><a class="nav-signin" href="https://app.relium.dev/onboarding">Sign in</a></li>
+    <li><a class="nav-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a></li>
+  </ul>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/how-it-works">How it works</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/security">Security</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button>
+  <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+  <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <span class="eyebrow">Legal</span>
+      <h1>Privacy notice</h1>
+      <p>How Relium collects, uses and stores personal data, and what you can ask us to do with it.</p>
+      <p class="page-updated">Last updated: September 2026</p>
+    </div>
+  </section>
+
+  <div class="legal-layout">
+    <div class="prose">
+
+      <div class="callout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p>This notice describes personal data. For the technical detail of what Relium reads from your repository and warehouse, see <a href="/security">Security and data handling</a>.</p>
+      </div>
+
+      <h2 id="who-we-are">Who we are</h2>
+      <p>Relium provides a pre-deployment verification service for data changes at <a href="https://relium.dev">relium.dev</a> and <a href="https://app.relium.dev">app.relium.dev</a>. For any question about this notice, or to exercise any of the rights described below, write to <a href="mailto:privacy@relium.dev">privacy@relium.dev</a>.</p>
+
+      <h2 id="what-we-collect">What we collect</h2>
+
+      <h3>Account data</h3>
+      <p>Your name, email address and organisation membership, provided when you sign in. Authentication is handled by Clerk; if you sign in with GitHub or Google, we receive the profile information those providers release for sign-in.</p>
+
+      <h3>Workspace and configuration data</h3>
+      <p>The organisation name you enter during setup, the repositories you connect, your dbt project configuration, and — if you provide them — the optional role and team size fields. Both optional fields can be left blank and nothing depends on them.</p>
+
+      <h3>Service data</h3>
+      <p>The compiled dbt manifests your CI submits, the reviews Relium produces from them, and aggregate warehouse metadata where a collector is connected. This is described in full on the <a href="/security">security page</a>. It can contain personal data only incidentally — for example, if a column name or a model name in your project happens to identify a person.</p>
+
+      <h3>Billing data</h3>
+      <p>If you subscribe to a paid plan, Polar acts as merchant of record and collects your billing details directly. Relium receives the subscription status and plan, not your payment method or card number.</p>
+
+      <h3>Operational logs</h3>
+      <p>Standard server logs for the API and application, kept to operate and secure the service.</p>
+
+      <h2 id="this-website">What relium.dev itself collects</h2>
+      <p>This marketing website loads no analytics, no advertising pixels and no third-party scripts. It sets no cookies. Your theme preference is stored in your own browser's local storage and never leaves it. That is why there is no cookie banner on this site — there is nothing to consent to.</p>
+      <p>The application at app.relium.dev does set cookies, because it has to: the session cookie that keeps you signed in, and a CSRF token that protects state-changing requests. Neither is used for tracking or advertising.</p>
+
+      <h2 id="why">Why we use it</h2>
+      <ul>
+        <li><strong>To provide the service</strong> — reviewing your changes, publishing decisions, and keeping the review record you can audit later.</li>
+        <li><strong>To authenticate you</strong> and to check, with GitHub, that you are permitted to perform a governance action.</li>
+        <li><strong>To bill you</strong>, if you are on a paid plan.</li>
+        <li><strong>To operate and secure the service</strong> — diagnosing failures, preventing abuse.</li>
+        <li><strong>To contact you</strong> about the service itself: setup problems, incidents, changes that affect you.</li>
+      </ul>
+      <p>We do not sell personal data, and we do not use your data to train models for anyone else.</p>
+
+      <h2 id="sharing">Who we share it with</h2>
+      <p>Only the subprocessors listed on the <a href="/security#subprocessors">security page</a> — GitHub, Clerk and Polar — each for the purpose stated there, plus our hosting and infrastructure providers. We will disclose data if we are legally required to, and we will tell you unless we are prohibited from doing so.</p>
+
+      <h2 id="retention">How long we keep it</h2>
+      <ul>
+        <li><strong>Review records</strong> are retained according to your plan: 7 days on Free, 90 days on Starter, and retained on Pro.</li>
+        <li><strong>Account and workspace data</strong> is kept while your account is open.</li>
+        <li><strong>Billing records</strong> are kept as long as we are required to keep them for tax and accounting purposes.</li>
+      </ul>
+
+      <h2 id="rights">Your rights</h2>
+      <p>You can ask us for a copy of the personal data we hold about you, ask us to correct it, ask us to delete it, or object to how we use it. Write to <a href="mailto:privacy@relium.dev">privacy@relium.dev</a> and we will respond within 30 days.</p>
+      <p>You can also cut off Relium's access to your code yourself, at any time, without asking us: uninstall the Relium GitHub App from your GitHub organisation. That revokes repository access immediately.</p>
+
+      <h2 id="security">Security</h2>
+      <p>Traffic to relium.dev, app.relium.dev and api.relium.dev is encrypted in transit. Warehouse credentials never reach Relium. The CI token we issue is stored only as a hash. More detail, including our subprocessors and how to report a vulnerability, is on the <a href="/security">security page</a>.</p>
+
+      <h2 id="changes">Changes to this notice</h2>
+      <p>If we change this notice in a way that materially affects you, we will tell you before it takes effect. The date at the top of this page always reflects the current version.</p>
+
+    </div>
+
+    <nav class="legal-toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#who-we-are">Who we are</a></li>
+        <li><a href="#what-we-collect">What we collect</a></li>
+        <li><a href="#this-website">What relium.dev collects</a></li>
+        <li><a href="#why">Why we use it</a></li>
+        <li><a href="#sharing">Who we share it with</a></li>
+        <li><a href="#retention">How long we keep it</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#changes">Changes to this notice</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <p class="legal-footnote">Questions about this notice: privacy@relium.dev</p>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Relium home">
+          <span class="logo-mark"></span>
+          RELIUM
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>&copy; 2026 Relium</span>
+    <span>Payments by Polar, our merchant of record</span>
+  </div>
+</footer>
+<script src="/relium.js" defer></script>
+</body>
+</html>

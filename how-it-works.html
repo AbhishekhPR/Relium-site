@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Relium works — pre-deployment verification for data changes</title>
+<meta name="description" content="What Relium does between the pull request and the merge: reads the compiled dbt project, traces downstream impact, evaluates semantic and KPI risk, and publishes an ALLOW, WARN or BLOCK decision.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/how-it-works">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/how-it-works">
+<meta property="og:title" content="How Relium works">
+<meta property="og:description" content="What Relium does between the pull request and the merge.">
+<link rel="stylesheet" href="/relium.css">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="/" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="/how-it-works" aria-current="page">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security">Security</a></li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button></li>
+    <li><a class="nav-signin" href="https://app.relium.dev/onboarding">Sign in</a></li>
+    <li><a class="nav-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a></li>
+  </ul>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/how-it-works">How it works</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/security">Security</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button>
+  <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+  <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="page-hero-inner reveal">
+      <span class="eyebrow">How it works</span>
+      <h1>What Relium does between the pull request and the merge.</h1>
+      <p>Relium is a pre-deployment verification system for data changes. It reads the change, works out what it would do to everything downstream, weighs the evidence it can gather, and returns a decision — all before the change reaches production.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading reveal">
+      <span class="eyebrow">The review</span>
+      <h2>Step by step, on the pull request.</h2>
+      <p>Everything below happens on the pull request. Nobody has to open a dashboard for it to work.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <span class="step-n" aria-hidden="true">1</span>
+        <div>
+          <h3>Relium sees the change</h3>
+          <p>The Relium GitHub App is installed on the repositories you choose. When a pull request touches SQL or dbt files, Relium opens a review for that commit.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">2</span>
+        <div>
+          <h3>Your CI submits the compiled manifests</h3>
+          <p>A GitHub Actions step runs <code>dbt compile</code> for the base and head commits and posts both manifests to Relium, authenticated with a repository secret. Reading the compiled project rather than the raw diff is what lets Relium reason about the real dependency graph — including everything a macro or a <code>ref</code> expands into.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">3</span>
+        <div>
+          <h3>It computes the change plan</h3>
+          <p>Which models changed, and how the compiled SQL differs between the two commits. This is a structural comparison, not a text diff: reformatting a query is not a change to what it means.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">4</span>
+        <div>
+          <h3>It traces the blast radius</h3>
+          <p>From the manifest's own lineage: the direct downstream models, the sources feeding in, and the exposures — dashboards and reports your dbt project already declares.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">5</span>
+        <div>
+          <h3>It evaluates semantic risk</h3>
+          <p>Join semantics and filter placement, null handling, cardinality changes, contract breaks, and changes to the definitions your KPIs are computed from. This is the part a schema test cannot do: the shape of the output can be identical while the meaning has moved.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">6</span>
+        <div>
+          <h3>It weighs the evidence it has</h3>
+          <p>Where a warehouse collector is connected, Relium requests bounded aggregate metadata for the affected tables — row counts, distinct and duplicate key counts, null rates, freshness — and compares it against the change. Where no evidence is available, the review says so rather than assuming.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n" aria-hidden="true">7</span>
+        <div>
+          <h3>It publishes the decision</h3>
+          <p>One check run and one comment on the pull request, reconciled rather than duplicated on every push. The dashboard holds the full report: the reasoning, the findings, the affected assets and the evidence behind each one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section decisions-section">
+    <div class="section-heading reveal">
+      <span class="eyebrow">Rollout</span>
+      <h2>Shadow first, enforce when you are ready.</h2>
+      <p>Relium starts in shadow mode on every repository. The decision is real and it is published, but a WARN or a BLOCK stays advisory and does not fail the GitHub check.</p>
+    </div>
+    <div class="contrast reveal">
+      <div class="contrast-panel" data-tone="pass">
+        <h3>Shadow mode</h3>
+        <p style="color:var(--muted);font-size:16px;line-height:1.68">Relium publishes the decision on every pull request. Your team can read it, disagree with it, and calibrate against it — without a single merge being held up. This is the right place to start, and many teams stay here for weeks.</p>
+        <p class="contrast-verdict">Default on every repository</p>
+      </div>
+      <div class="contrast-panel" data-tone="fail">
+        <h3>Enforce mode</h3>
+        <p style="color:var(--muted);font-size:16px;line-height:1.68">A BLOCK decision fails the GitHub check, so branch protection holds the merge until the finding is resolved or a reviewer records an exception. WARN stays advisory in both modes.</p>
+        <p class="contrast-verdict">Merge blocking is included on Pro</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section problem-section">
+    <div class="section-heading reveal">
+      <span class="eyebrow">Requirements</span>
+      <h2>What you need before you start.</h2>
+      <p>Three things, and you almost certainly have all of them.</p>
+    </div>
+    <div class="risk-grid">
+      <article class="risk-card reveal">
+        <span>01</span>
+        <h3>A dbt project on GitHub</h3>
+        <p>Relium looks for a <code>dbt_project.yml</code> in the repositories your GitHub App installation authorises. It can live at the repository root or in a subdirectory.</p>
+      </article>
+      <article class="risk-card reveal">
+        <span>02</span>
+        <h3>A CI job that can compile it</h3>
+        <p>If you already run <code>dbt compile</code> or <code>dbt build</code> in CI, you are done. Relium gives you the exact workflow step and the one repository secret it needs.</p>
+      </article>
+      <article class="risk-card reveal">
+        <span>03</span>
+        <h3>Optionally, a warehouse</h3>
+        <p>Warehouse evidence sharpens the decision but is not required to get one. The collector runs in your environment with your own read-only credentials, and is available from the Starter plan.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="cta-inner reveal">
+      <span class="eyebrow">Get started</span>
+      <h2>Know what changes before you ship.</h2>
+      <p>Connect a repository and open your next pull request. Relium will review the change and publish its decision on the PR.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+        <a class="btn btn-secondary" href="/pricing">See pricing</a>
+      </div>
+      <ul class="hero-proof">
+        <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free plan, no card required</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Relium home">
+          <span class="logo-mark"></span>
+          RELIUM
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>&copy; 2026 Relium</span>
+    <span>Payments by Polar, our merchant of record</span>
+  </div>
+</footer>
+<script src="/relium.js" defer></script>
+</body>
+</html>

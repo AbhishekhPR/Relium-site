@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of service — Relium</title>
+<meta name="description" content="The agreement between you and Relium for use of the Relium service: the service, your account, your content, acceptable use, plans and payment, and liability.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://relium.dev/terms">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://relium.dev/terms">
+<meta property="og:title" content="Terms of service — Relium">
+<meta property="og:description" content="The agreement between you and Relium for use of the Relium service.">
+<link rel="stylesheet" href="/relium.css">
+<link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="site-nav" aria-label="Primary navigation">
+  <a class="nav-logo" href="/" aria-label="Relium home">
+    <span class="logo-mark"></span>
+    RELIUM
+  </a>
+  <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation"><span></span></button>
+  <ul class="nav-links">
+    <li><a href="/how-it-works">How it works</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/security">Security</a></li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button></li>
+    <li><a class="nav-signin" href="https://app.relium.dev/onboarding">Sign in</a></li>
+    <li><a class="nav-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a></li>
+  </ul>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/how-it-works">How it works</a>
+  <a href="/pricing">Pricing</a>
+  <a href="/security">Security</a>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button>
+  <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
+  <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <span class="eyebrow">Legal</span>
+      <h1>Terms of service</h1>
+      <p>The agreement between you and Relium for use of the Relium service.</p>
+      <p class="page-updated">Last updated: September 2026</p>
+    </div>
+  </section>
+
+  <!-- UNRESOLVED, DELIBERATELY NOT INVENTED: the contracting legal entity, its
+       registered address, and the governing law / jurisdiction clause. Nothing
+       on this page asserts any of the three. Add a "Governing law" section here
+       once the entity and jurisdiction are confirmed, and name the entity in
+       section 1. -->
+
+  <div class="legal-layout">
+    <div class="prose">
+
+      <h2 id="agreement">1. The agreement</h2>
+      <p>These terms govern your use of the Relium service at <a href="https://app.relium.dev">app.relium.dev</a>, the API at api.relium.dev, the Relium GitHub App, and the Relium collector. By creating an account or connecting a repository you agree to them. If you are agreeing on behalf of a company, you confirm you are authorised to bind it.</p>
+
+      <h2 id="service">2. The service</h2>
+      <p>Relium reviews SQL and dbt changes on pull requests and publishes a decision — ALLOW, WARN or BLOCK — with its reasoning and the evidence it considered. What Relium reads and stores is described in the <a href="/security">security page</a> and the <a href="/privacy">privacy notice</a>, which form part of these terms.</p>
+
+      <h2 id="not-a-guarantee">3. Relium is an aid to review, not a guarantee</h2>
+      <p>This matters, so it is stated plainly. Relium analyses the change it is given and reports what it finds. It can miss a problem, and it can flag something that turns out to be fine. An ALLOW decision is not a warranty that a change is safe, and Relium is not a substitute for your own review, testing and release process. You remain responsible for what you merge and deploy.</p>
+
+      <h2 id="account">4. Your account</h2>
+      <p>You are responsible for the security of your account, for the actions taken by people you give access to your workspace, and for keeping the CI token Relium issues to you secret. Tell us promptly at <a href="mailto:security@relium.dev">security@relium.dev</a> if you believe your account or that token has been compromised.</p>
+
+      <h2 id="content">5. Your content</h2>
+      <p>Your repositories, your dbt project, your manifests and your warehouse metadata remain yours. You grant Relium only the licence needed to operate the service for you: to receive, process, store and display that content in order to produce and publish reviews. We claim no other rights over it.</p>
+
+      <h2 id="acceptable-use">6. Acceptable use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>connect a repository you are not authorised to connect;</li>
+        <li>attempt to access another customer's workspace or data;</li>
+        <li>probe, scan or test the security of the service without our written permission;</li>
+        <li>use the service to build a competing product;</li>
+        <li>place a load on the service intended to degrade it for others.</li>
+      </ul>
+
+      <h2 id="payment">7. Plans, payment and cancellation</h2>
+      <p>Paid plans are billed monthly in advance. Polar acts as merchant of record and handles checkout, invoicing, tax and payment methods; Polar's own terms apply to that transaction. You can cancel at any time through Polar's customer portal, reachable from Settings in the product. On cancellation you keep the paid plan until the end of the period you have already paid for, after which the workspace returns to the Free plan and its limits. We do not provide refunds for partial months except where the law requires it.</p>
+      <p>We may change our prices. If we do, we will give you notice before the change applies to your subscription.</p>
+
+      <h2 id="availability">8. Availability</h2>
+      <p>We work to keep Relium available and will give notice of planned maintenance where we can. We do not currently offer a contractual uptime commitment. The service is provided as it is, and we make no warranty that it will be uninterrupted or error-free.</p>
+
+      <h2 id="liability">9. Limitation of liability</h2>
+      <p>To the fullest extent the law allows, Relium is not liable for indirect, incidental or consequential loss, or for loss of profits, revenue, data or goodwill, arising from your use of the service. Our total liability in any twelve-month period is limited to the amount you paid us for the service during that period. Nothing in these terms limits liability that cannot be limited by law.</p>
+
+      <h2 id="termination">10. Suspension and termination</h2>
+      <p>You can stop using Relium at any time by uninstalling the GitHub App and cancelling your subscription. We may suspend or terminate an account that breaches these terms, that is being used unlawfully, or that is placing the service at risk — and we will tell you why unless we are prohibited from doing so.</p>
+
+      <h2 id="changes">11. Changes to these terms</h2>
+      <p>We may update these terms. If a change materially affects your rights, we will give you notice before it takes effect. Continuing to use the service after that point means you accept the updated terms.</p>
+
+      <h2 id="contact">12. Contact</h2>
+      <p>Questions about these terms: <a href="mailto:legal@relium.dev">legal@relium.dev</a>.</p>
+
+    </div>
+
+    <nav class="legal-toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#agreement">1. The agreement</a></li>
+        <li><a href="#service">2. The service</a></li>
+        <li><a href="#not-a-guarantee">3. An aid, not a guarantee</a></li>
+        <li><a href="#account">4. Your account</a></li>
+        <li><a href="#content">5. Your content</a></li>
+        <li><a href="#acceptable-use">6. Acceptable use</a></li>
+        <li><a href="#payment">7. Plans and payment</a></li>
+        <li><a href="#availability">8. Availability</a></li>
+        <li><a href="#liability">9. Limitation of liability</a></li>
+        <li><a href="#termination">10. Suspension and termination</a></li>
+        <li><a href="#changes">11. Changes to these terms</a></li>
+        <li><a href="#contact">12. Contact</a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <p class="legal-footnote">Questions about these terms: legal@relium.dev</p>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/" aria-label="Relium home">
+          <span class="logo-mark"></span>
+          RELIUM
+        </a>
+        <p>Pre-deployment verification for data changes. Relium reviews SQL and dbt changes before they reach production.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Product</p>
+        <ul>
+          <li><a href="/how-it-works">How it works</a></li>
+          <li><a href="/pricing">Pricing</a></li>
+          <li><a href="/security">Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Get started</p>
+        <ul>
+          <li><a href="https://app.relium.dev/onboarding?start=1">Create an account</a></li>
+          <li><a href="https://app.relium.dev/onboarding">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Legal</p>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/security">Data handling</a></li>
+          <li><a href="/security#subprocessors">Subprocessors</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>&copy; 2026 Relium</span>
+    <span>Payments by Polar, our merchant of record</span>
+  </div>
+</footer>
+<script src="/relium.js" defer></script>
+</body>
+</html>

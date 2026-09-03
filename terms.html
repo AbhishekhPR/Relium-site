@@ -71,7 +71,7 @@
       <p>This matters, so it is stated plainly. Relium analyses the change it is given and reports what it finds. It can miss a problem, and it can flag something that turns out to be fine. An ALLOW decision is not a warranty that a change is safe, and Relium is not a substitute for your own review, testing and release process. You remain responsible for what you merge and deploy.</p>
 
       <h2 id="account">4. Your account</h2>
-      <p>You are responsible for the security of your account, for the actions taken by people you give access to your workspace, and for keeping the CI token Relium issues to you secret. Tell us promptly at <a href="mailto:security@relium.dev">security@relium.dev</a> if you believe your account or that token has been compromised.</p>
+      <p>You are responsible for the security of your account, for the actions taken by people you give access to your workspace, and for keeping the CI token Relium issues to you secret. If you believe that token has been compromised, issue a new one from your Relium settings — doing so revokes the old one immediately — and uninstall the Relium GitHub App if you need to cut off repository access as well.</p>
 
       <h2 id="content">5. Your content</h2>
       <p>Your repositories, your dbt project, your manifests and your warehouse metadata remain yours. You grant Relium only the licence needed to operate the service for you: to receive, process, store and display that content in order to produce and publish reviews. We claim no other rights over it.</p>
@@ -103,7 +103,14 @@
       <p>We may update these terms. If a change materially affects your rights, we will give you notice before it takes effect. Continuing to use the service after that point means you accept the updated terms.</p>
 
       <h2 id="contact">12. Contact</h2>
-      <p>Questions about these terms: <a href="mailto:legal@relium.dev">legal@relium.dev</a>.</p>
+      <!-- UNRESOLVED, DELIBERATELY NOT INVENTED: Relium publishes no contact
+           address, because no privacy, security or legal mailbox on the
+           relium.dev domain is configured. Every reference to one is removed rather than
+           swapped for another address that also does not exist. The sentences below
+           therefore describe the rights and the self-service controls that are real,
+           and claim no channel for reaching a human. Publishing a working address is
+           an outstanding launch task, not a copy change. -->
+      <p>The controls these terms describe are in the product rather than behind a mailbox: change or cancel your subscription in your Relium settings, and uninstall the Relium GitHub App to end Relium’s access to your repositories. Relium does not yet publish a contact address for questions about these terms.</p>
 
     </div>
 
@@ -126,7 +133,7 @@
     </nav>
   </div>
 
-  <p class="legal-footnote">Questions about these terms: legal@relium.dev</p>
+  <p class="legal-footnote">These terms apply to relium.dev, app.relium.dev and api.relium.dev.</p>
 </main>
 
 <footer class="site-footer">

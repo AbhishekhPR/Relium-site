@@ -12,13 +12,18 @@
  * Two launch rules are pinned here, both of which are easy to undo by accident
  * in a copy edit and neither of which is visible in review:
  *
- *   1. No @relium.dev mailbox appears anywhere. None of them is configured, so
+ *   1. No relium.dev mailbox appears anywhere -- none is configured, so
  *      every one is an invitation to write into a void. Re-adding "just a
  *      support address" is a one-word change that nothing else would catch.
  *
  *   2. The body background carries no repeating grid. It was removed for a
  *      calmer, more premium surface, and it would come back the moment anyone
  *      reaches for a linear-gradient to add texture.
+ *
+ *   3. The plan prices are what they are supposed to be, and the two pages
+ *      that print them agree. Pro was $250 in two places -- the homepage card
+ *      and the pricing page card -- and a price is exactly the kind of thing
+ *      that gets corrected in one of them.
  *
  * Run: node --test scripts/public-files.test.mjs
  * No dependencies, no package.json, nothing to install — and deliberately no
@@ -110,5 +115,47 @@ test('every page still loads the one stylesheet and no third party', () => {
       [],
       `${name} loads a third-party asset: ${assets.join(', ')}`,
     )
+  }
+})
+
+/**
+ * The prices, per page that prints them.
+ *
+ * Written as an exact list rather than "does not contain $250": a checker that
+ * only forbids the old number says nothing about the new one, and would pass
+ * happily on a page that had lost its Pro card altogether.
+ */
+const PRICES = { Free: '$0', Starter: '$149', Pro: '$249' }
+
+function planCards(body) {
+  // Each card is <span class="plan-name">NAME</span> ... <span
+  // class="plan-amount">$N</span>, in that order, inside the same card.
+  const cards = {}
+  const pattern = /class="plan-name">([^<]+)<[\s\S]{0,600}?class="plan-amount">([^<]+)</g
+  let match = pattern.exec(body)
+  while (match) {
+    cards[match[1].trim()] = match[2].trim()
+    match = pattern.exec(body)
+  }
+  return cards
+}
+
+test('every page that prints a price prints the right one', () => {
+  const pages = html.filter(([, body]) => body.includes('plan-amount'))
+  assert.ok(pages.length >= 2, `expected the pricing surfaces, found ${pages.length}`)
+
+  for (const [name, body] of pages) {
+    const cards = planCards(body)
+    assert.deepEqual(
+      cards,
+      PRICES,
+      `${name} does not price the plans as ${JSON.stringify(PRICES)}`,
+    )
+  }
+})
+
+test('no page still advertises the old Pro price', () => {
+  for (const [name, body] of files) {
+    assert.ok(!/\$\s?250/.test(body), `${name} still shows $250`)
   }
 })

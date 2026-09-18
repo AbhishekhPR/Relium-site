@@ -125,7 +125,7 @@ test('every page still loads the one stylesheet and no third party', () => {
  * only forbids the old number says nothing about the new one, and would pass
  * happily on a page that had lost its Pro card altogether.
  */
-const PRICES = { Free: '$0', Starter: '$149', Pro: '$249' }
+const PRICES = { Free: '$0', Starter: '$99', Pro: '$249' }
 
 function planCards(body) {
   // Each card is <span class="plan-name">NAME</span> ... <span
@@ -154,8 +154,9 @@ test('every page that prints a price prints the right one', () => {
   }
 })
 
-test('no page still advertises the old Pro price', () => {
+test('no page still advertises a superseded price', () => {
   for (const [name, body] of files) {
-    assert.ok(!/\$\s?250/.test(body), `${name} still shows $250`)
+    assert.ok(!/\$\s?250/.test(body), `${name} still shows $250`)
+    assert.ok(!/\$\s?149/.test(body), `${name} still shows $149`)
   }
 })

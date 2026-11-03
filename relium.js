@@ -1,10 +1,10 @@
 /**
  * Relium marketing site behaviour.
  *
- * Four things and nothing else: the theme toggle, the mobile menu, the reveal
- * on scroll, and the interactive review map. No analytics, no tracker, no
- * third-party script, no network request — which is what lets the privacy
- * page say so plainly.
+ * Four things and nothing else: the theme toggle, the frosted nav, the mobile
+ * menu and the reveal on scroll. The homepage's console and layer stack live
+ * in relium-home.js. No analytics, no tracker, no third-party script, no
+ * network request — which is what lets the privacy page say so plainly.
  */
 (function () {
   "use strict";
@@ -52,9 +52,10 @@
   try {
     storedTheme = window.localStorage.getItem(storageKey);
   } catch (error) {
-    /* Storage blocked. The light default still applies for this page view. */
+    /* Storage blocked. The dark default still applies for this page view. */
   }
-  setTheme(storedTheme === "dark" ? "dark" : "light");
+  // Dark first: light only when the visitor chose it.
+  setTheme(storedTheme === "light" ? "light" : "dark");
 
   Array.prototype.forEach.call(toggles, function (toggle) {
     toggle.addEventListener("click", function () {
@@ -67,6 +68,23 @@
       }
     });
   });
+
+  /* ----------------------------------------------------------------- nav --
+     Transparent over the top of the page, frosted once anything scrolls
+     beneath it. */
+  var nav = document.querySelector(".site-nav");
+  if (nav) {
+    var scrolled = null;
+    var syncNav = function () {
+      var next = window.scrollY > 8;
+      if (next !== scrolled) {
+        scrolled = next;
+        nav.classList.toggle("is-scrolled", next);
+      }
+    };
+    syncNav();
+    window.addEventListener("scroll", syncNav, { passive: true });
+  }
 
   /* --------------------------------------------------------- mobile menu -- */
   Array.prototype.forEach.call(
@@ -132,106 +150,5 @@
     // Belt and braces: if something goes wrong with the observer, the content
     // must still be readable. Never let an animation gate the copy.
     window.setTimeout(revealAll, 2500);
-  }
-
-  /* ---------------------------------------------------------- review map -- */
-  var pipelineGraph = document.querySelector(".data-pipeline-graph");
-  var pipelineSection = document.querySelector("#pipeline");
-
-  function initReviewMap() {
-    if (!pipelineGraph) return;
-    var nodes = pipelineGraph.querySelectorAll("[data-pipeline-step]");
-    var inspector = pipelineGraph.querySelector(".pipeline-inspector");
-    if (!nodes.length || !inspector) return;
-
-    var kicker = inspector.querySelector("[data-inspector-kicker]");
-    var title = inspector.querySelector("[data-inspector-title]");
-    var body = inspector.querySelector("[data-inspector-body]");
-    var metric = inspector.querySelector("[data-inspector-metric]");
-    var owner = inspector.querySelector("[data-inspector-owner]");
-
-    function selectNode(node) {
-      Array.prototype.forEach.call(nodes, function (item) {
-        var selected = item === node;
-        item.classList.toggle("is-selected", selected);
-        item.setAttribute("aria-pressed", String(selected));
-      });
-      if (kicker) kicker.textContent = node.getAttribute("data-kicker") || "";
-      if (title) title.textContent = node.getAttribute("data-title") || "";
-      if (body) body.textContent = node.getAttribute("data-body") || "";
-      if (metric) metric.textContent = node.getAttribute("data-metric") || "";
-      if (owner) owner.textContent = node.getAttribute("data-owner") || "";
-      inspector.classList.remove("is-updating");
-      window.requestAnimationFrame(function () {
-        inspector.classList.add("is-updating");
-      });
-    }
-
-    Array.prototype.forEach.call(nodes, function (node) {
-      node.addEventListener("mouseenter", function () { selectNode(node); });
-      node.addEventListener("focus", function () { selectNode(node); });
-      node.addEventListener("click", function () { selectNode(node); });
-    });
-  }
-
-  function beginSvgAnimation(animation, delay) {
-    window.setTimeout(function () {
-      if (animation && typeof animation.beginElement === "function") {
-        animation.beginElement();
-      }
-    }, delay);
-  }
-
-  function activatePipeline() {
-    if (!pipelineGraph || pipelineGraph.dataset.pipelineActivated === "true") return;
-    pipelineGraph.dataset.pipelineActivated = "true";
-    pipelineGraph.classList.add("pipeline-visible");
-
-    if (reducedMotion.matches) {
-      pipelineGraph.classList.add("pipeline-reduced");
-      return;
-    }
-
-    window.setTimeout(function () {
-      pipelineGraph.classList.add("pipeline-flowing");
-      Array.prototype.forEach.call(
-        pipelineGraph.querySelectorAll(".pipeline-motion"),
-        function (animation) {
-          var delay = parseFloat(animation.getAttribute("data-delay") || "0") * 1000;
-          beginSvgAnimation(animation, delay);
-        }
-      );
-
-      var stage = pipelineGraph.querySelector(".transformation-layer");
-      function showRiskCaught() {
-        if (!stage) return;
-        stage.classList.add("risk-caught");
-        window.setTimeout(function () {
-          stage.classList.remove("risk-caught");
-        }, 1250);
-      }
-      window.setTimeout(showRiskCaught, 1500);
-      window.setInterval(showRiskCaught, 4200);
-    }, 700);
-  }
-
-  if (pipelineGraph) {
-    initReviewMap();
-    pipelineGraph.classList.add("pipeline-primed");
-    if (reducedMotion.matches || !("IntersectionObserver" in window)) {
-      activatePipeline();
-    } else {
-      var pipelineObserver = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting && entry.boundingClientRect.top > 0) return;
-            activatePipeline();
-            pipelineObserver.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.2 }
-      );
-      pipelineObserver.observe(pipelineSection || pipelineGraph);
-    }
   }
 }());

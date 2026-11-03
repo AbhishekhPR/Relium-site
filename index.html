@@ -11,6 +11,7 @@
 <meta property="og:url" content="https://relium.dev/">
 <meta property="og:title" content="Relium — Verify data changes before they reach production">
 <meta property="og:description" content="Relium reviews SQL and dbt changes on the pull request, traces downstream impact, evaluates semantic and KPI impact, and returns a release decision before the change ships.">
+<link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/relium.css">
 <link rel="icon" type="image/svg+xml" href="/relium-logo.svg">
 </head>
@@ -27,7 +28,7 @@
     <li><a href="/how-it-works">How it works</a></li>
     <li><a href="/pricing">Pricing</a></li>
     <li><a href="/security">Security</a></li>
-    <li><button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button></li>
+    <li><button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button></li>
     <li><a class="nav-signin" href="https://app.relium.dev/onboarding">Sign in</a></li>
     <li><a class="nav-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a></li>
   </ul>
@@ -37,7 +38,7 @@
   <a href="/how-it-works">How it works</a>
   <a href="/pricing">Pricing</a>
   <a href="/security">Security</a>
-  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle><span></span><b data-theme-label>Light</b></button>
+  <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
   <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
   <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
 </div>
@@ -45,75 +46,73 @@
 <main id="main">
   <section class="hero">
     <div class="hero-grid">
-      <div class="hero-copy reveal">
-        <span class="eyebrow">Pre-deployment verification for data teams</span>
-        <h1>Verify data changes before they reach production.</h1>
+      <div class="hero-copy">
+        <span class="eyebrow eyebrow-hero"><span class="tag">Relium</span>Pre-deployment verification for data teams</span>
+        <h1 class="hero-title"><span class="w"><span style="--i:0">Verify</span></span> <span class="w"><span style="--i:1">data</span></span> <span class="w"><span style="--i:2">changes</span></span> <span class="w"><span style="--i:3">before</span></span> <span class="w"><span style="--i:4">they</span></span> <span class="w"><span style="--i:5">reach</span></span> <span class="w"><span style="--i:6">production.</span></span></h1>
         <p class="hero-subtitle">Relium reviews every SQL and dbt change on the pull request, traces what it affects downstream, evaluates the impact on your metrics, and returns a release decision — before the change ships.</p>
         <div class="actions">
           <a class="btn btn-primary" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
-          <a class="btn btn-secondary" href="#pipeline">See how it works</a>
+          <a class="btn btn-secondary" href="#pipeline">See how it works <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
         <ul class="hero-proof">
           <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Free plan, no card required</li>
           <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Installs as a GitHub App</li>
           <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Works with your existing CI</li>
         </ul>
+        <ul class="stats-strip" aria-label="Relium at a glance">
+          <li><b>3 outcomes</b><span>ALLOW / WARN / BLOCK</span></li>
+          <li><b>0 rows read</b><span>aggregates only</span></li>
+          <li><b>1 GitHub App</b><span>no new workflow to learn</span></li>
+        </ul>
       </div>
 
-      <!-- The product figure. Every label is vocabulary the product actually
-           uses: the decision, the traced downstream models, the evidence
-           classes, the diff. No number here describes a real customer. -->
-      <aside class="product-mockup reveal" aria-labelledby="figure-caption">
-        <p id="figure-caption" class="sr-only">An illustration of a Relium review: a filtered LEFT JOIN in a dbt model receives a BLOCK decision, with the downstream models it affects and the evidence considered.</p>
-        <div class="mockup-shell">
-          <div class="mockup-topbar">
-            <div>
-              <span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
-            </div>
-            <strong>Relium review</strong>
-            <span class="mockup-status">pull request</span>
+      <!-- The live review console. Ships in its final BLOCK state so it is
+           complete without JavaScript and under prefers-reduced-motion;
+           relium-home.js replays it and cycles BLOCK -> ALLOW -> WARN.
+           Every label is product vocabulary. No number describes a customer. -->
+      <div class="hero-visual">
+        <figure class="console ink" id="review-console" data-tone="block">
+          <div class="console-bar">
+            <span class="console-title">RELIUM <i>//</i> PR_REVIEW</span>
+            <span class="console-pr">&middot; <span class="lbl">pull request </span><b data-c="pr">#214</b></span>
+            <span class="console-live"><span class="live-dot" aria-hidden="true"></span><span class="label-live">LIVE</span><span class="label-paused">PAUSED</span></span>
           </div>
-          <div class="mockup-body">
-            <div class="card">
-              <div class="card-head">
-                <span>Release decision</span>
-                <strong class="status-pill block">Merge held</strong>
-              </div>
-              <div class="decision-row">
-                <span class="decision-chip">BLOCK</span>
-                <div>
-                  <p class="decision-title">A filter in the WHERE clause turns this LEFT JOIN into an inner join</p>
-                  <p>Customers with no completed order are dropped before aggregation. <code>fct_customer_ltv</code> loses rows, and every metric built on it moves with it.</p>
-                </div>
-              </div>
+          <div class="console-tabs" role="group" aria-label="Example reviews">
+            <button class="console-tab" type="button" data-scenario="0" data-tone="block" aria-pressed="true"><span class="dot" aria-hidden="true"></span>BLOCK<span class="sr-only">, pull request</span> #214<span class="progress" aria-hidden="true"></span></button>
+            <button class="console-tab" type="button" data-scenario="1" data-tone="allow" aria-pressed="false"><span class="dot" aria-hidden="true"></span>ALLOW<span class="sr-only">, pull request</span> #215<span class="progress" aria-hidden="true"></span></button>
+            <button class="console-tab" type="button" data-scenario="2" data-tone="warn" aria-pressed="false"><span class="dot" aria-hidden="true"></span>WARN<span class="sr-only">, pull request</span> #216<span class="progress" aria-hidden="true"></span></button>
+          </div>
+          <div class="console-body" data-c="body">
+            <div class="console-diff" aria-hidden="true">
+              <div class="console-file"><span data-c="file">models/marts/fct_customer_ltv.sql</span><span class="stat" data-c="stat"><span class="a">+1</span> <span class="d">&minus;1</span></span></div>
+              <div class="diff-lines" data-c="diff"><span class="ln ctx" style="--n:42"><span class="g"> </span><span class="tx">left join orders o on c.id = o.customer_id</span></span><span class="ln del" style="--n:28"><span class="g">-</span><span class="tx">  and o.status = 'completed'</span></span><span class="ln add" style="--n:28"><span class="g">+</span><span class="tx">where o.status = 'completed'</span></span></div>
+              <span class="scanline"></span>
             </div>
-
-            <pre class="figure-code" aria-hidden="true"><span class="del">-  left join orders o on c.id = o.customer_id
--  where o.status = 'completed'</span><span class="add">+  left join orders o on c.id = o.customer_id
-+    and o.status = 'completed'</span></pre>
-
-            <div class="mockup-grid">
-              <div class="card">
-                <div class="card-head"><span>Downstream impact</span></div>
-                <ul class="asset-list lineage-trace" aria-label="Affected models">
-                  <li data-tone="block"><span class="asset-name">fct_customer_ltv</span><span class="hop-badge">changed</span></li>
-                  <li data-tone="block"><span class="asset-name">mart_revenue_daily</span><span class="hop-badge">affected</span></li>
-                  <li data-tone="warn"><span class="asset-name">mart_retention</span><span class="hop-badge">affected</span></li>
-                  <li data-tone="warn"><span class="asset-name">exec_dashboard</span><span class="hop-badge">exposure</span></li>
-                </ul>
-              </div>
-              <div class="card">
-                <div class="card-head"><span>Evidence considered</span></div>
-                <ul class="evidence-list">
-                  <li><b>dbt manifest</b>compiled lineage for both commits</li>
-                  <li><b>Semantic diff</b>join semantics changed</li>
-                  <li><b>Warehouse metadata</b>row counts and null rates</li>
-                </ul>
-              </div>
+            <div class="console-label"><span>Lineage</span><b data-c="lineage-meta">changed &rarr; affected &rarr; exposure</b></div>
+            <div class="lineage" data-c="lineage" data-layout="h">
+              <svg viewBox="0 0 600 170" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="edge" data-tone="block" data-edge="0" pathLength="1" d="M90 85 C195 85 195 42 300 42"/><path class="edge-flow" data-edge="0" pathLength="1" d="M90 85 C195 85 195 42 300 42"/><path class="edge" data-tone="warn" data-edge="1" pathLength="1" d="M90 85 C195 85 195 128 300 128"/><path class="edge-flow" data-edge="1" pathLength="1" d="M90 85 C195 85 195 128 300 128"/><path class="edge" data-tone="warn" data-edge="2" pathLength="1" d="M300 42 C405 42 405 85 510 85"/><path class="edge-flow" data-edge="2" pathLength="1" d="M300 42 C405 42 405 85 510 85"/><path class="edge" data-tone="warn" data-edge="3" pathLength="1" d="M300 128 C405 128 405 85 510 85"/><path class="edge-flow" data-edge="3" pathLength="1" d="M300 128 C405 128 405 85 510 85"/></svg>
+              <button class="node" type="button" data-node="0" data-tone="block" style="left:15%;top:50%"><span class="nm">fct_customer_ltv</span><span class="kd">changed</span></button>
+              <button class="node" type="button" data-node="1" data-tone="block" style="left:50%;top:24.71%"><span class="nm">mart_revenue_daily</span><span class="kd">affected</span></button>
+              <button class="node" type="button" data-node="2" data-tone="warn" style="left:50%;top:75.29%"><span class="nm">mart_retention</span><span class="kd">affected</span></button>
+              <button class="node" type="button" data-node="3" data-tone="warn" style="left:85%;top:50%"><span class="nm">exec_dashboard</span><span class="kd">exposure</span></button>
+            </div>
+            <div class="console-label"><span>Evidence</span><b>3 sources</b></div>
+            <ul class="evidence" data-c="evidence">
+              <li><button class="evidence-row" type="button" data-row="0"><span class="src">dbt manifest</span><span class="what">compiled lineage for both commits</span><span class="pill">4 nodes</span></button></li>
+              <li><button class="evidence-row" type="button" data-row="1"><span class="src">Semantic diff</span><span class="what">join semantics changed</span><span class="pill" data-tone="block">flagged</span></button></li>
+              <li><button class="evidence-row" type="button" data-row="2"><span class="src">Warehouse metadata</span><span class="what">row counts and null rates</span><span class="pill">aggregates</span></button></li>
+            </ul>
+            <div class="decision" data-c="decision" data-tone="block">
+              <span class="stamp">BLOCK</span>
+              <div class="decision-copy"><p class="t">A filter in the WHERE clause turns this LEFT JOIN into an inner join</p><span class="pill" data-tone="block">Merge held</span></div>
+              <span class="decision-wait" aria-hidden="true">AWAITING DECISION</span>
             </div>
           </div>
-        </div>
-      </aside>
+          <div class="console-foot"><span data-c="foot">pr_review.live &middot; 4 downstream nodes &middot; 3 evidence sources</span><span class="hint"><span class="hint-hover">HOVER TO INSPECT</span><span class="hint-touch">TAP TO INSPECT</span></span></div>
+          <div class="console-tip" id="console-tip" role="tooltip" hidden></div>
+          <figcaption class="sr-only">Example Relium reviews, shown as an animated console. Pull request #214 moves a filter on orders out of the LEFT JOIN condition and into the WHERE clause, which turns the join into an inner join; fct_customer_ltv, mart_revenue_daily, mart_retention and the exec_dashboard exposure are affected, and the decision is BLOCK — merge held. Pull request #215 adds a column to stg_customers that nothing downstream reads; the decision is ALLOW and the check passes. Pull request #216 changes mart_revenue_daily to bucket orders by UTC day; the decision is WARN, advisory, and the merge is not held. Focus a lineage node or evidence row for an explanation; the animation pauses while you do.</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -153,76 +152,104 @@
       <h2>Relium reviews the change where the change happens — on the pull request.</h2>
       <p>There is nothing to run and nothing to watch. Relium reads the pull request, works out what it would do to everything downstream, and publishes a decision before the merge.</p>
     </div>
-    <div class="data-pipeline-graph relium-review-map reveal" aria-label="Interactive map of a Relium review">
-      <div class="review-map-canvas">
-        <svg class="review-map-svg" viewBox="0 0 760 460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <path class="map-link map-link-pr" d="M126 92 C220 42, 302 82, 366 180"></path>
-          <path class="map-link map-link-sql" d="M628 92 C526 42, 454 82, 394 180"></path>
-          <path class="map-link map-link-blast" d="M112 352 C220 424, 306 358, 366 280"></path>
-          <path class="map-link map-link-alert" d="M648 350 C528 424, 450 356, 394 280"></path>
-          <path class="map-link map-link-fix" d="M380 380 C354 336, 354 304, 378 282"></path>
-          <path class="map-link map-link-block" d="M380 80 C408 126, 408 154, 382 178"></path>
-          <circle class="map-pulse" r="5">
-            <animateMotion class="pipeline-motion" data-delay="0" begin="indefinite" dur="5.4s" repeatCount="indefinite">
-              <mpath href="#map-motion-path"></mpath>
-            </animateMotion>
-          </circle>
-          <path id="map-motion-path" d="M126 92 C220 42, 302 82, 366 180 C386 212, 386 246, 366 280 C306 358, 220 424, 112 352 C220 424, 306 358, 366 280 C450 356, 528 424, 648 350"></path>
-        </svg>
-
-        <button class="review-node node-pr is-selected" type="button" data-pipeline-step="pr" data-title="A pull request is opened" data-kicker="Input" data-body="The Relium GitHub App sees SQL and dbt changes on the branch. There is no new workflow for the developer to learn and nothing extra to run locally." data-metric="Trigger: pull request opened or updated" data-owner="Access: GitHub App, repositories you choose" aria-pressed="true">
-          <span>01</span>
-          <strong>Pull request</strong>
-          <small>SQL or dbt changed</small>
-        </button>
-
-        <button class="review-node node-sql" type="button" data-pipeline-step="manifest" data-title="Your CI hands over the compiled manifests" data-kicker="Handoff" data-body="A short GitHub Actions step submits the dbt manifest for the base and head commits, so Relium reasons about the compiled project rather than guessing from the diff." data-metric="Input: manifest.json, base and head" data-owner="Auth: one repository secret" aria-pressed="false">
-          <span>02</span>
-          <strong>Compiled manifests</strong>
-          <small>handed over by CI</small>
-        </button>
-
-        <button class="review-node node-blast" type="button" data-pipeline-step="impact" data-title="Relium traces the downstream impact" data-kicker="Lineage" data-body="Which models, sources, metrics and exposures depend on what changed — read from your own compiled lineage, not inferred from file names." data-metric="Source: your dbt lineage" data-owner="Covers: models, metrics, exposures" aria-pressed="false">
-          <span>03</span>
-          <strong>Downstream impact</strong>
-          <small>lineage traced</small>
-        </button>
-
-        <button class="review-node node-alert" type="button" data-pipeline-step="semantic" data-title="It evaluates the semantic and KPI risk" data-kicker="Analysis" data-body="Join semantics, filter placement, null handling, cardinality, contract breaks, and changes to the definitions your metrics are built on." data-metric="Checks meaning, not shape" data-owner="Signal: semantic diff between commits" aria-pressed="false">
-          <span>04</span>
-          <strong>Semantic &amp; KPI risk</strong>
-          <small>meaning evaluated</small>
-        </button>
-
-        <button class="review-node node-fix" type="button" data-pipeline-step="evidence" data-title="Warehouse evidence is considered where available" data-kicker="Evidence" data-body="A collector you run, with your own read-only credentials, submits aggregate metadata — row counts, null rates, duplicate keys, freshness. Never rows." data-metric="Aggregate metadata only" data-owner="Runs in your environment" aria-pressed="false">
-          <span>05</span>
-          <strong>Evidence</strong>
-          <small>aggregates, never rows</small>
-        </button>
-
-        <button class="review-node node-block" type="button" data-pipeline-step="decision" data-title="The decision is published on the pull request" data-kicker="Output" data-body="One check run and one comment, with the reasoning and the evidence behind it. On Pro, a blocking decision can fail the check and hold the merge." data-metric="Decision: ALLOW / WARN / BLOCK" data-owner="Published: GitHub check and comment" aria-pressed="false">
-          <span>06</span>
-          <strong>Release decision</strong>
-          <small>ALLOW / WARN / BLOCK</small>
-        </button>
-
-        <div class="review-map-hub transformation-layer" aria-label="Relium review layer">
-          <em>Relium sits here</em>
-          <b class="risk-caught-badge">Decision returned</b>
-          <span>Verification layer</span>
-          <strong>Relium</strong>
-          <p>Between the pull request and the merge — the last point where the outcome can still be different.</p>
-        </div>
+    <div class="stack-wrap reveal">
+      <div class="stack" data-stack>
+        <span class="stack-rail" aria-hidden="true"></span>
+        <span class="stack-packet" aria-hidden="true"></span>
+        <ol class="stack-layers" aria-label="The six layers of a Relium review">
+          <li class="layer" data-step="pr" data-kicker="Input">
+            <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-01-detail">
+              <span class="layer-id">L01</span>
+              <span class="layer-name"><strong>Pull request</strong><small>SQL or dbt changed</small></span>
+              <span class="layer-kicker">Input</span>
+              <span class="layer-chev" aria-hidden="true"></span>
+            </button>
+            <div class="layer-detail" id="layer-01-detail">
+              <h3>A pull request is opened</h3>
+              <p>The Relium GitHub App sees SQL and dbt changes on the branch. There is no new workflow for the developer to learn and nothing extra to run locally.</p>
+              <ul class="layer-facts"><li>Trigger: pull request opened or updated</li><li>Access: GitHub App, repositories you choose</li></ul>
+            </div>
+          </li>
+          <li class="layer" data-step="manifest" data-kicker="Handoff">
+            <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-02-detail">
+              <span class="layer-id">L02</span>
+              <span class="layer-name"><strong>Compiled manifests</strong><small>handed over by CI</small></span>
+              <span class="layer-kicker">Handoff</span>
+              <span class="layer-chev" aria-hidden="true"></span>
+            </button>
+            <div class="layer-detail" id="layer-02-detail">
+              <h3>Your CI hands over the compiled manifests</h3>
+              <p>A short GitHub Actions step submits the dbt manifest for the base and head commits, so Relium reasons about the compiled project rather than guessing from the diff.</p>
+              <ul class="layer-facts"><li>Input: manifest.json, base and head</li><li>Auth: one repository secret</li></ul>
+            </div>
+          </li>
+          <li class="stack-zone">
+            <div class="zone-head">
+              <em class="zone-tag">Relium sits here</em>
+              <span class="zone-label">Verification layer</span>
+              <span class="pill zone-badge" data-tone="accent" aria-hidden="true">Decision returned</span>
+              <p><strong>Relium</strong> — between the pull request and the merge — the last point where the outcome can still be different.</p>
+            </div>
+            <ol class="zone-layers">
+              <li class="layer" data-step="impact" data-kicker="Lineage">
+                <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-03-detail">
+                  <span class="layer-id">L03</span>
+                  <span class="layer-name"><strong>Downstream impact</strong><small>lineage traced</small></span>
+                  <span class="layer-kicker">Lineage</span>
+                  <span class="layer-chev" aria-hidden="true"></span>
+                </button>
+                <div class="layer-detail" id="layer-03-detail">
+                  <h3>Relium traces the downstream impact</h3>
+                  <p>Which models, sources, metrics and exposures depend on what changed — read from your own compiled lineage, not inferred from file names.</p>
+                  <ul class="layer-facts"><li>Source: your dbt lineage</li><li>Covers: models, metrics, exposures</li></ul>
+                </div>
+              </li>
+              <li class="layer" data-step="semantic" data-kicker="Analysis">
+                <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-04-detail">
+                  <span class="layer-id">L04</span>
+                  <span class="layer-name"><strong>Semantic &amp; KPI risk</strong><small>meaning evaluated</small></span>
+                  <span class="layer-kicker">Analysis</span>
+                  <span class="layer-chev" aria-hidden="true"></span>
+                </button>
+                <div class="layer-detail" id="layer-04-detail">
+                  <h3>It evaluates the semantic and KPI risk</h3>
+                  <p>Join semantics, filter placement, null handling, cardinality, contract breaks, and changes to the definitions your metrics are built on.</p>
+                  <ul class="layer-facts"><li>Checks meaning, not shape</li><li>Signal: semantic diff between commits</li></ul>
+                </div>
+              </li>
+              <li class="layer" data-step="evidence" data-kicker="Evidence">
+                <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-05-detail">
+                  <span class="layer-id">L05</span>
+                  <span class="layer-name"><strong>Evidence</strong><small>aggregates, never rows</small></span>
+                  <span class="layer-kicker">Evidence</span>
+                  <span class="layer-chev" aria-hidden="true"></span>
+                </button>
+                <div class="layer-detail" id="layer-05-detail">
+                  <h3>Warehouse evidence is considered where available</h3>
+                  <p>A collector you run, with your own read-only credentials, submits aggregate metadata — row counts, null rates, duplicate keys, freshness. Never rows.</p>
+                  <ul class="layer-facts"><li>Aggregate metadata only</li><li>Runs in your environment</li></ul>
+                </div>
+              </li>
+              <li class="layer" data-step="decision" data-kicker="Output">
+                <button class="layer-head" type="button" aria-expanded="false" aria-controls="layer-06-detail">
+                  <span class="layer-id">L06</span>
+                  <span class="layer-name"><strong>Release decision</strong><small>ALLOW / WARN / BLOCK</small></span>
+                  <span class="layer-kicker">Output</span>
+                  <span class="layer-chev" aria-hidden="true"></span>
+                </button>
+                <div class="layer-detail" id="layer-06-detail">
+                  <h3>The decision is published on the pull request</h3>
+                  <p>One check run and one comment, with the reasoning and the evidence behind it. On Pro, a blocking decision can fail the check and hold the merge.</p>
+                  <ul class="layer-facts"><li>Decision: ALLOW / WARN / BLOCK</li><li>Published: GitHub check and comment</li></ul>
+                </div>
+              </li>
+            </ol>
+          </li>
+        </ol>
       </div>
-
-      <aside class="pipeline-inspector" aria-live="polite">
-        <p class="eyebrow" data-inspector-kicker>Input</p>
-        <h3 data-inspector-title>A pull request is opened</h3>
-        <p data-inspector-body>The Relium GitHub App sees SQL and dbt changes on the branch. There is no new workflow for the developer to learn and nothing extra to run locally.</p>
-        <div class="inspector-facts">
-          <span data-inspector-metric>Trigger: pull request opened or updated</span>
-          <span data-inspector-owner>Access: GitHub App, repositories you choose</span>
-        </div>
+      <aside class="stack-inspector" aria-hidden="true">
+        <p class="eyebrow"><b data-inspector-id>L01</b>&nbsp;&middot;&nbsp;<span data-inspector-kicker>Input</span></p>
+        <div class="inspector-content" data-inspector-content></div>
       </aside>
     </div>
   </section>
@@ -471,5 +498,6 @@
   </div>
 </footer>
 <script src="/relium.js" defer></script>
+<script src="/relium-home.js" defer></script>
 </body>
 </html>

@@ -19,7 +19,7 @@
    1 tokens · 2 base · 3 nav · 4 buttons and pills · 5 hero · 6 console
    7 layer stack · 8 sections and panels · 9 steps · 10 decisions
    11 pricing · 12 faq · 13 integrations · 14 legal pages · 15 footer
-   16 responsive · 17 motion
+   15b below-the-fold sections · 16 responsive · 17 motion
    ========================================================================== */
 
 @font-face{font-family:"Geist";src:url("/fonts/geist-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -686,6 +686,170 @@ table.compare td.no,table.matrix td.no{color:var(--faint)}
 .footer-col a{color:var(--muted);font-size:14px;transition:color .16s}
 .footer-col a:hover{color:var(--text)}
 .footer-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;max-width:1280px;margin:0 auto;padding:22px var(--gutter) 34px;border-top:1px solid var(--border);color:var(--faint);font-family:var(--mono);font-size:11.5px}
+
+/* -------------------------------------------------------------------------
+   15b. Below the fold. Scroll-triggered pieces are armed by relium-home.js
+        (`.is-armed`) and played once in view (`.is-played`). Without JS,
+        or under prefers-reduced-motion, nothing is armed and every piece
+        sits in its final state.
+   ------------------------------------------------------------------------- */
+
+/* Problem: a CI run that goes green, against what it never saw. */
+.panel-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);color:var(--faint);font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.panel-bar i{color:var(--accent);font-style:normal}
+.panel-bar .pill{font-size:9.5px}
+.run-state{display:inline-grid}
+.run-state > span{grid-area:1/1}
+.run-state .s-run{opacity:0}
+.contrast-list li{position:relative}
+.contrast-list li > span:last-child{transition:none}
+.contrast-list .fail[data-tone="warn"] svg{color:var(--warn)}
+.contrast-list .pending{position:absolute;top:3px;left:0;display:none;width:15px;height:15px;border:1.5px solid var(--border-strong);border-top-color:var(--allow);border-radius:50%}
+.contrast.is-armed .pending{display:block}
+.contrast.is-armed .pass svg,.contrast.is-armed .fail,.contrast.is-armed .contrast-verdict,.contrast.is-armed .run-state .s-done{opacity:0}
+.contrast.is-armed .run-state .s-run{opacity:1}
+.contrast.is-armed .pass > span:last-child{opacity:.4}
+.contrast.is-played .pending{animation:spin .8s linear 4,fadeOut .2s linear forwards;animation-delay:0s,calc(var(--i) * 480ms + 500ms)}
+.contrast.is-played .pass svg{animation:tickIn .4s cubic-bezier(.2,1.5,.4,1) both;animation-delay:calc(var(--i) * 480ms + 500ms)}
+.contrast.is-played .pass > span:last-child{animation:dimIn .3s ease both;animation-delay:calc(var(--i) * 480ms + 500ms)}
+.contrast.is-played [data-tone="pass"] .contrast-verdict{animation:fadeUp .5s var(--ease-out) 2.5s both}
+.contrast.is-played .run-state .s-run{animation:fadeOut .2s linear 2.5s both}
+.contrast.is-played .run-state .s-done{animation:fadeIn .3s linear 2.6s both}
+.contrast.is-played .fail{animation:warnIn .5s var(--ease-out) both;animation-delay:calc(var(--i) * 560ms + 3100ms)}
+.contrast.is-played [data-tone="fail"] .contrast-verdict{animation:fadeUp .6s var(--ease-out) 5.6s both}
+
+/* Decisions: tone edge, lift, and the check run each outcome produces. */
+.verdict-card[data-tone="allow"]{--tone:var(--allow);--tone-fg:var(--allow-fg);--tone-border:var(--allow-border)}
+.verdict-card[data-tone="warn"]{--tone:var(--warn);--tone-fg:var(--warn-fg);--tone-border:var(--warn-border)}
+.verdict-card[data-tone="block"]{--tone:var(--block);--tone-fg:var(--block-fg);--tone-border:var(--block-border)}
+.verdict-card{overflow:visible;transition:transform .4s var(--ease-out)}
+.verdict-card::before{inset:-1px 24px auto;background:linear-gradient(90deg,transparent,var(--tone),transparent)!important;box-shadow:0 0 22px 2px color-mix(in srgb,var(--tone) 55%,transparent)}
+.verdict-card:hover{transform:translateY(-4px)}
+.check-run{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:center;margin-top:16px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg-soft);font-family:var(--mono);font-size:11px}
+.cr-icon{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--tone);color:var(--bg);font-size:10px;font-weight:800;line-height:1}
+.cr-name{min-width:0;overflow:hidden;color:var(--text);text-overflow:ellipsis;white-space:nowrap}
+.cr-state{grid-column:2;color:var(--tone-fg);font-size:10.5px;font-weight:600}
+.cr-icon{grid-row:span 2}
+.verdict-check{padding-top:20px}
+
+/* Timeline: where Relium acts, and where everything else does. */
+.timeline{position:relative;margin-top:72px}
+.tl{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.15fr 1fr 3.3fr;gap:10px;list-style:none}
+.tl-step{display:grid;justify-items:center;align-content:start;gap:12px;padding:18px 8px 16px;border:1px solid transparent;border-radius:16px;text-align:center}
+.tl-dot{position:relative;width:11px;height:11px;border:1.5px solid var(--border-strong);border-radius:50%;background:var(--bg)}
+.tl-label{color:var(--muted);font-family:var(--mono);font-size:12px;line-height:1.4}
+.tl-relium{border-color:var(--accent-line);background:linear-gradient(180deg,var(--accent-soft),transparent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 5%,transparent),0 24px 50px -30px color-mix(in srgb,var(--accent) 70%,transparent)}
+.tl-relium .tl-dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft),0 0 14px var(--accent)}
+.tl-relium .tl-label{color:var(--accent);font-weight:600;letter-spacing:.04em}
+.tl-after{display:flex;flex-direction:column;border:1px dashed var(--border-strong);border-radius:16px}
+.tl-after > ol{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;list-style:none}
+.tl-after-label{padding:0 12px 14px;color:var(--faint);font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-align:center;text-transform:uppercase}
+.tl-incident .tl-label{color:var(--text)}
+.tl-line{position:absolute;top:24px;right:6%;left:6%;z-index:0;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--text) 24%,transparent),var(--accent) 14%,var(--accent) 24%,color-mix(in srgb,var(--text) 24%,transparent) 34%);transform-origin:left}
+.timeline.is-armed .tl-line{transform:scaleX(0)}
+.timeline.is-armed .tl-step,.timeline.is-armed .tl-after-label{opacity:0}
+.timeline.is-played .tl-line{animation:growX 1.6s var(--ease-out) both}
+.timeline.is-played .tl-step{animation:fadeUp .5s var(--ease-out) both;animation-delay:calc(var(--i) * 200ms + 150ms)}
+.timeline.is-played .tl-after-label{animation:fadeIn .5s ease 1.5s both}
+.timeline.is-played .tl-relium .tl-dot::after{position:absolute;inset:-2px;border-radius:50%;background:var(--accent);content:"";animation:livePulse 1.2s ease-out .6s 2 both}
+
+/* Integrations: a hub with four connections. */
+.connect{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:stretch}
+.connect-map{position:relative;aspect-ratio:800/420;border:1px solid var(--border);border-radius:var(--radius-lg);background:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--text) 9%,transparent) 1px,transparent 1.5px) 0 0/20px 20px,var(--surface);box-shadow:inset 0 1px 0 var(--hairline-hi)}
+.connect-svg{position:absolute;inset:0;width:100%;height:100%}
+.c-edge{fill:none;stroke:var(--border-strong);stroke-width:1.5;vector-effect:non-scaling-stroke;transition:stroke .3s}
+.c-edge-optional{stroke-dasharray:.014 .014}
+.c-flow{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-dasharray:.05 .95;stroke-dashoffset:1;opacity:.85;vector-effect:non-scaling-stroke;animation:flowEdge 4s linear infinite;animation-play-state:paused}
+.c-flow:nth-child(6){animation-delay:-1s}
+.c-flow:nth-child(7){animation-delay:-2s}
+.c-flow-optional{stroke:var(--muted);animation-delay:-3s;animation-duration:6s}
+.connect.is-live .c-flow{animation-play-state:running}
+.connect[data-active="github"] .c-edge[data-to="github"],.connect[data-active="dbt"] .c-edge[data-to="dbt"],.connect[data-active="ci"] .c-edge[data-to="ci"],.connect[data-active="warehouse"] .c-edge[data-to="warehouse"]{stroke:var(--accent-line)}
+.connect-hub{position:absolute;top:50%;left:50%;z-index:2;display:flex;align-items:center;gap:10px;padding:14px 18px;border:1px solid var(--accent-line);border-radius:14px;background:linear-gradient(180deg,var(--accent-soft),transparent),var(--surface);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 6%,transparent),0 20px 50px -20px color-mix(in srgb,var(--accent) 70%,transparent);transform:translate(-50%,-50%)}
+.connect-hub b{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.18em}
+.connect-edge-label{position:absolute;top:66%;left:65.5%;z-index:1;padding:3px 9px;border:1px dashed var(--border-strong);border-radius:999px;background:var(--surface);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.06em;white-space:nowrap;transform:translate(-50%,-50%)}
+.connect-nodes{list-style:none}
+.connect-node{position:absolute;z-index:2;transform:translate(-50%,-50%)}
+.connect-node[data-node="github"]{top:21.43%;left:18.75%}
+.connect-node[data-node="dbt"]{top:21.43%;left:81.25%}
+.connect-node[data-node="ci"]{top:78.57%;left:18.75%}
+.connect-node[data-node="warehouse"]{top:78.57%;left:81.25%}
+.connect-btn{position:relative;display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;border:1px solid var(--border-strong);border-radius:14px;background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;transition:border-color .25s}
+.connect-btn::after{position:absolute;inset:-1px;border-radius:inherit;box-shadow:inset 0 0 0 1px var(--accent-line),inset 0 0 24px -8px color-mix(in srgb,var(--accent) 50%,transparent);content:"";opacity:0;transition:opacity .3s}
+.connect-btn .integration-logo{width:36px;height:36px;margin:0;border-radius:10px}
+.connect-btn .integration-logo svg{width:20px;height:20px}
+.connect-btn strong{font-size:15px;font-weight:550}
+.connect-node.is-active .connect-btn{border-color:var(--accent-line)}
+.connect-node.is-active .connect-btn::after{opacity:1}
+.connect-text,.connect-optional{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.connect-inspector{display:flex;flex-direction:column;justify-content:flex-end;gap:12px;padding:26px;border:1px solid var(--border);border-radius:var(--radius-lg);background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 160px),var(--surface);box-shadow:inset 0 1px 0 var(--hairline-hi)}
+:root[data-theme="light"] .connect-inspector{background:var(--surface);box-shadow:var(--shadow-soft)}
+.connect-inspector .integration-logo{margin-bottom:auto}
+.connect-inspector strong{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.connect-inspector p{color:var(--muted);font-size:15.5px;line-height:1.65}
+.connect-inspector.is-updating > *{animation:fadeUp .35s var(--ease-out) both}
+
+/* Pricing: restrained. */
+.plan-amount{font-size:clamp(48px,4.6vw,60px);letter-spacing:-.055em}
+.plan[data-popular="true"]{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 6%,transparent),0 40px 90px -40px color-mix(in srgb,var(--accent) 65%,transparent)}
+.plan-features svg{display:none}
+.plan-features li::before{display:grid;place-items:center;width:18px;height:18px;margin-top:1px;border:1px solid var(--allow-border);border-radius:5px;background:var(--allow-bg);color:var(--allow-fg);content:"\2713";font-family:var(--mono);font-size:10px;font-weight:700;line-height:1}
+
+/* FAQ: the answer opens to its own height (where supported). */
+.faq{interpolate-size:allow-keywords}
+.faq details::details-content{block-size:0;overflow:hidden;opacity:0;transition:block-size .4s var(--ease-out),opacity .3s ease,content-visibility .4s allow-discrete}
+.faq details[open]::details-content{block-size:auto;opacity:1}
+.faq summary::after{transition:transform .35s var(--ease-out)}
+
+/* Final CTA: the console's stamp, BLOCK turning into ALLOW, as a motif. */
+.final-cta h2{font-size:clamp(36px,5.4vw,72px);letter-spacing:-.045em}
+.cta-stamps{position:absolute;inset:0;z-index:-1;display:grid;place-items:center;pointer-events:none}
+.cta-stamp{grid-area:1/1;padding:.06em .3em;border:.03em solid currentColor;border-radius:.1em;font-family:var(--mono);font-size:clamp(84px,17vw,230px);font-weight:700;letter-spacing:.12em;line-height:1;opacity:.07;transform:rotate(-6deg)}
+:root[data-theme="light"] .cta-stamp{opacity:.06}
+.cta-stamp[data-tone="block"]{color:var(--block);opacity:0}
+.cta-stamp[data-tone="allow"]{color:var(--allow)}
+.final-cta.is-armed .cta-stamp[data-tone="block"]{opacity:.07}
+.final-cta.is-armed .cta-stamp[data-tone="allow"]{opacity:0}
+.final-cta.is-played .cta-stamp[data-tone="block"]{animation:stampOut .6s ease .8s both}
+.final-cta.is-played .cta-stamp[data-tone="allow"]{animation:stampSwap .7s cubic-bezier(.2,1.3,.4,1) 1.2s both}
+
+@media(max-width:960px){
+  .connect{grid-template-columns:1fr}
+  .connect-inspector{display:none}
+  .connect-map{aspect-ratio:auto;padding:16px;background:transparent;border:0;box-shadow:none}
+  .connect-svg,.connect-edge-label{display:none}
+  .connect-hub{position:relative;top:auto;left:auto;justify-content:center;transform:none}
+  .connect-nodes{position:relative;display:grid;gap:10px;margin-top:10px;padding-left:34px}
+  .connect-nodes::before{position:absolute;top:-10px;bottom:30px;left:13px;width:1px;background:linear-gradient(180deg,var(--accent-line),var(--border-strong));content:""}
+  .connect-node{position:relative;top:auto!important;left:auto!important;display:grid;gap:10px;padding:18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);transform:none}
+  .connect-node::before{position:absolute;top:30px;left:-25px;width:9px;height:9px;border:1px solid var(--accent-line);border-radius:50%;background:var(--bg);content:""}
+  .connect-node[data-node="warehouse"]{border-style:dashed}
+  .connect-btn{padding:0;border:0;background:transparent;cursor:default}
+  .connect-btn::after{display:none}
+  .connect-text,.connect-optional{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;white-space:normal}
+  .connect-optional{justify-self:start}
+  .connect-text{color:var(--muted);font-size:15px;line-height:1.6}
+}
+@media(max-width:760px){
+  .tl,.tl-after > ol{grid-template-columns:1fr;gap:6px}
+  .tl-step{grid-template-columns:auto 1fr;justify-items:start;align-items:center;gap:14px;padding:12px 14px;text-align:left}
+  .tl-after{padding-bottom:4px}
+  .tl-after-label{order:-1;padding:14px 14px 4px;text-align:left}
+  .tl-line{top:24px;bottom:24px;left:19.5px;right:auto;width:1px;height:auto;background:linear-gradient(180deg,color-mix(in srgb,var(--text) 24%,transparent),var(--accent) 12%,var(--accent) 24%,color-mix(in srgb,var(--text) 24%,transparent) 34%);transform-origin:top}
+  .timeline.is-armed .tl-line{transform:scaleY(0)}
+  .timeline.is-played .tl-line{animation:growY 1.6s var(--ease-out) both}
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeOut{to{opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes dimIn{from{opacity:.4}to{opacity:1}}
+@keyframes tickIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes warnIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes stampOut{from{opacity:.07;transform:rotate(-6deg)}to{opacity:0;transform:rotate(-6deg) scale(.94)}}
+@keyframes stampSwap{from{opacity:0;transform:rotate(-6deg) scale(1.25)}to{opacity:.07;transform:rotate(-6deg) scale(1)}}
 
 /* -------------------------------------------------------------------------
    16. Responsive

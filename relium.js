@@ -1,9 +1,9 @@
 /**
  * Relium marketing site behaviour.
  *
- * Four things and nothing else: the theme toggle, the frosted nav, the mobile
- * menu and the reveal on scroll. The homepage's console and layer stack live
- * in relium-home.js. No analytics, no tracker, no third-party script, no
+ * Five things and nothing else: the theme toggle, the frosted nav, the mobile
+ * menu, the reveal on scroll and the contents highlight on long pages. The
+ * interactive visuals live in relium-visuals.js. No analytics, no tracker, no third-party script, no
  * network request — which is what lets the privacy page say so plainly.
  */
 (function () {
@@ -150,5 +150,34 @@
     // Belt and braces: if something goes wrong with the observer, the content
     // must still be readable. Never let an animation gate the copy.
     window.setTimeout(revealAll, 2500);
+  }
+
+  /* ------------------------------------------------------------ contents --
+     On long pages, mark the section being read in the sticky contents: the
+     last heading that has scrolled above the nav line. */
+  var toc = document.querySelector(".legal-toc");
+  if (toc) {
+    var tocLinks = Array.prototype.filter.call(toc.querySelectorAll("a"), function (link) {
+      return /^#./.test(link.getAttribute("href") || "");
+    });
+    var tocTargets = tocLinks.map(function (link) {
+      return document.getElementById(link.getAttribute("href").slice(1));
+    });
+    var tocFrame = 0;
+    var syncToc = function () {
+      tocFrame = 0;
+      var current = 0;
+      tocTargets.forEach(function (target, i) {
+        if (target && target.getBoundingClientRect().top < 120) current = i;
+      });
+      tocLinks.forEach(function (link, i) {
+        if (i === current) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    syncToc();
+    window.addEventListener("scroll", function () {
+      if (!tocFrame) tocFrame = window.requestAnimationFrame(syncToc);
+    }, { passive: true });
   }
 }());

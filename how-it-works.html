@@ -35,7 +35,7 @@
 </nav>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="/how-it-works">How it works</a>
+  <a href="/how-it-works" aria-current="page">How it works</a>
   <a href="/pricing">Pricing</a>
   <a href="/security">Security</a>
   <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
@@ -44,11 +44,54 @@
 </div>
 
 <main id="main">
-  <section class="page-hero">
-    <div class="page-hero-inner reveal">
+  <section class="page-hero page-hero-split">
+    <div class="page-hero-inner">
       <span class="eyebrow">How it works</span>
       <h1>What Relium does between the pull request and the merge.</h1>
       <p>Relium is a pre-deployment verification system for data changes. It reads the change, works out what it would do to everything downstream, weighs the evidence it can gather, and returns a decision — all before the change reaches production.</p>
+    </div>
+    <div class="hero-visual">
+        <figure class="console ink console-compact" id="review-console" data-tone="block">
+          <div class="console-bar">
+            <span class="console-title">RELIUM <i>//</i> PR_REVIEW</span>
+            <span class="console-pr">&middot; <span class="lbl">pull request </span><b data-c="pr">#214</b></span>
+            <span class="console-live"><span class="live-dot" aria-hidden="true"></span><span class="label-live">LIVE</span><span class="label-paused">PAUSED</span></span>
+          </div>
+          <div class="console-tabs" role="group" aria-label="Example reviews">
+            <button class="console-tab" type="button" data-scenario="0" data-tone="block" aria-pressed="true"><span class="dot" aria-hidden="true"></span>BLOCK<span class="sr-only">, pull request</span> #214<span class="progress" aria-hidden="true"></span></button>
+            <button class="console-tab" type="button" data-scenario="1" data-tone="allow" aria-pressed="false"><span class="dot" aria-hidden="true"></span>ALLOW<span class="sr-only">, pull request</span> #215<span class="progress" aria-hidden="true"></span></button>
+            <button class="console-tab" type="button" data-scenario="2" data-tone="warn" aria-pressed="false"><span class="dot" aria-hidden="true"></span>WARN<span class="sr-only">, pull request</span> #216<span class="progress" aria-hidden="true"></span></button>
+          </div>
+          <div class="console-body" data-c="body">
+            <div class="console-diff" aria-hidden="true">
+              <div class="console-file"><span data-c="file">models/marts/fct_customer_ltv.sql</span><span class="stat" data-c="stat"><span class="a">+1</span> <span class="d">&minus;1</span></span></div>
+              <div class="diff-lines" data-c="diff"><span class="ln ctx" style="--n:42"><span class="g"> </span><span class="tx">left join orders o on c.id = o.customer_id</span></span><span class="ln del" style="--n:28"><span class="g">-</span><span class="tx">  and o.status = 'completed'</span></span><span class="ln add" style="--n:28"><span class="g">+</span><span class="tx">where o.status = 'completed'</span></span></div>
+              <span class="scanline"></span>
+            </div>
+            <div class="console-label"><span>Lineage</span><b data-c="lineage-meta">changed &rarr; affected &rarr; exposure</b></div>
+            <div class="lineage" data-c="lineage" data-layout="h">
+              <svg viewBox="0 0 600 170" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="edge" data-tone="block" data-edge="0" pathLength="1" d="M90 85 C195 85 195 42 300 42"/><path class="edge-flow" data-edge="0" pathLength="1" d="M90 85 C195 85 195 42 300 42"/><path class="edge" data-tone="warn" data-edge="1" pathLength="1" d="M90 85 C195 85 195 128 300 128"/><path class="edge-flow" data-edge="1" pathLength="1" d="M90 85 C195 85 195 128 300 128"/><path class="edge" data-tone="warn" data-edge="2" pathLength="1" d="M300 42 C405 42 405 85 510 85"/><path class="edge-flow" data-edge="2" pathLength="1" d="M300 42 C405 42 405 85 510 85"/><path class="edge" data-tone="warn" data-edge="3" pathLength="1" d="M300 128 C405 128 405 85 510 85"/><path class="edge-flow" data-edge="3" pathLength="1" d="M300 128 C405 128 405 85 510 85"/></svg>
+              <button class="node" type="button" data-node="0" data-tone="block" style="left:15%;top:50%"><span class="nm">fct_customer_ltv</span><span class="kd">changed</span></button>
+              <button class="node" type="button" data-node="1" data-tone="block" style="left:50%;top:24.71%"><span class="nm">mart_revenue_daily</span><span class="kd">affected</span></button>
+              <button class="node" type="button" data-node="2" data-tone="warn" style="left:50%;top:75.29%"><span class="nm">mart_retention</span><span class="kd">affected</span></button>
+              <button class="node" type="button" data-node="3" data-tone="warn" style="left:85%;top:50%"><span class="nm">exec_dashboard</span><span class="kd">exposure</span></button>
+            </div>
+            <div class="console-label evidence-label"><span>Evidence</span><b>3 sources</b></div>
+            <ul class="evidence" data-c="evidence">
+              <li><button class="evidence-row" type="button" data-row="0"><span class="src">dbt manifest</span><span class="what">compiled lineage for both commits</span><span class="pill">4 nodes</span></button></li>
+              <li><button class="evidence-row" type="button" data-row="1"><span class="src">Semantic diff</span><span class="what">join semantics changed</span><span class="pill" data-tone="block">flagged</span></button></li>
+              <li><button class="evidence-row" type="button" data-row="2"><span class="src">Warehouse metadata</span><span class="what">row counts and null rates</span><span class="pill">aggregates</span></button></li>
+            </ul>
+            <div class="decision" data-c="decision" data-tone="block">
+              <span class="stamp">BLOCK</span>
+              <div class="decision-copy"><p class="t">A filter in the WHERE clause turns this LEFT JOIN into an inner join</p><span class="pill" data-tone="block">Merge held</span></div>
+              <span class="decision-wait" aria-hidden="true">AWAITING DECISION</span>
+            </div>
+          </div>
+          <div class="console-foot"><span data-c="foot">pr_review.live &middot; 4 downstream nodes &middot; 3 evidence sources</span><span class="hint"><span class="hint-hover">HOVER TO INSPECT</span><span class="hint-touch">TAP TO INSPECT</span></span></div>
+          <div class="console-tip" id="console-tip" role="tooltip" hidden></div>
+          <figcaption class="sr-only">Example Relium reviews, shown as an animated console. Pull request #214 moves a filter on orders out of the LEFT JOIN condition and into the WHERE clause, which turns the join into an inner join; fct_customer_ltv, mart_revenue_daily, mart_retention and the exec_dashboard exposure are affected, and the decision is BLOCK — merge held. Pull request #215 adds a column to stg_customers that nothing downstream reads; the decision is ALLOW and the check passes. Pull request #216 changes mart_revenue_daily to bucket orders by UTC day; the decision is WARN, advisory, and the merge is not held. Focus a lineage node or evidence row for an explanation; the animation pauses while you do.</figcaption>
+        </figure>
     </div>
   </section>
 
@@ -58,50 +101,50 @@
       <h2>Step by step, on the pull request.</h2>
       <p>Everything below happens on the pull request. Nobody has to open a dashboard for it to work.</p>
     </div>
-    <div class="steps reveal">
-      <div class="step">
+    <div class="steps steps-rail">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">1</span>
         <div>
           <h3>Relium sees the change</h3>
           <p>The Relium GitHub App is installed on the repositories you choose. When a pull request touches SQL or dbt files, Relium opens a review for that commit.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">2</span>
         <div>
           <h3>Your CI submits the compiled manifests</h3>
           <p>A GitHub Actions step runs <code>dbt compile</code> for the base and head commits and posts both manifests to Relium, authenticated with a repository secret. Reading the compiled project rather than the raw diff is what lets Relium reason about the real dependency graph — including everything a macro or a <code>ref</code> expands into.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">3</span>
         <div>
           <h3>It computes the change plan</h3>
           <p>Which models changed, and how the compiled SQL differs between the two commits. This is a structural comparison, not a text diff: reformatting a query is not a change to what it means.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">4</span>
         <div>
           <h3>It traces the blast radius</h3>
           <p>From the manifest's own lineage: the direct downstream models, the sources feeding in, and the exposures — dashboards and reports your dbt project already declares.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">5</span>
         <div>
           <h3>It evaluates semantic risk</h3>
           <p>Join semantics and filter placement, null handling, cardinality changes, contract breaks, and changes to the definitions your KPIs are computed from. This is the part a schema test cannot do: the shape of the output can be identical while the meaning has moved.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">6</span>
         <div>
           <h3>It weighs the evidence it has</h3>
           <p>Where a warehouse collector is connected, Relium requests bounded aggregate metadata for the affected tables — row counts, distinct and duplicate key counts, null rates, freshness — and compares it against the change. Where no evidence is available, the review says so rather than assuming.</p>
         </div>
       </div>
-      <div class="step">
+      <div class="step" data-play="0.5">
         <span class="step-n" aria-hidden="true">7</span>
         <div>
           <h3>It publishes the decision</h3>
@@ -122,11 +165,13 @@
         <h3>Shadow mode</h3>
         <p style="color:var(--muted);font-size:16px;line-height:1.68">Relium publishes the decision on every pull request. Your team can read it, disagree with it, and calibrate against it — without a single merge being held up. This is the right place to start, and many teams stay here for weeks.</p>
         <p class="contrast-verdict">Default on every repository</p>
+        <div class="check-run" data-tone="warn"><span class="cr-icon" aria-hidden="true">!</span><span class="cr-name">Relium decision: BLOCK</span><span class="cr-state">advisory</span></div>
       </div>
       <div class="contrast-panel" data-tone="fail">
         <h3>Enforce mode</h3>
         <p style="color:var(--muted);font-size:16px;line-height:1.68">A BLOCK decision fails the GitHub check, so branch protection holds the merge until the finding is resolved or a reviewer records an exception. WARN stays advisory in both modes.</p>
         <p class="contrast-verdict">Merge blocking is included on Pro</p>
+        <div class="check-run" data-tone="block"><span class="cr-icon" aria-hidden="true">&#10005;</span><span class="cr-name">Relium decision: BLOCK</span><span class="cr-state">failing — merge waits</span></div>
       </div>
     </div>
   </section>
@@ -214,5 +259,6 @@
   </div>
 </footer>
 <script src="/relium.js" defer></script>
+<script src="/relium-visuals.js" defer></script>
 </body>
 </html>

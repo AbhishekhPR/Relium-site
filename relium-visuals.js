@@ -1,7 +1,11 @@
 /**
- * Homepage behaviour: the live review console and the L01–L06 layer stack.
+ * The site's interactive visuals: the live review console, the L01–L06
+ * layer stack, the play-once sections, the integrations hub and the
+ * security page's data boundary. Each initialiser runs only if its markup
+ * is on the page, so one file serves the homepage, /how-it-works and
+ * /security.
  *
- * Loaded by index.html only, after relium.js. Same rules as there: no
+ * Loaded after relium.js. Same rules as there: no
  * network request, no third party, no inline script (the CSP forbids it).
  *
  * Motion budget: CSS animates transform and opacity; the one exception is
@@ -574,13 +578,15 @@
   }
 
   /* =================================================================
-     Play once: the problem panels, the timeline, the final CTA stamp.
+     Play once: the problem panels, the timeline, the how-it-works steps.
      Armed only when motion is allowed, played the first time they are
      in view, then left alone. Unarmed, they are already in their final
      state — which is what no-JS and reduced-motion visitors see.
      ================================================================= */
   function initPlayOnce(element) {
     if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+    // data-play="0.6" plays once 60% of the element is in view; default 20%.
+    var threshold = parseFloat(element.getAttribute("data-play")) || 0.2;
     element.classList.add("is-armed");
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -588,7 +594,7 @@
         element.classList.add("is-played");
         observer.disconnect();
       });
-    }, { threshold: 0.2 });
+    }, { threshold: threshold });
     observer.observe(element);
   }
 
@@ -630,7 +636,15 @@
     }
   }
 
+  /* Looping visuals marked data-live (the data boundary's packets) run
+     only while on screen. */
+  function initLive(element) {
+    if (reducedMotion.matches) return;
+    onVisible(element, function (visible) { element.classList.toggle("is-live", visible); });
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll("[data-play]"), initPlayOnce);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-live]"), initLive);
   var connectRoot = document.querySelector("[data-connect]");
   if (connectRoot) initConnect(connectRoot);
 

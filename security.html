@@ -37,7 +37,7 @@
 <div class="mobile-menu" id="mobile-menu">
   <a href="/how-it-works">How it works</a>
   <a href="/pricing">Pricing</a>
-  <a href="/security">Security</a>
+  <a href="/security" aria-current="page">Security</a>
   <button class="theme-toggle theme-toggle-mobile" type="button" aria-label="Switch to light mode" aria-pressed="true" data-theme-toggle><span></span><b data-theme-label>Dark</b></button>
   <a class="mobile-signin" href="https://app.relium.dev/onboarding">Sign in</a>
   <a class="mobile-cta" href="https://app.relium.dev/onboarding?start=1">Get started free</a>
@@ -51,6 +51,40 @@
       <p>This page describes how the product actually works today. Where something is not yet in place, it says so rather than implying otherwise.</p>
       <p class="page-updated">Last reviewed: September 2026</p>
     </div>
+  </section>
+
+  <section class="section boundary-section">
+    <figure class="boundary reveal" data-live>
+      <figcaption class="sr-only">The data boundary. In your environment: your repository, read through the GitHub App; your CI, which posts the compiled manifests; and your warehouse, read by a collector you run with read-only credentials you hold. Three things cross to Relium: pull request metadata and the SQL and dbt files the pull request changes; the compiled manifest.json for the base and head commits; and aggregate metadata — row counts, null rates, duplicate keys and freshness. Three things never leave your environment: individual rows or cell values, customer records or personal data, and warehouse credentials. Relium analyses the change, returns a decision, and writes one check run and one comment per review.</figcaption>
+      <div class="bz bz-yours">
+        <div class="bz-head"><span class="bz-title">Your environment</span></div>
+        <ul class="bz-sources">
+          <li class="bz-source"><b>Repository</b><span>GitHub App · repositories you choose</span></li>
+          <li class="bz-source"><b>CI</b><span>GitHub Actions · repository secret</span></li>
+          <li class="bz-source"><b>Warehouse + collector</b><span>read-only credentials you hold</span></li>
+        </ul>
+        <div class="bz-locked">
+          <p class="bz-locked-head"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Never leaves</p>
+          <ul>
+            <li>Individual rows or cell values</li>
+            <li>Customer records or personal data</li>
+            <li>Warehouse credentials</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bz-lanes">
+        <div class="bz-head"><span class="bz-boundary-label">Boundary</span></div>
+        <div class="bz-lane" style="--i:0"><span class="bz-payload">PR metadata · changed SQL and dbt files</span><span class="bz-track" aria-hidden="true"><i class="bz-packet"></i></span></div>
+        <div class="bz-lane" style="--i:1"><span class="bz-payload"><code>manifest.json</code> · base and head commits</span><span class="bz-track" aria-hidden="true"><i class="bz-packet"></i></span></div>
+        <div class="bz-lane" style="--i:2"><span class="bz-payload">aggregate metadata · row counts · null rates · duplicate keys · freshness</span><span class="bz-track" aria-hidden="true"><i class="bz-packet"></i></span></div>
+      </div>
+      <div class="bz bz-relium">
+        <div class="bz-head"><em class="zone-tag">Relium</em></div>
+        <div class="bz-step"><b>Analysis</b><span>change plan · traced lineage</span></div>
+        <div class="bz-step"><b>Decision</b><span>ALLOW / WARN / BLOCK</span></div>
+        <p class="bz-return"><span aria-hidden="true">&larr;</span> one check run and one comment per review</p>
+      </div>
+    </figure>
   </section>
 
   <div class="legal-layout">
@@ -215,5 +249,6 @@
   </div>
 </footer>
 <script src="/relium.js" defer></script>
+<script src="/relium-visuals.js" defer></script>
 </body>
 </html>

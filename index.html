@@ -122,24 +122,26 @@
       <h2>Code passing tests is not the same as a data change being safe.</h2>
       <p>A dbt change can compile, pass every test and deploy cleanly, and still silently change what a number means. Tests check the shape of your data. They do not check whether the definition of revenue moved.</p>
     </div>
-    <div class="contrast reveal">
+    <div class="contrast reveal" data-play>
       <div class="contrast-panel" data-tone="pass">
+        <div class="panel-bar" aria-hidden="true"><span>ci <i>//</i> checks</span><span class="pill run-state" data-tone="allow"><span class="s-run">running</span><span class="s-done">passed</span></span></div>
         <h3>What your pipeline checks today</h3>
         <ul class="contrast-list">
-          <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>The SQL compiles</span></li>
-          <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Schema tests pass</span></li>
-          <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Uniqueness and not-null hold</span></li>
-          <li class="pass"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>The models build in order</span></li>
+          <li class="pass" style="--i:0"><span class="pending" aria-hidden="true"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>The SQL compiles</span></li>
+          <li class="pass" style="--i:1"><span class="pending" aria-hidden="true"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Schema tests pass</span></li>
+          <li class="pass" style="--i:2"><span class="pending" aria-hidden="true"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Uniqueness and not-null hold</span></li>
+          <li class="pass" style="--i:3"><span class="pending" aria-hidden="true"></span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>The models build in order</span></li>
         </ul>
         <p class="contrast-verdict">CI is green. The pull request is approved.</p>
       </div>
       <div class="contrast-panel" data-tone="fail">
+        <div class="panel-bar" aria-hidden="true"><span>production <i>//</i> after merge</span><span class="pill" data-tone="warn">not checked</span></div>
         <h3>What nothing checks</h3>
         <ul class="contrast-list">
-          <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>A filter moved and a third of customers left the model</span></li>
-          <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>A metric definition quietly changed meaning</span></li>
-          <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Four downstream marts inherited the change</span></li>
-          <li class="fail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>The board report now disagrees with finance</span></li>
+          <li class="fail" data-tone="block" style="--i:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>A filter moved and a third of customers left the model</span></li>
+          <li class="fail" data-tone="warn" style="--i:1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>A metric definition quietly changed meaning</span></li>
+          <li class="fail" data-tone="warn" style="--i:2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Four downstream marts inherited the change</span></li>
+          <li class="fail" data-tone="block" style="--i:3"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg><span>The board report now disagrees with finance</span></li>
         </ul>
         <p class="contrast-verdict">Nobody finds out until someone questions the number.</p>
       </div>
@@ -266,18 +268,21 @@
         <h3>Nothing downstream is at risk</h3>
         <p>Relium found no meaningful semantic change and nothing downstream that this release puts at risk.</p>
         <p class="verdict-check">GitHub check passes</p>
+        <div class="check-run" data-tone="allow"><span class="cr-icon" aria-hidden="true">&#10003;</span><span class="cr-name">Relium decision: ALLOW</span><span class="cr-state">passing</span></div>
       </article>
       <article class="verdict-card reveal" data-tone="warn">
         <span class="verdict-tag">WARN</span>
         <h3>Somebody should look at this</h3>
         <p>The change alters behaviour in a way a reviewer should see. The decision is visible on the pull request and does not fail the check.</p>
         <p class="verdict-check">Advisory — merge is not held</p>
+        <div class="check-run" data-tone="warn"><span class="cr-icon" aria-hidden="true">!</span><span class="cr-name">Relium decision: WARN</span><span class="cr-state">advisory</span></div>
       </article>
       <article class="verdict-card reveal" data-tone="block">
         <span class="verdict-tag">BLOCK</span>
         <h3>This is expected to break something</h3>
         <p>Relium expects the change to break something that matters downstream, and says exactly what and why.</p>
         <p class="verdict-check">On Pro, the check fails and the merge waits</p>
+        <div class="check-run" data-tone="block"><span class="cr-icon" aria-hidden="true">&#10005;</span><span class="cr-name">Relium decision: BLOCK</span><span class="cr-state">failing — merge waits</span></div>
       </article>
     </div>
   </section>
@@ -307,6 +312,22 @@
         </article>
       </div>
     </div>
+    <div class="timeline reveal" data-play>
+      <ol class="tl" aria-label="Where a data change goes after the pull request">
+        <li class="tl-step" style="--i:0"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">PR opened</span></li>
+        <li class="tl-step tl-relium" style="--i:1"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">Relium decision</span></li>
+        <li class="tl-step" style="--i:2"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">merge</span></li>
+        <li class="tl-after">
+          <ol>
+            <li class="tl-step" style="--i:3"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">deploy</span></li>
+            <li class="tl-step" style="--i:4"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">dashboard</span></li>
+            <li class="tl-step tl-incident" style="--i:5"><span class="tl-dot" aria-hidden="true"></span><span class="tl-label">someone questions the number</span></li>
+          </ol>
+          <span class="tl-after-label">where other tools act</span>
+        </li>
+      </ol>
+      <span class="tl-line" aria-hidden="true"></span>
+    </div>
   </section>
 
   <section class="section integrations-section" id="connects">
@@ -314,35 +335,45 @@
       <span class="eyebrow">Fits your stack</span>
       <h2>Four connections, all of which you already have.</h2>
     </div>
-    <div class="integration-grid">
-      <article class="integration-card reveal">
-        <span class="integration-logo logo-github">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
-        </span>
-        <strong>GitHub</strong>
-        <p>Installed as a GitHub App. The decision is published as a check run and a comment on the pull request.</p>
-      </article>
-      <article class="integration-card reveal">
-        <span class="integration-logo logo-dbt">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v13c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-13"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></svg>
-        </span>
-        <strong>dbt</strong>
-        <p>Relium reads your compiled manifest, so lineage, tests, exposures and contracts come from your own project.</p>
-      </article>
-      <article class="integration-card reveal">
-        <span class="integration-logo logo-ci">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6h6"/><path d="M4 5a2 2 0 0 1 2-2h8l6 6v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="m9 13.5 2 2 4-4"/></svg>
-        </span>
-        <strong>GitHub Actions</strong>
-        <p>One workflow step submits the base and head manifests. Relium shows you the exact file to copy.</p>
-      </article>
-      <article class="integration-card reveal">
-        <span class="integration-logo logo-warehouse">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 9v12"/></svg>
-        </span>
-        <strong>Your warehouse</strong>
-        <p>Optional. A collector you run with your own read-only credentials submits aggregate metadata — never rows.</p>
-      </article>
+    <div class="connect reveal" data-connect>
+      <div class="connect-map">
+        <svg class="connect-svg" viewBox="0 0 800 420" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path class="c-edge" data-to="github" pathLength="1" d="M400 210 C300 210 260 90 150 90"/>
+          <path class="c-edge" data-to="dbt" pathLength="1" d="M400 210 C500 210 540 90 650 90"/>
+          <path class="c-edge" data-to="ci" pathLength="1" d="M400 210 C300 210 260 330 150 330"/>
+          <path class="c-edge c-edge-optional" data-to="warehouse" pathLength="1" d="M400 210 C500 210 540 330 650 330"/>
+          <path class="c-flow" pathLength="1" d="M150 90 C260 90 300 210 400 210"/>
+          <path class="c-flow" pathLength="1" d="M650 90 C540 90 500 210 400 210"/>
+          <path class="c-flow" pathLength="1" d="M150 330 C260 330 300 210 400 210"/>
+          <path class="c-flow c-flow-optional" pathLength="1" d="M650 330 C540 330 500 210 400 210"/>
+        </svg>
+        <div class="connect-hub" aria-hidden="true"><span class="logo-mark"></span><b>RELIUM</b></div>
+        <span class="connect-edge-label" aria-hidden="true">optional · aggregates only</span>
+        <ul class="connect-nodes">
+          <li class="connect-node" data-node="github">
+            <button class="connect-btn" type="button" aria-controls="connect-github"><span class="integration-logo logo-github"> <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> </span><strong>GitHub</strong></button>
+            <p class="connect-text" id="connect-github">Installed as a GitHub App. The decision is published as a check run and a comment on the pull request.</p>
+          </li>
+          <li class="connect-node" data-node="dbt">
+            <button class="connect-btn" type="button" aria-controls="connect-dbt"><span class="integration-logo logo-dbt"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v13c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-13"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></svg> </span><strong>dbt</strong></button>
+            <p class="connect-text" id="connect-dbt">Relium reads your compiled manifest, so lineage, tests, exposures and contracts come from your own project.</p>
+          </li>
+          <li class="connect-node" data-node="ci">
+            <button class="connect-btn" type="button" aria-controls="connect-ci"><span class="integration-logo logo-ci"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6h6"/><path d="M4 5a2 2 0 0 1 2-2h8l6 6v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="m9 13.5 2 2 4-4"/></svg> </span><strong>GitHub Actions</strong></button>
+            <p class="connect-text" id="connect-ci">One workflow step submits the base and head manifests. Relium shows you the exact file to copy.</p>
+          </li>
+          <li class="connect-node" data-node="warehouse">
+            <button class="connect-btn" type="button" aria-controls="connect-warehouse"><span class="integration-logo logo-warehouse"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 9v12"/></svg> </span><strong>Your warehouse</strong></button>
+            <span class="pill connect-optional" data-tone="accent">optional · aggregates only</span>
+            <p class="connect-text" id="connect-warehouse">Optional. A collector you run with your own read-only credentials submits aggregate metadata — never rows.</p>
+          </li>
+        </ul>
+      </div>
+      <aside class="connect-inspector" aria-hidden="true">
+        <span class="connect-inspector-logo" data-ci-logo></span>
+        <strong data-ci-name></strong>
+        <p data-ci-text></p>
+      </aside>
     </div>
     <p class="pricing-note reveal">Warehouse evidence is collected by a process that runs in your environment, with credentials you hold. See <a href="/security">how Relium handles your data</a>.</p>
   </section>
@@ -440,7 +471,8 @@
     </div>
   </section>
 
-  <section class="final-cta">
+  <section class="final-cta" data-play>
+    <div class="cta-stamps" aria-hidden="true"><span class="cta-stamp" data-tone="block">BLOCK</span><span class="cta-stamp" data-tone="allow">ALLOW</span></div>
     <div class="cta-inner reveal">
       <span class="eyebrow">Get started</span>
       <h2>Know what changes before you ship.</h2>

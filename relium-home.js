@@ -573,6 +573,67 @@
     }, 0.2);
   }
 
+  /* =================================================================
+     Play once: the problem panels, the timeline, the final CTA stamp.
+     Armed only when motion is allowed, played the first time they are
+     in view, then left alone. Unarmed, they are already in their final
+     state — which is what no-JS and reduced-motion visitors see.
+     ================================================================= */
+  function initPlayOnce(element) {
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+    element.classList.add("is-armed");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        element.classList.add("is-played");
+        observer.disconnect();
+      });
+    }, { threshold: 0.2 });
+    observer.observe(element);
+  }
+
+  /* =================================================================
+     Integrations: hover, focus or click a connection to read it. The
+     flowing edges only run while the diagram is on screen.
+     ================================================================= */
+  function initConnect(root) {
+    var nodes = root.querySelectorAll(".connect-node");
+    var inspector = root.querySelector(".connect-inspector");
+    var logo = inspector.querySelector("[data-ci-logo]");
+    var name = inspector.querySelector("[data-ci-name]");
+    var text = inspector.querySelector("[data-ci-text]");
+    var narrow = window.matchMedia("(max-width: 960px)");
+
+    function select(node) {
+      Array.prototype.forEach.call(nodes, function (item) {
+        item.classList.toggle("is-active", item === node);
+      });
+      root.setAttribute("data-active", node.getAttribute("data-node"));
+      logo.innerHTML = node.querySelector(".integration-logo").outerHTML;
+      name.textContent = node.querySelector("strong").textContent;
+      text.textContent = node.querySelector(".connect-text").textContent;
+      inspector.classList.remove("is-updating");
+      void inspector.offsetWidth;
+      inspector.classList.add("is-updating");
+    }
+
+    Array.prototype.forEach.call(nodes, function (node) {
+      var button = node.querySelector(".connect-btn");
+      ["mouseenter", "focus", "click"].forEach(function (type) {
+        button.addEventListener(type, function () { if (!narrow.matches) select(node); });
+      });
+    });
+    select(nodes[0]);
+
+    if (!reducedMotion.matches) {
+      onVisible(root, function (visible) { root.classList.toggle("is-live", visible); });
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-play]"), initPlayOnce);
+  var connectRoot = document.querySelector("[data-connect]");
+  if (connectRoot) initConnect(connectRoot);
+
   var consoleRoot = document.getElementById("review-console");
   if (consoleRoot) initConsole(consoleRoot);
   var stackRoot = document.querySelector("[data-stack]");
